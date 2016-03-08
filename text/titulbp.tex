@@ -1,0 +1,56 @@
+\begin{center}
+%napisy
+\newcommand{\napisCVUT}{České vysoké učení technické v Praze}
+\newcommand{\napisFS}{Fakulta stavební}
+\newcommand{\napisProgram}{Program Geodézie a kartografie}
+\newcommand{\napisObor}{Obor Geoinformatika}
+\newcommand{\napisKatedra}{Katedra geomatiky}
+\newcommand{\napisVedouci}{Ing. Martin Landa, Ph.D.}
+\newcommand{\napisAutor}{Matěj Krejčí}
+\newcommand{\napisDatum}{Praha 2016}
+\newcommand{\napisNazevI}{Processing of vector data using distributed}
+\newcommand{\napisNazevII}{database systems in GIS}
+\newcommand{\napisNazevAjI}{Využití distribuovaných databázových}
+\newcommand{\napisNazevAjII}{ systémů pro správu vektorových dat v GIS}
+\newcommand{\napisBakalarka}{Master thesis}
+\newcommand{\napisPraha}{Prague 2016}
+%
+% prikazy
+%\newcommand{\velka}[1]{\uppercase{#1}}
+\newcommand{\velka}[1]{\textsc{#1}}
+%
+% 
+\newif\ifpatitul
+\patitultrue
+
+\ifpatitul
+{\Large\velka{\napisCVUT}}\\
+\velka{\Large\napisFS}\\
+\vfill
+{\LARGE\velka{\napisBakalarka}}
+\vfill
+{\large\napisPraha\hfill\napisAutor}
+\newpage
+\fi%patitul
+
+
+{\Large\velka{\napisCVUT}}\\
+{\Large\velka{\napisFS}}\\
+{\Large\velka{\napisProgram}}\\
+{\Large\velka{\napisObor}}\\
+\vfill
+\includegraphics[width=3cm]{logo_cvut_cb} %~
+\vfill
+
+{\Large\velka{\napisBakalarka}}\\
+{\Large\velka{\napisNazevI\\
+\napisNazevII}}\\
+{\large\velka{\napisNazevAjI\\
+\napisNazevAjII}}
+\vfill
+{\large%
+Vedoucí práce: \napisVedouci\\
+\napisKatedra\\
+\bigskip
+\napisDatum\hfill\napisAutor}
+\end{center}

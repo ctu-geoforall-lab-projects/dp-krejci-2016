@@ -1,0 +1,69 @@
+###connection
+
+##################################################################################################################
+#hdfs
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=hdfsc host=cluster-1-m port=50070
+
+
+
+
+
+
+
+
+
+
+
+
+##################################################################################################################
+
+#hdfs
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hdfs conn_id=hdfsc host=172.17.0.3 port=50070
+
+#hdfsweb
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=cloudera host=quickstart.cloudera port=50070
+
+#hive_cli
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=hive_cli host=172.17.0.2 port=50070
+
+#hive_shpy2
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hiveserver2 conn_id=hiveserver2 host=quickstart.cloudera port=50070 user=claudera schema=default
+
+#jdbc
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=jdbc_conn_id host=172.17.0.2 port=50070
+
+
+##################################################################################################################
+#v.out.hdfs.py
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/v.out.hdfs.py driver=webhdfs  hdfs=/ map=cfm layer=1
+
+#v.hive.table
+/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/v.hive.table.py driver=hiveserver2 table=cfm attributes={'cat':'INT', 'nazev':'STRING','poityp':'STRING'} jsonpath=/cfm_1_ENCLOSED.json -e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://172.17.0.2:50070/webhdfs/v1/user?op=GETFILESTATUS
+
+#status
+curl -i "http://172.17.0.2:50070/webhdfs/v1/?op=GETFILESTATUS"
+#ls
+curl -i "http://172.17.0.2:50070/webhdfs/v1/foo/?op=LISTSTATUS"
+#mkdir
+curl -i -X PUT"http://172.17.0.2:50070/webhdfs/v1/foo2?op=MKDIRS"
+
+
+
+
+curl -i -X PUT "http://host:port/webhdfs/v1/foo2?op=MKDIRS"
