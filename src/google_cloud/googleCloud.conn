@@ -1,0 +1,50 @@
+#ssh to cluser
+gcloud compute --project "spatial-hadoop" ssh --zone "europe-west1-b" "cluster-1-m"
+gcloud --project=spatial-hadoop2 compute ssh --zone=europe-west1-b hadoop-m
+
+#tunel to cluser
+gcloud compute ssh --zone=europe-west1-b --ssh-flag="-D 1080" --ssh-flag="-N" --ssh-flag="-n" cluster-1-m
+
+#web interface
+/usr/bin/google-chrome \
+  --proxy-server="socks5://localhost:1080" \
+  --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost" \
+  --user-data-dir=/tmp/
+
+*********************************************************
+#deply new cluster
+1download bdutil
+2create bucket
+
+##init cluster
+gcloud beta dataproc clusters create cluster-2 --zone europe-west1-b --master-machine-type n1-standard-1 --master-boot-disk-size 500 --num-workers 2 --worker-machine-type n1-standard-1 --worker-boot-disk-size 300 --project spatial-hadoop 
+
+
+./bdutil --bucket hadoop_spatial_bucket -n 5 -P my-cluster --env_var_files datastore_env.sh,extensions/querytools/querytools_env.sh,spatial.sh deploy
+
+#gcloud dataproc https://cloud.google.com/hadoop/bdutil
+##describe cluster
+gcloud dataproc clusters describe cluster-1
+
+##
+matt@cluster-1-m:/$ mc ./usr/local/share/google/dataproc/bdutil-dataproc-20160216-151931-RC0
+#delete cluster
+./bdutil delete
+*********************************************************
+
+*********************************************************
+Access data from google starage 
+https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists
+*********************************************************
+
+
+#Check your quota
+gcloud compute project-info describe --project myproject
+gcloud compute regions describe example-region
+
+
+
+
+
+#hadoop check config
+ hadoop org.apache.hadoop.conf.Configuration | grep webhdfs

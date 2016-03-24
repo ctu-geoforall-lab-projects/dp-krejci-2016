@@ -1,7 +1,8 @@
 *.aux
 *.log
-BP.pdf
+dp-krejci.pdf
 *.bak
 *.out
 *.toc
 *.dvi
+*.gz

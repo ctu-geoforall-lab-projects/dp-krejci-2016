@@ -3,7 +3,7 @@
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
 \usepackage{xcolor}
-\usepackage[czech,english]{babel}
+\usepackage[english,czech]{babel}
 \usepackage[pdftex, final]{graphicx}
 \usepackage{alltt}
 \usepackage{paralist}
@@ -12,6 +12,7 @@
 \usepackage[final]{pdfpages}
 \usepackage[final,pdftex, colorlinks=false]{hyperref}
 \usepackage{fancyhdr}
+\usepackage[ruled,vlined]{algorithm2e}
 %mensi mezera z figure
 %\setlength{\belowcaptionskip}{-10pt}
 \newcommand{\squeezeup}{\vspace{-2.5mm}}
@@ -42,14 +43,21 @@
 \makeatother
 
 \usepackage{indentfirst}
+\usepackage{wrapfig}
 
+\usepackage{booktabs}
 
-%%%%%%%%%% zahlavi %%%%%%%%%%%
+%%%%%%%%%% tabulka %%%%%%%%%%%
 
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\usepackage{etoolbox}
+\preto\tabular{\shorthandoff{-}}
 
-
-
-
+%\usepackage{etoolbox}
+%\patchcmd{\thebibliography}{\chapter*}{}{}{}
 
 %cislovani kapitol
 \renewcommand*\thesection{\arabic{section}}
@@ -61,7 +69,7 @@
 \renewcommand{\chaptername}{}
 
 
-
+\setcounter{secnumdepth}{3}
 
 %Abstract
 \usepackage{lipsum}
@@ -123,24 +131,24 @@ morecomment=[l]{\#},
 
 \lstdefinestyle{mybash}{
    language=bash,
-   basicstyle={\ttfamily},
-   keywordstyle=[1]{\bfseries},
-   keywordstyle=[2]{\color{black}},
-   commentstyle={\itshape},
-   %frame=lines,
-   showstringspaces=false,
-   backgroundcolor=\color{darkGrey},
-}
-
-\lstdefinestyle{python}{
-   language=python,
-   basicstyle={\ttfamily},
+   basicstyle={\ttfamily\scriptsize},
    keywordstyle=[1]{\bfseries},
    keywordstyle=[2]{\color{black}},
    commentstyle={\itshape},
    frame=lines,
    showstringspaces=false,
-   backgroundcolor=\color{lightGrey},
+   %backgroundcolor=\color{darkGrey},
+}
+
+\lstdefinestyle{python}{
+   language=python,
+   basicstyle={\ttfamily\scriptsize},
+   keywordstyle=[1]{\bfseries},
+   keywordstyle=[2]{\color{black}},
+   commentstyle={\itshape},
+   frame=lines,
+   showstringspaces=false,
+   %backgroundcolor=\color{lightGrey},
 }
 
 
@@ -148,7 +156,6 @@ morecomment=[l]{\#},
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \newcommand{\klicslova}[2]{\noindent\textbf{#1: }#2}
 \newcommand{\modul}[1]{\emph{#1}}
 %\newcommand{\instr}[1]{\lstinline[style=psmapInline]|#1|}
@@ -169,9 +176,9 @@ morecomment=[l]{\#},
 
 
 
-\renewcommand{\bibname}{Literatura}
-\renewcommand{\contentsname}{Obsah}
-\renewcommand{\figurename}{Obr.}
+\renewcommand{\bibname}{References}
+\renewcommand{\contentsname}{Content}
+\renewcommand{\figurename}{Fig.}
 \renewcommand{\tablename}{Tab.}
 
 
@@ -183,9 +190,6 @@ morecomment=[l]{\#},
 
 
 \input{titulbp}
-\newpage
-\input{listsezadanim} % resi si zalomeni sam
-
 
 \begin{abstractpage}
 \begin{abstractx}{czech}
@@ -211,7 +215,10 @@ morecomment=[l]{\#},
 \input{prohlaseniapodekovani}
 \newpage
 
+\setcounter{tocdepth}{3}
+
 \tableofcontents
+%\addtocontents{toc}{~\vspace{-3\baselineskip}}
 
 
 \newpage
@@ -228,7 +235,7 @@ morecomment=[l]{\#},
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \subsection*{Context}
-Over the years the capabilities of hard drives have increased massively and access speed too. According to study by International Data Corp, since 2007 we produce more data than we can store. This amount of data is widely named big data.
+%Over the years the capabilities of hard drives have increased massively and access speed too. According to study by International %Data Corp, since 2007 we produce more data than we can store. This amount of data is widely named big data.
 \subsection*{Motivation and contribution}
 
 \subsection*{Aim of the thesis}
@@ -242,32 +249,38 @@ Over the years the capabilities of hard drives have increased massively and acce
 \paragraph*{Starter}
 
 \section{Hadoop framework}
+\label{sec:hadoop}
 		\subsection*{Hadoop}
-		 \emph{"The Apache Hadoop software library is a framework that allows for the distributed
+		\emph{"The Apache Hadoop software library is a framework that allows for the distributed
 		  processing of large data sets across clusters of computers using simple programming 
 		  models. It is designed to scale up from single servers to 
 		 thousands of machines, each offering local computation and storage. Rather than rely 
 		 on hardware to deliver high-availability, the library itself is
 		  designed to detect and handle failures at the application layer, so delivering a 
 		  highly-available service on top of a cluster of computers,
-		  each of which may be prone to failures."}
-		\paragraph*{History}goes back to 2002 and the 
+		  each of which may be prone to failures."}(Apache Hadoop,\cite{hadoop_web})
+		\paragraph*{History}goes back to 2002 when the 
 open-source project Apache Hadoop software for reliable, scalable,
 distributed computing was launched. The project was originally
 developed within Yahoo! company. That was the first company
 which used framework Hadoop in production environments.
 
 At the beginning of October 2003, Hadoop project was launched to improve performance
-of the Apache Nutch web search engine in the short time (in January 2006) was moved to the new Hadoop sub project.
-At around the same time  distributed file system called Google
-file system, with the specific, permitting efficient and reliable access
-the huge amount of data has been created. This abstract filesystem, widely called "user level"
+of the Apache Nutch\cite{nutch_web} web search engine and in the short time (in January 2006) was moved to the new Hadoop sub project.
+At the same time  distributed file system called Google
+file system\cite{google_fs}, with the specific, permitting, efficient and reliable access
+the huge amount of data, has been created. This abstract filesystem, widely called "user level"
 filesystem runs as a service that is accessible via APIs and libraries. 
-In 2008, Hadoop was made its own top-level project at Apache, confirming its
-success and its diverse, active community. By this time, Hadoop was being used by many
+In 2008, Hadoop was mad own top-level project at Apache.\cite{hadoop_web_news} By this time, Hadoop was being used by many
 other companies besides Yahoo!, such as Last.fm, Facebook, and the New York Times. 
 
-\paragraph*{The base Apache Hadoop}framework \cite{apache_web} written in Java is composed of the following modules:
+
+ \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./img/schema2.pdf}
+    \caption[Hadoop architecture2]{\centering Hadoop HDFS and MapReduce abstract layer  }
+ \end{figure} 
+\paragraph*{The base Apache Hadoop}framework written in Java is composed of the following modules(Hadoop Apache \cite{hadoop_web}):
 \begin{itemize}
 \item \textbf{Hadoop Common} - The common utilities that support the other Hadoop modules;
 \item \textbf{Hadoop Distributed File System (HDFS)} – A distributed file system that provides
@@ -280,77 +293,102 @@ Beside main modules, there are many Hadoop extensions for cluster management,
 data access and helpers for storing data in HDFS.
 
 		\subsection{HDFS: Hadoop Distributed File System}
-		\paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files across several machines, it is called Hadoop Distributed FileSystem (HDFS). Is designed for handling very large files with streaming
-data access. In HDFS, large files are broken down into smaller blocks (128MB, by default) which are 
+As the main source for describing HDFS have been used the official documentation (\textit{hadoop.apache.org} 
+\cite{hadoop_web}) and book (\textit{Hadoop: The Definitive Guide}\cite{hadoop_definitive})
+		\paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files on several 
+machines, it is called Hadoop Distributed FileSystem (HDFS). Is designed for handling very large files with streaming
+data access.\cite{hadoop_hdfs_web} In HDFS, large files are broken down into smaller blocks (128MB, by default) which are 
 stored as independent units. The architecture of HDFS is a highly fault-tolerant and provides wide permeability
 for access.   
-  A short overview of main characteristics of HDFS design is described
- below\cite{hadoop_definitive}:
-\begin{enumerate}
-\item \textbf{Very large files} - With relevant hardware data of amounts petabites 
-can be accessed on Hadoop clusters effectively.
-\item \textbf{Streaming data access} - Efficient data processing is based on
- read once and copied many times pattern. 
-\item \textbf{Commodity hardware} is suitable for running Hadoop. At the end,
- this fact helped with decision to invest value of money to the development of Hadoop instead 
- of operate on expensive and highly reliable hardware.
-\item \textbf{Low-latency data access} - HDFS is not suitable for preforming
+  A short overview of main characteristics of HDFS design is described in (Hadoop: The Definitive 
+  Guide\cite{hadoop_definitive}) as five features: (1)\textbf{Very large files} - With relevant hardware data of amounts petabytes 
+can be accessed on Hadoop clusters effectively. (2) \textbf{Streaming data access} - Efficient data processing is based on
+ read once and copied many times pattern. (3)\textbf{Commodity hardware} is suitable for running Hadoop. At the end,
+ this fact helped with the decision to invest value of money to the development of Hadoop instead 
+ of operating on expensive and highly reliable hardware. (4) \textbf{Low-latency data access} - HDFS is not suitable for performing
  low-latency access to data. Primary, HDFS is optimized for delivering
-a high throughput of data.
-\item \textbf{Lots of small files} allows to read and operate over more files
+a high throughput of data. (5)\textbf{Lots of small files} allows to read and operate over more files
  at the same time. Limitation of number of stored directories,  files and block in filesystem is limited by \emph{Namenode} memory.
 
+HDFS is based on traditional hierarchical file model. As in other filesystems, HDFS allows basic file operations: 
+read, write, rename, move etc. However it doesn’t support hard and soft links. Below is the example of copying file between HDFS folders. 
+\vskip-2ex
+\begin{figure}[h!]
+\begin{footnotesize}
+\lstset{extendedchars=false,
+escapeinside=''}
+\begin{lstlisting}[style=mybash]
+$ hadoop fs -cp /user/hadoop/file1 /user/hadoop/file2 
+\end{lstlisting}
+\end{footnotesize} 
+\end{figure}
+\vskip-2ex
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.6\textwidth]{./img/hadoop/schema2.pdf}
-    \caption[Hadoop architecture]{\centering Hadoop architecture  }
+    \includegraphics[width=1\textwidth]{./img/hdfsarchitecture.png}
+    \caption[HDFS architecture1]{\centering HDFS architecture \footnotemark}
  \end{figure} 
-\end{enumerate}
-		\subsubsection{Organisation of data}
-Similarly to  a filesystem, HDFS as well is based on the disk blocks. The traditional
- the file system is based on blocks which define the minimal size of the amount of data to read and write. 
-        HDFS blocks have the simillar concept based on blocks, but the minimal unit is
-         large. The size of the block is 128 MB by default. Blocks are broken and distributed
-          over disks on the cluster like blocks over a single disk in the filesystem. The ideal 
-          size of stored files is the same as the size of the block. With increasing the block 
-          size time cost for computing as well increasing.  On the other hand, a large number
-           of blocks is expensive for the preparation of files. The important task is to find optimize 
-            ratio between data preparation and computational time by set suitable blocks size.
-        The idea of block abstraction helps to bring several benefits. First advantages of
-         abstraction design is the possibility of storing bigger data file than physical disk unit, 
-         even the fact that it is unusual.
-        The second benefit of fixed size is simplifying storage management. Obviously is easy task
-         to hold calculate size disponibility and eliminating metadata concerns(Is  not necessary 
-         to store metadata of tree in data blocks, even in the same system.)
-        Furthmore the blocks are suitable for replication for providing fault tolerance. Protection
-         against corrupted blocks, disk or machines is based replication of block over a cluster. 
-         To ensure the integrity of HDFS checksums when reading as well as reading data.
-        
-        
-		
+ \footnotetext{Figure source: \url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}}
 
-		\subsubsection{Namenodes}
-Hadoop comes with cluster architecture based on master(\emph{Namenode}) and\\ slave(\emph{Datanode}) design pattern. 
-        The \emph{Namenode} handles metadata of abstract file system(namespace), which include
-        information about the structure of files and directories in the tree. Information about filesystem is stored 
-        on local disk in two files: the namespace image and edit log file. 
-        The \emph{Namenode} know all locations of  \emph{Datanodes} blocks where data 
-        are stored. It also provides the primary user interface to access HDFS. 
-        By design \emph{Namenode}  is a single point of failure and should be never overloaded and must be the most reliable node of the cluster.  Without \emph{Namenode}, HDFS is totally unserviceable. In recent Hadoop releases, there is also a backupnode- \emph{SecondaryNamenode}, always up to date with latest \emph{Namenode} status. It receives all the operations done by \emph{Namenode} and stores them in local memory. This permits to have the latest, up to date, namespace status when \emph{Namenode} fails. 
-		\subsubsection{Datanodes}
+		\subsubsection{Organization of data}
+Similarly to  a filesystem, HDFS is based on the disk blocks as well. The traditional
+file system is based on blocks which define the minimal size of the amount of data to read and write.
+HDFS blocks have the similar concept based on blocks, but the minimal unit is
+larger. The size of the block is 128 MB by default. Blocks are broken and distributed
+over disks on the cluster like blocks over a single disk in the filesystem. The ideal 
+size of stored files is the same as the size of the block. With increasing the block 
+size time cost for computing increases as well. On the other hand, a large number
+of blocks is expensive for the preparation of files. The important task is to find the optimized 
+ratio between the data preparation and the computational time by set suitable blocks size.
+The idea of block abstraction helps to bring several benefits. First advantages of
+abstraction design which allows storing bigger file than physical disk unit, 
+even the fact that for Hadoop it is unusual.
+
+The second benefit of fixed size is simplifying of storage management. Obviously, it is easy task
+to hold calculating of size discernibility and eliminating metadata concerns (not necessary 
+to store metadata of tree in data blocks, even in the same system.)
+Furthermore, the blocks are suitable for replication and for providing fault tolerance. Protection
+against corrupted blocks, disks or machines is based on replication of block over a cluster. 
+Moreover, this approach ensures the integrity of HDFS checksums when reading as well as reading data.
+
+\textbf{Replication selection process} is suited to minimize bandwidth consumption over a cluster. 
+To minimize read latency, HDFS is primary try to read the closest replica to the reader. Priority is the 
+same rack as node reader. \cite{hadoop_hdfs_web}
+
+\textbf{Rack Awareness} on Hadoop serves for getting the maximum potential of production, 
+it means that it knows the network topology. The purpose of rack-aware replication is ensured by policy 
+component. It controls data reliability, availability, and network bandwidth. For a multi-rack cluster, is suitable to need to map 
+nodes to a rack\cite{hadoop_rack_web}. This can be ensured manually or using program for mapping hierarchy of IP 
+addresses. The priority of transfers is a size of bandwidth availability.  Within transfers 
+where there is more bandwidth available as compared to off-rack transfers for MapReduce jobs on a node. 
+By theory, the better network bandwidth is between machines in the same rack, due to hardware specifics.
+		
+		
+		\subsubsection{NameNodes and DataNodes}
+Hadoop comes with cluster architecture based on master(\textit{Namenode}) and\\ slave(\textit{DataNode}) design pattern. 
+The \textit{Namenode} handles metadata of abstract file system(namespace), which include
+information about the structure of files and directories in the tree. Information about filesystem is stored 
+on local disk in two files: the namespace image and edit log file. 
+The \textit{NameNode} know all locations of  \textit{DataNodes} blocks where data 
+are stored. It also provides the primary user interface to access HDFS. 
+By design \textit{NameNode}  is a single point of failure and should be never overloaded and must 
+be the most reliable node of the cluster.  Without \textit{NameNode}, HDFS is totally unserviceable. 
+In recent Hadoop releases, there is also a backupnode- \textit{SecondaryNameNode}, always up to date 
+with latest \textit{NameNode} status. It receives all the operations done by \textit{NameNode} and 
+stores them in local memory. This permits to have the latest, up to date namespace status, when \textit{NameNode} fails. 
+        
 As has been mentioned, the blocks of a file are independently stored in nodes, which are called
-Datanodes. Every Datanode in the cluster makes registration process to the Namenode during starting. Besides that, each Datanode informs Namenode about blocks availability by sending a block report. A block reports are sent periodically or when a change event
-happens. Moreover, every Datanode sends \emph{relevant} messages to the Namenode to confirm that
-it remains operational and that the data is safe and available. If a Datanode stops operating, the error mechanisms designed to defend the failure and data loss maintain the availability of the block.
-\emph{Relevant} messages also hold information, which allows the Namenode run the cluster efficiently e.g. load balancing.  One   important concept of design  is that Namenode never directly calls data.
+\textit{DataNodes}. Every \textit{DataNode} in the cluster makes registration process to the \textit{NameNode} during start. 
+Besides that, each \textit{DataNode} informs \textit{NameNode} about blocks availability by sending a block report. 
+Block reports are sent periodically or when a change event happens. Moreover, every \textit{DataNode} sends 
+\emph{relevant} messages to the \textit{NameNode} to confirm that
+it remains operational and that the data is safe and available. If a \textit{DataNode} stops operating, the error 
+mechanisms designed to defend the failure and data loss maintain the availability of the block.
+\emph{Relevant} messages also hold information, which allows the \textit{NameNode} to run the cluster efficiently e.g. 
+load balancing. One important concept of design  is that \textit{NameNode} never directly calls data.
 		
-		
-		\subsubsection*{Data replication}
-		\subsubsection*{I/O streams}
 
-		
 	\subsection{Parallel computing - MapReduce}		
-
 The \emph{MapReduce} is a programming designed pattern for processing and generating large data
 sets. The \emph{MapReduce} abstraction is inspired by the Map and Reduce functions, which is commonly
 found in functional programming languages, such as LISP. Users can easily express their
@@ -363,134 +401,648 @@ Map(keyA, valueA) → list (keyB, valueB)
 Reduce function aggregates all intermediate values that associate to the same intermediate key
 to produce the final output, also in the form of $<$ key, value $>$ pairs
 \begin{center}
-Reduce (keyB, list(valueB)) → list (key C, valueC)
+Reduce(keyB, list(valueB)) → list (key C, valueC)
 \end{center}
 Thus the \emph{MapReduce} framework transforms a list of (key, value) pairs into a list of values. 
-%In this section the fundamentals of parallel computing with using Hadoop is described. 
-%The basis of computing core is \emph{MapReduce} framework. As indicated, the \emph{MapReduce} consists two main 
-%functions. After job is started the first function, \textbf{Map} is distributed over cluster of computers - in 
-%Hadoop dialect over \emph{Datanodes}. 
-%In \textbf{Map} function is defined form and location of reading row input data. According to character of 
-%computation the pairs. The key is intermediate product and is stored locally.
-%Reduce nodes take these intermediate outputs and using Reduce function combine them to final output which is then stored in HDFS.
-%
-%However, it essential that all the mapping function can run independently and their results can be proceeds by reducing 						function. Described principle allows almost linearly parallelizable solution of task.
 
 
-\paragraph{As MapReduce demonstration} for this work is suitable to use we data from cellular microwaves links(MWL). 
-Assume that data are already serialized and stored in text files. Each file representing 24 hours of captured data. 
-Size amount of weakly data is relatively small(~100Mb) which is suitable.
-We are interesting to compute mean of difference between transmitted and received signal
- for each link in period between 2014-07-07 and 2015-07-07.
+\paragraph{As MapReduce demonstration} in this work the use of data from cellular microwaves links(MWL)  is suitable . 
+Assuming that data are already serialized and stored in text files and each file representing 24 hours of captured data, the size amount of weakly data is relatively small(~100Mb) which is adequate.
+We are interesting in computational of then  mean differences between transmitted and received signal for each link in the period between 2014-07-07 and 2015-07-07.
 
-Below is sample of data stored as CSV.
-\begin{figure}[h!]
-\begin{footnotesize}
-\lstset{extendedchars=false,
-escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+Below is the sample of data stored as CSV.
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}\begin{lstlisting}[style=mybash]
 linkid;data;rx;tx
 324;"2014-07-07 11:14:56.552";-48.9;10
 256;"2014-07-07 11:14:59.703";-99.9;7
 ...
 324;"2015-07-07 17:10:56.578";-50.1;7;
 256;"2015-07-07 17:10:56.484";-85.3;10;
-\end{lstlisting}
-\end{footnotesize} 
-\end{figure}
+\end{lstlisting} \end{figure}
 
-The lines above are presented to map functions as key-values pairs.
+The text lines above are presented to map functions as key-values pairs.
 The map function extracts data from date 2014-07-07 and creates pairs {link:(rx-tx)}
-
-\begin{figure}[h!]
-\begin{footnotesize}
-\lstset{extendedchars=false,
-escapeinside=''}
-\begin{lstlisting}[style=mybash]
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}\begin{lstlisting}[style=mybash]
 {324:-58.9}
 {256:-106.9}
 ...
 {324:-57.1}
 {256:-95.3}
-\end{lstlisting}
-\end{footnotesize} 
-\end{figure}
+\end{lstlisting} \end{figure}
+
 The output is processed by MapReduce framework before is being sent to reduce function.
- Mentioned process sorts pairs by key as bellow.
+Mentioned process sorts pairs by key as shown bellow.
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}\begin{lstlisting}[style=mybash]
+{324:[-58.9,-57.1]}
+{256:[-106.9,-95.3]}
+\end{lstlisting} \end{figure}
+
+Finally reduce program iterates over the list of values for each link and compute mean.
+ The final results are stored in Hadoop file system.
+ 
+
+
+\section{Spatial processing in parallel}
+	\subsubsection{Introduction to Spatial MapReduce Query}
+Figure \ref{fig:mapred_spatial} shows a simple example of distributed spatial query processing. The main idea 
+grows up from the basis of MapReduce. On the figure, the dataset is partitioned into four tiles. After 
+query job is started each tile is analyzed separately using Map(M1-M4) function. For demonstration, 
+query analyzes intersection of two datasets(red, blue) on each tile and relation between 
+objects from the different dataset is detected. The result is done by Reduce(R) function, where results from each
+map phase are processed.
+
 \begin{figure}[h!]
-\begin{footnotesize}
+    \centering
+    \includegraphics[width=0.5\textwidth]{./img/mapred_spatial.pdf}
+    \caption[Spatial Map Reduce]{\centering Detection of spatial relations using Map(\textit{M1-M4}) and Reduce(\textit{R}) functions}
+        \label{fig:mapred_spatial}
+ \end{figure}
+\paragraph{}
+
+The motivation for spatial processing in parallel is queering data in reasonable time. 
+Firstly, it is essential to introduce characteristics of queries for solving different 
+tasks. In HadoopGIS (F. Aji, F. Wang, et al.\cite{hadoopGIS}) there is defined five major 
+query cases of spatial data: (1) \textit{Feature Aggregation queries}  which doesn’t 
+fall into spatial queries, however, they are evenly important for spatial frameworks 
+as others. As a common example of Feature Aggregation query, a function for finding mean 
+values of attributes. 
+\textit{Fundamental Spatial Queries} covers groups of tasks like: including point based 
+queries, containment queries, and spatial joins. (3) Next groups 
+\textit{ Complex Spatial Queries} includes more challenging task. A query which solves 
+advanced Spatial Join: spatial mismatching or overlay; or neighbor query. (4) Integrated 
+spatial and feature queries, which combine query from more categories, such feature 
+aggregation queries in a selected spatial regions. Finally (5) \textit{Global
+Spatial Pattern Queries}, for example, queries on finding high-density regions, or 
+queries to find directional patterns of spatial objects.
+
+Anyway, classification of a query to five groups is based on characteristics of a task. 
+But, as in RDBMS as well in distributed databases, the most challenging is to solve  cost-intensive query. 
+Join Queries and Nearest Neighbour queries can be classified as 
+cost-intensive to compare to the rest and because of that, it becomes as interesting and
+most challenging task for a scientist, developers. Logically that fact affects the direction of the most of academic works and developments.
+
+Speeding up a process of solving \textit{Spatial Join} which is classified as classic GIS 
+problem is a motivation for the parallel processing of spatial data. Spatial Join 
+is an operation used to combine two or more datasets with respect to a spatial 
+relationship. Detection of relations between spatial objects using serial(used in RDBMS) 
+computing approach started to be limited by its design. On the scene comes solutions
+based on parallel and distributed models. In the past, many distributed 
+solutions as OpenMP\cite{omp} have been presented, for instance, Intel TBB and Bulk Synchronous Parallel\cite{multi_cpu}.
+Because of their complexity, they have been used insignificantly to compare with Hadoop framework.
+Already introduced MapReduce parallel model opens doors for developing efficient
+spatial query engine with less developing investments. In the last years,  
+few projects came up on the scene  focused on Spatial MapReduce.
+\textit{SpatialHadoop}\cite{spatialhadoop}, \textit{HadoopGIS}\cite{hadoopGIS} and \textit{ESRI Spatial Framework for Hadoop}\cite{esri_framework}
+are three open source systems that are designed to process large scale spatial data on Hadoop.
+All three systems come with significantly different design of implementation but they all are based
+on Map Reduce framework from Hadoop environment and basically all project have the same goal.
+To realize such systems, it is essential to identify time-consuming spatial query components,
+break them down into small tasks, and process these tasks in parallel. 
+Design of first two systems, \textit{SpatialHadoop} and \textit{HadoopGIS}
+extensions are well described in publications. Background of Esri library is not described in an available
+publication, on the other hand, the user documentation seems to be complex and described in detail. 
+Esri laboratory published article\cite{esri_indexing} about QuadTree indexing, which is used for building 
+indexes in their \textit{ESRI Spatial Framework for Hadoop}.
+In the section below there are described fundamentals of spatial processing in parallel and the in discussion 
+the comparison of solutions of developed and published frameworks is provided. The main source for description 
+of frameworks is mentioned literature (\textit{SpatialHadoop}\cite{spatialhadoop}, \textit{HadoopGIS}\cite{hadoopGIS} 
+and \textit{ESRI Spatial Framework for Hadoop}\cite{esri_framework})
+
+		
+\subsection{Spatial Join}
+\label{sub:spatial_join}
+Assume two sets of multi-dimensional object in \emph{Euclidean space}. Relation of spatial 
+join between sets \emph{R} and \emph{S} can be defined\cite{spatial_join2}:
+
+\begin{center}
+$R\bowtie_{pred}S=\left \{ \left ( r,s|r  \right )\in R,s \in S, pred(r,s) is \ \ true) \right \}  $
+\end{center}
+where $\bowtie_{pred}$ is a spatial predicate for the relationship of two
+spatial objects. 
+\linebreak 
+\textit{Spatial join} finds all pairs of object which satisfying a spatial relation between given objects. 
+For further explanation of the spatial join concept assume that  objects \emph{s} from set \emph{S} and 
+analogically  \emph{r} from \emph{R} are rectangles. Intersection operation between each rectangle \emph{s} 
+and \emph{r} will report set \emph{R} of intersected \emph{r} rectangles.
+
+Solution of described \textit{spatial join} is trivial. General spatial join problem has been extended by 
+complex spatial join, known as \textit{spatial overlay join}\cite{spatial_join}: (a)The set of objects
+can be another character than a rectangle, such as point, segments or polygon. (b) The dimension of a set 
+can be more than three. (c) The relationship between pairs of objects may be any relationship between 
+objects which includes spatial elements, such as intersections, nearness, enclosure, or a directional relation. 
+
+To speed up spatial join query different ways based on filtering are commonly used.
+Typical trivial solutions are covered by usage of Minimal Bounding Box (MBB) as a first 
+filter for defining the subset of candidate object satisfying a spatial predicate. For defining of MBBs for 
+sets of points Convex Hull algorithm can be used. 
+To speed up computation the construction of Convex Hull based on heuristic \cite{covex_hull} is more efficient. 
+In Spatial Join technique \cite{spatial_join} 
+many different methods of filtering spatial objects and their suitability for specific 
+requirements are used. For large dataset stored in GIS, the filtering is essential. The object such a polygon 
+or point cloud can reach millions or more features. Boolean vectors operation on detecting relation without filter stage 
+can be extremely expensive in a meaning of I/O performance. Usually, in the first stage is filtering data; spatial objects 
+are read from hard drive which is sufficient for computation of MBRs, then created MBRs are 
+stored in memory and the spatial join test is performed faster.
+
+
+		\subsubsection{Spatial Data Partitioning}
+		\label{Spatial_Data_Partitioning}
+Data partitioning is a powerful mechanism for improving an efficiency of data management systems, 
+and it is a standard feature in modern database systems. Partitioning data into smaller units allows 
+for query processing in parallel and further improved performance. In addition,
+with proper partition scheme, I/O operations may be substantially
+reduced by scanning only a few sections that contain relevant information to answer a question.
+By architecture of Hadoop design, the important step and the first one is defining a suitable format for 
+storing data which influences  speed of their access and at least query process. In general, the 
+partitioning produces sub-datasets based in smaller regions-tiles is the common approach.
+There are two main reasons for the partitioning of spatial data. 
+The first one is to avoid tiles with high density. This is mainly due to the potential high 
+skew\cite{spatial_skew} of data which could imbalance workers in a cluster environment. Another aspect is to  
+properly handle boundary of intersecting objects. As MapReduce provides custom
+scheduling  for balancing tasks the problem of load imbalance can be partially 
+mitigated to a task of scheduling planning. In work (Effective Spatial Data Partitioning for Scalable Query 
+Processing \cite{partitioning}) has been introduced and compared six methods of spatial data partitioning for parallel processing. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{./img/part_overview.png}
+    \caption[mapreduce flow]{\centering  Spatial partitions generated by different algorithms BSP: Binary split 
+    partitioning, FG: Fixed grid
+partitioning, SLC: Strip partitioning, BOS: Boundary optimized strip partitioning, STR: sort-tile-recursive
+partitioning, HC: Hilbert curve partitioning. Source of fig: \cite{partitioning}}
+ \end{figure} 
+
+\paragraph{Spatial Data skew} is common in a spatial application. Example \cite{hadoopGIS} assumes dataset of 
+$1000\cdot1000$ tiles. The maximum count of the object is 10 000 objects, but the average count is $1020$. This 
+fact growing from the real situation where a high density of objects are e.g. in cities and less dense in farmlands. 
+In parallel spatial processing where a distribution of processes is based on tiles, the data skew can significantly 
+increase the response time.
+
+\paragraph{Boundary object}
+Spatial partitioning generates boundary objects that cross multiple partitions. Thus, it influences the independent relation 
+of each partition. In a usual case, a spatial object has complex boundary and extent. Even more, 
+from real experience is evident that in spatial datasets spatial object can cross multiple partitions. The problem is solved with 
+different methods; replicating spatial object to multiple partitions and filtering duplicates during query process 
+or another approach, creation sector with putting weight on minimizing boundary objects. 
+
+\paragraph*{} \textbf{HadoopGIS} in partitioning stage is focused on breaking high-density tiles into smaller ones, with using 
+recursive partitioning. Firstly, they provide two-dimensional data partitioning and generates a set of tiles.
+These preprocessed tiles are a source for query tasks. The preprocessing is done with the using of distributed computing.
+ Week point of tile-based approach is non-adaptable algorithm on non-uniformly distributed data. Because that, 
+ in practice with spatial partitioning the critical problem of \textit{data skew} is known. HadoopGIS ensures 
+ this problem by cutting high-density tiles into small ones thus recursive partitioning approach. For controlling 
+ number of objects per tile  maximal and a minimal number of objects per tile is defined. Splitting recursion 
+ finds optimal direction(x or y) for creating half-sized tiles which fulfil the thresholds by a number of objects 
+ in each half. In HDFS storage, the final tiles are not stored in small files taking into account default HDFS blocks size (128MB). 
+
+\paragraph*{} \textbf{SpatialHadoop} implemented the solution  based on the same tiles based idea as HadoopGIS, but few features 
+are significantly different.
+The main difference is storing partitions (tiles) in HDFS blocks instead in a big batch file. Algorithm for creating tiles differently 
+is  based on that. Three main characteristics arise from that fact. SpatialHadoop is counting 
+with a size of HDFS block and the size of tiles should fit  that size. It avoids data skew of spatial datasets. 
+Secondly, a design of partitioning method ensures spatial locality; a spatially close object is assigned to the same 
+partition. The last feature tempts to balancing the size of a partition. In an ideal case, all partition are the 
+same size. The number of partitions \emph{n} is computed as $n=\left[ \frac{S(1+ \alpha)}{B}\right]$,
+ where \emph{S} is the size of input file, \emph{B} is the HDFS block size and $\alpha$ is an overhead ratio(0.2 by default). 
+ Next step is the definition of boundaries by of partitions. Boundaries are represented by rectangles. Thus, a skew of data is not considered. 
+ The output of this step is set of rectangles representing  boundaries of partition. Together it represents cover 
+ of whole space domain. The result is input for initialization of physical partitioning procedure. The method solving 
+ the problem of an object with spatial extents (e.g. polygon) which overlaps more than one partitions. Determination 
+ of solution is based on selected index methods; when some of them assign object to all overlapping partitions and 
+ the others find the best matching partition. Replicated records are managed later by  query processor. Finally, 
+ for each record from partition the map function write the pair $<$partition,record$>$ which are grouped by 
+ partitions and sent to reduce function for the next task- indexing phase.
+
+
+		\subsubsection{Spatial Indexing}
+		\label{Spatial_Indexing}
+One essential requirement for spatial queries is a fast response. 
+In general, the filtering and partitioning  of spatial objects are widely related to indexing. 
+Spatial indexing helps to avoid to sequential browsing in other words to avoid full table scanning.
+Generally, in RDBMS for creation index over specified column or multiple columns is available multiple 
+indexing methods like btree, hash, gist, and gin. On spatial indexing problem in RDBMS have 
+been done many scientific works and different algorithms have been shown. Suitability of 
+different indexing methods is linked to the characteristics and distribution of data. 
+Adaptation of serial indexing method to parallel processing quite challenges. 
+RDBMS has the ability to use information from multiple indexes to determine how best
+to search for the records that satisfy all query criteria. A
+NoSQL key-value store, in contrast, has only a single index
+that is built atop the constraint that all records are ordered
+lexicographically . Traditional 
+Spatial Indexes from the field of RDBMS e.g. Grid file or R-tree are not suitable for parallel 
+processing. By design of traditional indexing method, they are not designed for effective 
+usage on Hadoop, where developers implement indexing in a procedural way and the execution 
+runs on multiple threads. Since Hadoop is based on MapReduce layer to implement 
+sequential construction instead of incremental one  is necessary.  
+MapReduce is a scan based data processing framework which does not utilize any form of a disk-based 
+index and the performance is limited as the input has to be scanned. The design of spatial indexing methods 
+is according to filtering approach and choose a partitioning pattern. 
+
+
+
+\paragraph*{} \textbf{SpatialHadoop} indexing model is composed from three phases. The first phase, partitioning is already
+described\ref{Spatial_Data_Partitioning}.
+
+The purpose of the second phase is to build \textit{local index}  for each physical partition of data. 
+In contrast to global index, the local index is built for each partition sparely. In addition, each local 
+index is stored in on one HDFS block. It ensures that Hadoop uses load balancer for relocating blocks 
+across machine. Additionally, it allows  a spatial operation to access local indexes where each local 
+index is processed in one map task. 
+
+Last phase, building the \textit{global index} provide index structure of all partitions. As next step, 
+ all local indexes to one file which represent the final index of spatial data are concatenated. This process 
+provides using MapReduce parallel framework.  After this part is done the NameNode creates a global index
+and store it in memory. The index is based on dictionary; key and value.
+\begin{figure}[h!]
 \lstset{extendedchars=false,
 escapeinside=''}
 \begin{lstlisting}[style=mybash]
-{324:[-58.9,-57.1]}
-{256:[-106.9,-95.3]}
+-179.3248215,-54.934357,6.9290401,71.2885321,part-00000_data_00001
+-171.773529,-54.81145,6.9261512,65.1480999,part-00000_data_00001_1
+6.9225032,-46.44586,179.3801209,78.0657531,part-00000_data_00002_2
 \end{lstlisting}
-\end{footnotesize} 
 \end{figure}
-Finally reduce program iterate over the list of values for each link and compute mean.
- The final results are stored in Hadoop file system.
-%	    \subsection{Running MapReduce task}
-%\begin{itemize}
-%  \item[1] Client program uploads files to the Hadoop Distributed File System (HDFS) location and notifies the JobTracker which in turn returns the Job ID to the client.
-%The Jobtracker allocates map tasks to the TaskTrackers..
-%  \item[2] The JobTracker will first determine the number of splits (each split is configurable, ~16-64MB) from the input path, and select some TaskTracker based on their network proximity to the data sources, then the JobTracker send the task requests to those selected TaskTrackers.
-%  \item[3 M] JobTracker determines appropriate jobs based on how busy the TaskTracker is.
-%  \item[4 M] Each TaskTracker will start the map phase processing by extracting the input data from the splits. For each record parsed by the “InputFormat”, it invoke the user provided “map” function, which emits a number of key/value pair in the memory buffer. A periodic wakeup process will sort the memory buffer into different reducer node by invoke the “combine” function. The key/value pairs are sorted into one of the R local files (suppose there are R reducer nodes).
-%  \item[5 M]The buffer is eventually flushed into two files.
-%  \item[6 M]When the map task completes (all splits are done), the TaskTracker will notify the JobTracker. When all the TaskTrackers are done, the JobTracker will notify the selected TaskTrackers for the reduce phase.
-%  \item[6 M]Each TaskTracker will read the region files remotely. It sorts the key/value pairs and for each key, it invoke the “reduce” function, which collects the key/aggregatedValue into the output file (one per reducer node).
-%  
-%Map/Reduce framework is resilient to crash of any components. The JobTracker keep tracks of the progress of each phases and periodically ping the TaskTracker for their health status. When any of the map phase TaskTracker crashes, the JobTracker will reassign the map task to a different TaskTracker node, which will rerun all the assigned splits. If the reduce phase TaskTracker crashes, the JobTracker will rerun the reduce at a different TaskTracker.
-%  
-%  When the map task completes (all splits are done), the TaskTracker will notify the JobTracker. When all the TaskTrackers are done, the JobTracker will notify the selected TaskTrackers for the reduce phase.
-%\begin{figure}[h!]
-%    \centering
-%    \includegraphics[width=1\textwidth]{./img/hadoop/MapReduce.png}
-%    \caption[Logo PostgreSQL]{\centering Logo PostgreSQL }
-% \end{figure}   
+ Key is represented by HDFS block and  rectangular boundaries as value. This index keeps all the 
+ time in the main memory. That ensure faster access. In critic situation when fail of master or 
+ restart of a cluster is possible to rebuild index from rectangular boundaries of the file blocks. 
+ For accessing the master index is not necessary to parse it yourself. Implantation offers API 
+ which retrieves the global index as an object.
+SpatialHadoop offers tree methods for building indexes. 
+
+The simple one, \textbf{Grid Index} is a flat and partitions of
+data according to a grid such that records overlapping each grid cell are stored in one file block 
+as a single partition. Grid index is suitable for uniformly distributed data. Otherwise, the data 
+screw is critical by the principle of MapReduce. 
+
+Besides grid index, SpatialHadoop framework offer building index based on method \textbf{R-tree} and 
+\textbf{ R+-tree}. Fig \ref{fig:partitioning} (b) shows results of R-tree algorithm. 
+
+  \begin{figure}[h!]
+	\centering
+    \includegraphics[width=1\textwidth]{./img/spatial_hadoop_parti.png}
+    \caption[Spatial Map Reduce]{\centering (a) Grid Partitioning (b) R-tree Partitioning.\footnotemark}
+    \label{fig:partitioning}
+  \end{figure}  
+\footnotetext{Source: SpatialHadoop: A MapReduce Framework for Spatial Data; Eldawy A., Mokbel,F.M \cite{spatialhadoop} }
+    
+\paragraph*{} \textbf{HadoopGIS} indexing is based on hierarchical space partitioning and MBB based 
+region filtering. Similarly, to Grid Index of SpatialHadoop design is built from  combination of local 
+indexes and global index. Recursively each tile can be further partitioned into even smaller regions. 
+But, HadoopGIS does not pre-generate indexes into files. Finally, HadoopGIS supports uniform grid 
+index, which is efficiently applicable only in the rare case of uniform data distribution. 
+
+		\subsection{Spatial Operation}
+
+
+TODO in progress!
+\paragraph{Interface}Three mentioned spatial processing frameworks (section \textit{Spatial Join}\ref{sub:spatial_join}) 
+for Hadoop show different design for storing and accessing data. Similarly, the interface for 
+configuration, data management and query data varies.
+
+Operation on \textit{HadoopGIS} and \textit{Spatial frameworkGIS from Esri are based} are based on likeSQL layer. 
+Concretely on the top of spatial MapReduce library Hadoop extension is implemented, likeSQL data warehouse- Hive.  
+\textit{SpatialHadoop} supports spatial extension Pigeon a high level SQL-like language which  provides OGC-compliant 
+spatial data types and operations making it easier to adopt by users. It makes the program simpler and more expressive 
+as it uses spatial data types (e.g. POINT and RECTANGLE) and spatial functions (e.g. Overlaps). 
+The spatial functionality is implemented as user defined functions (UDFs) which are seamless to integrate with existing 
+non-spatial operations in Pig.
+		
+		
+		TODO
+		  ogc spatial operators
+
+		  popsat customizaci SpatialHadoop
+	      https://github.com/aseldawy/spatialhadoop2/wiki/Implementing-custom-spatial-operations-in-SpatialHadoop
+ 		  https://github.com/Esri/spatial-framework-for-hadoop/wiki/UDF-Documentation
+		  https://cwiki.apache.org/confluence/display/Hive/Spatial+queries
+
+
+
+
+
+
+\begin{table}[!htbp]
+\begin{footnotesize}
+\centering
+\begin{tabular}{@{}|c||c|c|c|@{}}
+\toprule
+framework    & HadoopGIS   & SpatialHadoop    & \begin{tabular}[c]{@{}c@{}}Spatial framework \\ for Hadoop(Esri)\end{tabular}         
+                                                                     \\ \midrule \midrule
+\begin{tabular}[c]{@{}c@{}}integration \\ with extension\end{tabular} & HiveSP                                                                           & \begin{tabular}[c]{@{}c@{}}Pigeon(spatial \\ extension for\\  Apache Pig)\end{tabular} & Hive                                                                                                                                                                   \\ \midrule
+\begin{tabular}[c]{@{}c@{}}build-in\\ data types\end{tabular}         & \begin{tabular}[c]{@{}c@{}}Point, Polygon, \\ Box and \\ LineString\end{tabular} & \begin{tabular}[c]{@{}c@{}}Point, Rectangle\\ and Polygon\end{tabular}                 & \begin{tabular}[c]{@{}c@{}}inherit from\\ Esri Java Geometry \\ Library: Point, MultiPoint, \\ Polyline, Polygon, Envelope.\\ Also includes OGC Wrappers.\end{tabular} \\ \midrule
+input data                                                            & CSV                                                                              & \begin{tabular}[c]{@{}c@{}}CSV,\\ custom \\ data types\end{tabular}                    & Json                                                                                                                                                                   \\ \midrule
+\begin{tabular}[c]{@{}c@{}}User-defined\\ data types\end{tabular}     & -                                                                                & \begin{tabular}[c]{@{}c@{}}- for Pigeon\\ + SpatialHadoop\end{tabular}                 & -                                                                                                                                                                      \\ \midrule
+visualisation                                                         & -                                                                                & +*HadoopViz                                                                            & \begin{tabular}[c]{@{}c@{}}*Geoprocessing \\ Tools for Hadoop\\ (ArcMap)\end{tabular}                                                                                  \\ \midrule
+index                                                                 & \begin{tabular}[c]{@{}c@{}}uniform grid\\  index\end{tabular}                    & R-tree,R+-tree,Grid index & QuadTree                                                                                                                                                               \\ \midrule
+\begin{tabular}[c]{@{}c@{}}accessible\\ index\end{tabular}            & -                                                                                & +                                                                                      & -                                                                                                                                                                      \\ \bottomrule
+
+\end{tabular}
+\caption{Overview of spatial frameworks for Hadoop}
+\label{tab:comparison_spatial_fr}
+\end{footnotesize}
+\end{table}
 	
-	\subsection{Execution workflow}
+		\subsection{Summary}
+		
+ SpatialHadoop, HadoopGIS and ESRI Spatial Framework for Hadoop are
+three open source systems that are designed to process large scale
+spatial data on Hadoop. Although the features of  the implementation of each framework are different, 
+the overall design is suited to Map and Reduce function principals. Spatial cross join is well suited to parallelizable and fit to MapReduce. 
 
-The MapReduce framework splits the input files in to \emph{M} pieces of typically 16 to 128
-megabytes (MB) per piece. It then starts many copies of the program on a cluster, including 1
-\emph{Namenode} and other \emph{Datanode}. The \emph{Namenode}  is responsible for scheduling the job to each
-\emph{Datanode}, and monitoring the job progress and \emph{Datanode’s} health.
-\emph{Datanode} with are asking to \emph{Namenode} tasks of certain types (Map
-or Reduce, or both). The \emph{Namenode} is checking the pool of non-running (including failed) tasks
-and assign one or more tasks to the Worker. Map tasks are assigned with priority to
-data locality. When a \emph{Datanode} is assigned with a Map task, it first reads the content of the
-corresponding input split (either locally or remotely) and emits $<$ key, value $>$ pairs to the
-user-defined Map function.
+All three spatial frameworks come with indexing, where SpatialHadoop is the most customizable. 
+The design of  SpatialHadoop implementation is open to extending available indexes. Esri and 
+SpatialHadoop offer more advanced indexing methods, such as 
+QuadTree(Esri) and E-tree(SpatialHadoop). One of the main weakness of HadoopGIS is an indexing 
+support. It disposables only by grid index method which can be 
+effectively used only for uniformly distributed data.
+
+To compare with others, SpatialHadoop comes with the different MapReduce approach for solving cross-spatial join.
+In SpatialHadoop, both sides in a spatial join are partitioned and its implemented as only 
+Map job.  SpatialHadoop makes pairs from spatially overlapping partitions, which are finally 
+assigned to Map tasks for parallel and distributed execution.
+
+In addition, SpatialHadoop implements filtering using MapReduce as a preprocessing step.
+HadoopGIS as a first step join both datasets, reorder and assign its data to the same 
+HDFS block.  Accessing data are provided by key-value pairs. Partitions are represented by keys and item as values. 
+
+When decision which framework is suitable for a specific application must be made, the 
+key factor can be access of data  or programming language choice. While SpatialHadoop 
+uses binary format for representation data in memory and disk, HadoopGIS 
+uses Hadoop streams. Thus, HadoopGIS representing all side results as text and access 
+of data is only sequential. In contrast, SpatialHadoop binary approach allows 
+accessing data randomly.
+These facts make SpatialHadoop more efficient since parsing text are an expensive task. 
+On the other hand, HadoopGIS allows writing MapReduce function in different languages than Java which can be crucial. 
+
+
+Generally, all frameworks allow customization on the level of developing MapReduce functions. As Esri 
+framework allows interaction with core libraries, is more focused  for GIS users than developers. 
+Esri covers the wide portfolio of built-in spatial operators to compare SpatialHadoop framework, 
+and at least significantly more than HadoopGIS. On the other hand, the leader for customization and 
+development of additional functionality is SpatialHadoop.
+
+
+
+ 
+
+
+\begin{table}[!htbp]
+\begin{scriptsize}
+\centering
+
+
+\begin{tabular}{@{}|l||l|l|@{}}
+\toprule
+Group                       & Framework                                                        & Description                                                                                                                                                  \\ \midrule \midrule
+\multirow{5}{*}{Compute}    & Compute engine                                                   & large-scale workloads on virtual machines                                                                                                                \\ \cmidrule(l){2-3} 
+                            & Preemptible VMs                                                  & short-lived instances for batch and fault-tolerant jobs                                                                                                  \\ \cmidrule(l){2-3} 
+                            & Custom Machine Types                                             & customized deployment of virtual machine                                                                                                                 \\ \cmidrule(l){2-3} 
+                            & App Engine                                                       & engine for building scalable web app and mobile backends                                                                                                 \\ \cmidrule(l){2-3} 
+                            & Container engine                                                 & powerful cluster manager for running Docker containers                                                                                                   \\ \midrule
+\multirow{5}{*}{Storage}    & Cloud storage*                                                   & simple, cost effective data storage                                                                                                                       \\ \cmidrule(l){2-3} 
+                            & \begin{tabular}[c]{@{}l@{}}Cloud storage\\ Nearline\end{tabular} & highly-durable storage for data archiving and online backup                                                                                              \\ \cmidrule(l){2-3} 
+                            & Cloud SQL                                                        & storing data using relational MySQL database                                                                                                             \\ \cmidrule(l){2-3} 
+                            & Datastore   \ref{subsub:datastore}                               & scalable, NoSQL database for non-relational data                                                                                                         \\ \cmidrule(l){2-3} 
+                            & Bigtable                                                         & fast, scalable NoSQL database service                                                                                                                    \\ \midrule
+Networking                  & Cloud networking                                                 & load balancing, VPN, DNS,                                                                                                                                \\ \midrule
+\multirow{5}{*}{Big Data}   & BigQuery                                                         & real time analysis(100,000 rows)of data per second                                                                                                       \\ \cmidrule(l){2-3} 
+                            & DataFlow                                                         & real-time data processing for batch and stream data processing                                                                                           \\ \cmidrule(l){2-3} 
+                            & DataProc\ref{subsub:dataproc}                                                        & management for Spark and Hadoop services. Quick deployment                                                                                               \\ \cmidrule(l){2-3} 
+                            & DataLab                                                          & analysis and visualisation of large-scaled data                                                                                                          \\ \cmidrule(l){2-3} 
+                            & Pub/Sub                                                          & \begin{tabular}[c]{@{}l@{}}real-time messaging service for sending up to\\ 1 milion messages per second\end{tabular}                                     \\ \midrule
+\multirow{2}{*}{Services}   & Cloud Endpoinds                                                  & API for access to backend servers for mobile platforms                                                                                                   \\ \cmidrule(l){2-3} 
+                            & Translate API                                                    & allows to develop apps for translating languages programatically                                                                                         \\ \midrule
+\multirow{4}{*}{Management} & Cloud monitoring                                                 & monitoring performance and availability of cloud apps                                                                                                    \\ \cmidrule(l){2-3} 
+                            & Cloud deployment manager                                         & manager for repeatable deployment using templates                                                                                                        \\ \cmidrule(l){2-3} 
+                            & Container registry                                               & private Docker image storage                                                                                                                             \\ \cmidrule(l){2-3} 
+                            & Cloud logging                                                    & \begin{tabular}[c]{@{}l@{}}Mannager for log data and engine for debug system issue.\\ Supports Google App Engine and Google Compute Engine.\end{tabular} \\ \bottomrule
+\end{tabular}
+\end{scriptsize}
+\caption{Overview of Google Cloud platform}
+\label{tab:google_all}
+\end{table}
+
+
+		
+	\section{Google cloud platform}
+\textbf{Cloud} in IT field generally means deploying an application and running it on a platform which is 
+provided by someone else. Services allow to developers  work efficiently  with requisite resources which are necessary for an application to work.
+
+\textbf{Google cloud platform}, supports building, testing and deploying an application on highly-scalable 
+infrastructure.
+The platform is based on building blocks. Advantages of design the platform design is a quick development of 
+desired product by combining separate services together. Portfolio of services is sorted into six main categories 
+which are described for better overview in 
+table\ref{tab:google_all} \cite{gc_product_services}.
+
+The user interface offers three different ways for managing services of Google Cloud. Web-based interface, command-line 
+interface and programming API. The most user-friendly interface is web based. The web interface provides to 
+user quick overview and a better understanding of 
+options over each service. On the other hand, the range of configuration possibilities is limited compared with the rest 
+interfaces. \textit{Google Cloud SDK} is a 
+package of tools for managing resources and application on Google Cloud Platform. Package includes \textit{gcloud tool}, \textit{gsutil} and \textit{bq}.
+
+
+
+\paragraph{Command-line interface} called \textit{gcloud} enables to manage Google Compute Engines resources in friendly way 
+to compare with Compute Engine API. It uses concept of configurations for managing different accounts on Google Claude. 
+Interface of \textit{gcloud} is suited for handling services of Google cloud platform using command line. For example, 
+deploying VM, handling containers, configuring network and the other.
+\vskip-2ex
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+$ gcloud init
+\end{lstlisting} \end{figure}
+\vskip-3ex To check available regions.
+command will set new configuration, creating a new named or reinitialize an existing named configuration
+\vskip-2ex
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+$ gcloud config configurations create my-config
+\end{lstlisting} \end{figure}
+\vskip-3ex
+Configuration is aimed for setting default general variables like: account, project, default region and zone, proxy etc.
+To check project properties call:
+\vskip-2ex
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+$ gcloud compute project-info describe
+\end{lstlisting} \end{figure}
+\vskip-3ex
+Prints summary of project properties: ssh key, name project, usage and limit quotes of project. 
+
+After creation of configuration profile set up default zone, region are appropriate. The variables can be set by 
+\textit{gcloud} or with using local variables. After creating instance of cloud computer(default properties).
+\vskip-2ex
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+$ gcloud compute instances create my-instance
+\end{lstlisting} \end{figure}
+\vskip-3ex
+The instance is accessible by \textit{gcloud} ssh tool(for instance run in zone asia-east1). Access can be also provided 
+by standard ssh protocol.
+\vskip-2ex
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+$ gcloud compute ssh my-instance --zone asia-east1
+\end{lstlisting} \end{figure}
+\vskip-3ex
+   
+   
+\textit{gcloud dataproc}\ref{subsub:dataproc} tools support deployment of clusters with limited configuration. For deploying 
+clusters with distributed file system, like Hadoop and spark, is suitable to use \textit{bdutil}\ref{sub:bdutil} tools. 
+This example demonstrate, that command line tools doesn’t fully cover full portfolio of Google Claude Platform. 
+   
+\paragraph{Google Cloud Client Libraries} give programmatic access to Google Cloude Platform services. For development of applications 
+linked to cloud services it ensure better language integration, security handling and easy general access. Libraries are currently 
+available in five languages: Go, Java, Note.js, Python and Ruby. Below is shown example of Python API library. In this case the sample of code allows to initialize  instance of Cloud Dataproc and get JSON object represented list of clusters.
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=python]
+from oauth2client.client import GoogleCredentials
+project = 'my-test-project'
+region = 'global'
+credentials = GoogleCredentials.get_application_default()
+result = dataproc.projects().regions().clusters().list(
+         projectId=project,
+         region = region).execute()
+\end{lstlisting} \end{figure}
+
+ 
+   
+		\subsection{Geography and Regions}
+Google cloud platform is available across three \textit{locations}: North America, Europe, and Asia. Each location includes 
+\textit{regions} and \textit{zones}. The choice of place, where service is running is on developer. The statistics of data 
+center resources; latency availability, durability are available and the with using API allows to manipulated with resources problematically. 
+
+
+\paragraph*{Hierarchy}
+Design of network is suited to ensures maintenance  of custom services efficiently. The hierarchical model provided separated
+ levels of failure as well as room for distributing resources across multiple regions or zones. Main abstract unit is \textit{location} 
+ which consists \textit{regions}. To ensure availability, locations are independent to each other important features of locations is the 
+ network latency under 5ms on the 95th percentile. Lower level of hierarchy, thus subset is \textit{zone}. As well as location, 
+ zones are independent to each other. Location consists of zones which should be classified as single point of failure. Thus, 
+ to build up fault-tolerant application is necessary to deploy it over different zones. Furthermore, to choose region according 
+ to geographic location of accessing points is suitable. In addition, to ensure fail of service on the level of \textit{region}, 
+ Google suggests to have a backup plan for migration to another one. Fully qualified address of zone   for API access is \textless 
+ region\textgreater-\textless zone\textgreater \ e.g. \textit{europe-west1-d}. 
+
+\begin{figure}[!htbp]
+\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+## view list of available zones.
+$ gcloud compute zones list
+NAME           REGION       STATUS NEXT_MAINTENANCE 
+asia-east1-c   asia-east1   UP
+..
+
+## check available regions.
+$ gcloud compute regions list
+NAME         CPUS         DISKS_GB    ADDRESSES RESERVED_ADDRESSES STATUS 
+asia-east1      0.00/8.00      0/2048      0/23      0/1           UP
+..
+\end{lstlisting} \end{figure}
+
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+## get information about desired zone e.g asia-east1.
+$ gcloud compute regions describe asia-east1
+creationTimestamp: '2014-05-30T18:35:16.514-07:00'
+description: asia-east1
+id: '1220'
+kind: compute#region
+name: asia-east1
+quotas:
+- limit: 8.0
+  metric: CPUS
+  usage: 0.0
+...
+\end{lstlisting} \end{figure}
+\vskip-2ex
+        
 \begin{figure}[h!]
-    \centering
-    \includegraphics[width=1\textwidth]{./img/hadoop/map_reduce_architecture.png}
-    \caption[mapreduce flow]{\centering Running MapReduce job}
- \end{figure} 
-The output of the Map function is first buffered in the memory and periodically written
-to local disks. A partitioning function partitions the output into \emph{R} sets, each associated with
-a Reducer task The \emph{Namenode} passes the location of these outputs to \emph{Datanode’s} with Reduce tasks
-running, which read these buffered data. The Reduce task
-then sorts all the intermediate keys so that occurrences of the same key are grouped together.
-For each key, the entire list of values is passed to the Reduce function. Each Reducer, upon
-finishing its share of keys, outputs a result file (R output files in total).
+\centering
+	\includegraphics[width=0.7\textwidth]{./img/zones_diagram.pdf}
+    \caption[Spatial Map Reduce]{\centering Zones diagram describing zones available in each region\footnotemark}
+    \label{fig:partitioning}
+  \end{figure}  
+\footnotetext{Source:\url{https://cloud.google.com/compute/docs/zones}}
 
-\section{Distributed spatial data}
-		\subsection{Serialization/De-serialization}
-		\subsection{Spatial indexing and analytic on Hadoop}
-		\subsection{Project: Spatial framework for Hadoop}
-			\subsubsection{Java geometry API}
 
-\section{Technologies Behind}
-	\subsection{Spatial framework GRASS GIS}
-		\paragraph*{Postgis driver}
-	\subsection{Data warehouse: Hive}
-		\paragraph{About}
-		\subsubsection{Performance limitation}
-	\subsection{Cluster virtualisation}
-		\subsubsection{Docker}
-		\subsubsection{Google cloud services}
+
+		\subsection{Datastore}
+		\label{subsub:datastore}
+		
+
+		\subsection{DataProc: Cluster services}
+		\label{subsub:dataproc}
+\textbf{DataProc} is a package of tools for managing Hadoop\ref{sec:hadoop} and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
+The process of deploying cluster is fully automatized using default configuration. Hadoop and Spark deployment is compatible with official
+releases even offers more. By default, the configuration of automatic deployment is simple. On the other hand in the most cases it is 
+necessary to configure cluster manually. The helper software  \emph{bdutil} for deploying cluster allows complex configuration includes 
+defining hardware configuration, combining services from wide Google cloud portfolio and custom additional tasks for installation and configuration cluster. 
+
+In list of the main characteristic of \textit{DataProc} solution is a low cost, quick starting and integration with Google Cloud services. 
+The pricing is  \$0.01 per CPU for hour(19.3.2016). DataProc service can include \textit{Preemptible instances} which offers pricing 
+per minutes(min 10 minute). This choice is suitable for batch jobs and fault-tolerant workloads. The time for starting cluster is up to 
+90 seconds in average. To compare e.g with Amazon cloud services(EMR)\cite{amazon_emr}, starting Google cluster is 3 time faster.
+
+\subsubsection{bdutil}\label{sub:bdutil}
+	
+    
+
 		
 		
+		\subsection{Networking}
+	
+	\section{Related Technologies Behind}
+	\subsection{Geospatial framework GRASS GIS}
+
+\textit{"\textbf{Geographic Resources Analysis Support System}\footnote{Cited from: \url{https://grass.osgeo.org/documentation/general-overview/}}, 
+commonly referred to as GRASS GIS, is a Geographic Information System (GIS) used for data management, image processing, graphics production, 
+spatial modelling, and visualization of many types of data. It is Free (Libre) Software/Open Source released under GNU General Public License 
+(GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial Foundation."}
+
+\paragraph{Vector data processing} 
+%\footnote{Cited from: \url{https://grass.osgeo.org/grass64/manuals/vectorintro.html}}GRASS vectors 
+%can be linked to one or many database management systems (DBMS). The db.* set of commands provides 
+%basic SQL support for attribute management, while the v.db.* set of commands operates on a table 
+%linked to a vector map. Import and export of vector data is handled with v.in.ogr module. The 
+%v.in.ogr module offers a common interface for many different vector formats. For special cases, 
+%other import modules are available, e.g. v.in.ascii for input from a text file containing coordinate 
+%and attribute data, and v.in.db for input from a database containing coordinate and attribute data. 
+%With v.external external maps can be virtually linked into a mapset, only pseudo-topology is generated 
+%but the vector geometry is not imported. The v.out.* set of commands exports to various formats. 
+%GRASS 7 allows to access PostGIS data directly via virtual mapset called OGR. In this case parameter 
+%map or input is used for OGR data source and layer for table.
+
+
+	\subsection{Hadoop extensions}
+	\label{sub:hextensions}
+	\paragraph{Data warehouse: Hive}
+\textit{\footnote{Cited from: \url{https://pig.apache.org/}}"Apache Pig is a platform for analyzing 
+large data sets that consists of a high-level language for expressing data analysis programs, coupled 
+with infrastructure for evaluating these programs. The salient property of Pig programs is that their 
+structure is amenable to substantial parallelization, which in turns enables them to handle very large data sets."}
+	\paragraph{Apache Hive TM}
+\textit{\footnote{Cited from: \url{https://hive.apache.org/}}"The Apache Hive ™ data warehouse software 
+facilitates querying and managing large datasets residing in distributed storage. Hive provides a mechanism 
+to project structure onto this data and query the data using a SQL-like language called HiveQL. At the same
+time this language also allows traditional map/reduce programmers to plug in their custom mappers and 
+reducers when it is inconvenient or inefficient to express this logic in HiveQL."}
+	\paragraph{Pigeon: spatial extension}
+\textit{\footnote{Cited from: \url{https://github.com/aseldawy/pigeon}}"Pigeon is a spatial extension to 
+Pig that allows to process spatial data. All functionality in Pigeon are introduced as user-defined 
+functions (UDFS) which makes it unobtrusive and allows it to work with your existing systems. All the 
+spatial functionality is supported by ESRI Geometry API a native Java open source library for spatial 
+functionality licensed under Apache Public License."}
+
 
 
 	
@@ -498,15 +1050,17 @@ finishing its share of keys, outputs a result file (R output files in total).
 \chapter*{Experiment framework}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Practical framework}
 
 
-\setcounter{footnote}{1}
-\newpage
-\necislovana{Conclusion}
+\section{Deploying Hadoop Cluster}
+	\subsection{Google Claude: DataProc}
+	
 
 
+
+\chapter*{}\stepcounter{chapter}\addcontentsline{toc}{chapter}{}
 
 \pagenumbering{gobble}
 \newpage
-\necislovana{Seznam použitých zkratek}
+\necislovana{Acronyms}
 \begin{acronym}
  \setlength{\parskip}{0ex}
  \setlength{\itemsep}{1ex}
@@ -525,48 +1079,95 @@ finishing its share of keys, outputs a result file (R output files in total).
 
 
 
-
 \newpage
 \renewcommand\baselinestretch{1.2}
 \selectfont
-\renewcommand{\refname}{Sources}
+\renewcommand{\refname}{References}
 \phantomsection
 \addcontentsline{toc}{section}{ \refname}
 
 \begin{thebibliography}{99}
-\label{literatura}
+\label{References}
+
+
+
+\bibitem{hadoop_definitive}
+WHITE, Tom. \textit{Hadoop: the definitive guide. Fourth edition.} Beijing: O'Reilly, 2015. ISBN 14-919-0163-2.
+
+\bibitem{spatial_join}
+JACOX, Edwin H. a Hanan SAMET. \textit{Spatial join techniques}. ACM Transactions on Database Systems. 2007, 32(1), 1-5. DOI: 10.1145/1206049.1206056. ISSN 03625915. URL: \textless\url{http://portal.acm.org/citation.cfm?doid=1206049.1206056}
+
+\bibitem{partitioning}
+Ablimit Aji, Vo Hoang, Fusheng Wang \textit{Effective Spatial Data Partitioning for Scalable Query Processing} 2015/9/3,
+Journal: arXiv preprint arXiv:1509.00910 \textless\url{http://arxiv.org/pdf/1509.00910}
+
+\bibitem{spatial_skew}
+Ray, Suprio, et al. \textit{Skew-resistant parallel in-memory spatial join.} Proceedings of the 26th International Conference on Scientific and Statistical Database Management. ACM, 2014.
+
+\bibitem{spatial_join2}
+YOU, Simin, Jianting ZHANG a Le GRUENWALD. \textit{Large-scale spatial join query processing in Cloud.} 2015 31st IEEE International Conference on Data Engineering Workshops. IEEE, 2015, , 34-41. DOI: 10.1109/ICDEW.2015.7129541. ISBN 978-1-4799-8442-8. URL: \textless\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=7129541}
+
+\bibitem{covex_hull}
+GOMES, Abel J.P. A \textit{Total Order Heuristic-Based Convex Hull Algorithm for Points in the Plane. Computer-Aided Design.} 2016, 70, 153-160. DOI: 10.1016/j.cad.2015.07.013. ISSN 00104485.  URL: \textless\url{http://linkinghub.elsevier.com/retrieve/pii/S001044851500113X}
+
+\bibitem{omp}
+Wirz, Alexander, Björn Knafla, and Claudia Leopold. \textit{Comparison of Spatial Data Structures in OpenMP-Parallelized Steering.} HIGH PERFORMANCE COMPUTING  SIMULATION (HPCS 2008) (2008): 31.
+
+\bibitem{multi_cpu}
+ZHANG, Jianting, Simin YOU a Le GRUENWALD. \textit{Parallel online spatial and temporal aggregations on multi-core CPUs and many-core GPUs.} Information Systems. 2014, 44, 134-154. DOI: 10.1016/j.is.2014.01.005. ISSN 03064379.URL:  \textless\url{http://linkinghub.elsevier.com/retrieve/pii/S0306437914000234}
+
+
+\bibitem{hadoopGIS}
+AJI, Ablimit, Fusheng WANG, Hoang VO, Rubao LEE, Qiaoling LIU, Xiaodong ZHANG a Joel SALTZ. \textit{Hadoop GIS:A High Performance Spatial Data Warehousing System over MapReduce.} 2013, 6(11), 1009-1020. DOI: 10.14778/2536222.2536227. ISSN 21508097.  URL:  \textless\url{http://dl.acm.org/citation.cfm?doid=2536222.2536227}
+
+\bibitem{spatialhadoop}
+ELDAWY, Ahmed a Mohamed F. MOKBEL. \textit{SpatialHadoop: A MapReduce framework for spatial data.} DOI: 10.1109/ICDE.2015.7113382. ISBN 10.1109/ICDE.2015.7113382. URL:  \textless\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=7113382}
+
+\bibitem{esri_indexing}
+WHITMAN, Randall T., Michael B. PARK, Sarah M. AMBROSE a Erik G. HOEL. \textit{Spatial indexing and analytics on Hadoop.} Proceedings of the 22nd ACM SIGSPATIAL International Conference on Advances in Geographic Information Systems - SIGSPATIAL '14. New York, New York, USA: ACM Press, 2014, , 73-82. DOI: 10.1145/2666310.2666387. ISBN 9781450331319. URL:  \textless\url{http://dl.acm.org/citation.cfm?doid=2666310.2666387}
+
+\bibitem{spatial_indexing}
+FOX, Anthony, Chris EICHELBERGER, James HUGHES a Skylar LYON. \textit{Spatio-temporal indexing in non-relational distributed databases.} 2013 IEEE International Conference on Big Data. IEEE, 2013, , 291-299. DOI: 10.1109/BigData.2013.6691586. ISBN 978-1-4799-1293-3. URL:  \textless\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6691586}
+
+\bibitem{google_fs}
+GHEMAWAT, Sanjay, Howard GOBIOFF a Shun-Tak LEUNG. \textit{The Google file system. ACM SIGOPS Operating Systems Review.} 2003, 37(5), 29-. DOI: 10.1145/1165389.945450. ISSN 01635980.  URL:  \textless\url{http://portal.acm.org/citation.cfm?doid=1165389.945450}
 
 
 
 
-\bibitem{radar_meterology}
-RAGHAVAN, S. \textit {Radar meteorology}.
-31 Oct 2003. Boston: Kluwer Academic Publishers, 2003, 549 s. ISBN 14-020-1604-2. 
+
+%%%%%%% online
 
 
-%\bibitem{coppock}
-%COPPOCK J.T.,  RHIND D.W. \textit{The History of GIS}
-%In Maguire D.J., Goodchild M.F., and Rhind D.W. (editors) Geographical Information Systems : Principles and Applications, 1991, Volume 1
-%
-%\bibitem{neuman}
-%NEBEKER, Frederik. \textit{Calculating the weather: meteorology in the 20th century}
-% San Diego: Academic Press, c1995, vii, 255 p. ISBN 01-251-5175-6. 
-%
-%\bibitem{slavicek}
-%SLAVÍČEK, Marek. \textit{Zkoumání srážkoodtokových vztahů v urbanizovaném územi}
-% Praha, 2003. Disertační práce Ph.D. ČVUT.
-%
-%
-%\bibitem{wpc}
-%Hydrometeorological Prediction Center \textit{ A Brief History of the Hydrometeorological Prediction Center}
-%[cit. 2014-04-14] URL: \textless\url{ http://www.hpc.ncep.noaa.gov/html/WPC_history.pdf}$>$
-%
-%
-%\bibitem{flash_floods}
-%SENE, Kevin. \textit {Flash floods forecasting and warning}.
-%2013. Dordrecht: Springer, 2013. ISBN 978-940-0751-644. 
+\bibitem{esri_framework}
+GIS Tools for Hadoop. Esri GitHub [online]. [2016-03-18]. URL:  \textless\url{http://esri.github.io/gis-tools-for-hadoop/}
+
+\bibitem{amazon_emr}
+Amazon EMR. Amazon [online]. [2016-03-18]. 
+URL: \textless\url{https://aws.amazon.com/elasticmapreduce/}
+
+\bibitem{hadoop_web}
+Apache Hadoop main. Apache Hadoop [online]. [2016-03-18]. 
+URL: \textless\url{http://hadoop.apache.org/}
+
+\bibitem{nutch_web}
+Apache Nutch. Apache Hadoop [online]. [2016-03-18]. 
+URL: \textless\url{http://nutch.apache.org/#News
+}
+
+\bibitem{hadoop_news_web}
+Apache Hadoop news. Apache Hadoop [online]. [2016-03-18]. 
+URL: \textless\url{http://hadoop.apache.org/index.html#News}
 
 
+\bibitem{hadoop_hdfs_web}
+Apache Hadoop news. Apache Hadoop [online]. [2016-03-18]. 
+URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}
+
+
+\bibitem{hadoop_rack_web}
+Hadoop Rack Awareness. Apache Hadoop [online]. [2016-03-18]. 
+URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/cluster_setup.html#Hadoop+Rack+Awareness}
 
 \end{thebibliography}
 
@@ -576,13 +1177,12 @@ RAGHAVAN, S. \textit {Radar meteorology}.
 \setcounter{footnote}{1}
 \newpage
 
-
-
 \appendix
 \chapter*{Attachment}
 \renewcommand\thesection{\Alph{section}}
 
-
+\section{priloha 123}
+\section{priloha 123}
 
 \end{document}
 
