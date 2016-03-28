@@ -364,7 +364,7 @@ where there is more bandwidth available as compared to off-rack transfers for Ma
 By theory, the better network bandwidth is between machines in the same rack, due to hardware specifics.
 		
 		
-		\subsubsection{NameNodes and DataNodes}
+		\subsubsection{NameNode and DataNode}
 Hadoop comes with cluster architecture based on master(\textit{Namenode}) and\\ slave(\textit{DataNode}) design pattern. 
 The \textit{Namenode} handles metadata of abstract file system(namespace), which include
 information about the structure of files and directories in the tree. Information about filesystem is stored 
@@ -841,12 +841,12 @@ interface and programming API. The most user-friendly interface is web based. Th
 user quick overview and a better understanding of 
 options over each service. On the other hand, the range of configuration possibilities is limited compared with the rest 
 interfaces. \textit{Google Cloud SDK} is a 
-package of tools for managing resources and application on Google Cloud Platform. Package includes \textit{gcloud tool}, \textit{gsutil} and \textit{bq}.
+package of tools for managing resources and application on Google Cloud Platform. Package includes \textit{gcloud tool} for Google Compute Engine resources and \textit{gsutil} for working with Cloud Storage.
 
 
 
 \paragraph{Command-line interface} called \textit{gcloud} enables to manage Google Compute Engines resources in friendly way 
-to compare with Compute Engine API. It uses concept of configurations for managing different accounts on Google Claude. 
+to compare with Compute Engine API. It uses concept of configurations for managing different accounts on Google Cloud. 
 Interface of \textit{gcloud} is suited for handling services of Google cloud platform using command line. For example, 
 deploying VM, handling containers, configuring network and the other.
 \vskip-2ex
@@ -897,7 +897,7 @@ $ gcloud compute ssh my-instance --zone asia-east1
    
 \textit{gcloud dataproc}\ref{subsub:dataproc} tools support deployment of clusters with limited configuration. For deploying 
 clusters with distributed file system, like Hadoop and spark, is suitable to use \textit{bdutil}\ref{sub:bdutil} tools. 
-This example demonstrate, that command line tools doesn’t fully cover full portfolio of Google Claude Platform. 
+This example demonstrate, that command line tools doesn’t fully cover full portfolio of Google Cloud Platform. 
    
 \paragraph{Google Cloud Client Libraries} give programmatic access to Google Cloude Platform services. For development of applications 
 linked to cloud services it ensure better language integration, security handling and easy general access. Libraries are currently 
@@ -912,7 +912,7 @@ credentials = GoogleCredentials.get_application_default()
 result = dataproc.projects().regions().clusters().list(
          projectId=project,
          region = region).execute()
-\end{lstlisting} \end{figure}
+\end{lstlisting} \end{figure}\vskip-3ex
 
  
    
@@ -920,7 +920,13 @@ result = dataproc.projects().regions().clusters().list(
 Google cloud platform is available across three \textit{locations}: North America, Europe, and Asia. Each location includes 
 \textit{regions} and \textit{zones}. The choice of place, where service is running is on developer. The statistics of data 
 center resources; latency availability, durability are available and the with using API allows to manipulated with resources problematically. 
-
+%\begin{figure}[h!]
+%\centering
+%	\includegraphics[width=0.7\textwidth]{./img/zones_diagram.pdf}
+%    \caption[Spatial Map Reduce]{\centering Zones diagram describing zones available in each region\footnotemark}
+%    \label{fig:partitioning}
+%  \end{figure}  
+%\footnotetext{Source:\url{https://cloud.google.com/compute/docs/zones}}
 
 \paragraph*{Hierarchy}
 Design of network is suited to ensures maintenance  of custom services efficiently. The hierarchical model provided separated
@@ -947,10 +953,7 @@ $ gcloud compute regions list
 NAME         CPUS         DISKS_GB    ADDRESSES RESERVED_ADDRESSES STATUS 
 asia-east1      0.00/8.00      0/2048      0/23      0/1           UP
 ..
-\end{lstlisting} \end{figure}
 
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
 ## get information about desired zone e.g asia-east1.
 $ gcloud compute regions describe asia-east1
 creationTimestamp: '2014-05-30T18:35:16.514-07:00'
@@ -962,24 +965,106 @@ quotas:
 - limit: 8.0
   metric: CPUS
   usage: 0.0
-...
+..
 \end{lstlisting} \end{figure}
-\vskip-2ex
         
-\begin{figure}[h!]
+
+
+
+\subsection{Identity and Access Management}
+Cloud Identity and Access Management(Cloud IAM) provide another way for handling privacy and permissions for \textit{Google Cloud} services. Currently alpha  or beta versions are supported for nine services over Google Cloud portfolio, includes \textit{Google Cloud Storage}. IAM design is based on three main pillars, such as \textit{Roles}, \textit{Policy} and \textit{Resources}. Identity of user is handled by four different authentication methods such a Google account, Service account, Google group and Google Apps domain.
+
+\paragraph{Resources} Allowed grant access to users for Cloud Platform resources. Thus to available services of Google Cloud portfolio. To allow permissions for using given service is declared syntax \textless service\textgreater.\textless resource\textgreater.\textless verb\textgreater, for example \emph{pubsub.topics.publish}.
+
+\paragraph{Roles} A role represent collection of permissions. Two kinds of role are available, such as Primitive roles and Curated roles. The first mentioned, concentric roles, thus Owner role can also Edit and Edit role includes Read role. These basic role approach is applied e.g. in Cloud Storage as default. Second, curated roles are new and allows more advanced policy management. Currently(28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a)) are in alpha or beta development version and are not suggested to use for production use. However these Curated roles provides additional granular access to specific services from Google Cloud portfolio and prevent unwanted access to other resources. In figure
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[]
+\begin{scriptsize}
 \centering
-	\includegraphics[width=0.7\textwidth]{./img/zones_diagram.pdf}
-    \caption[Spatial Map Reduce]{\centering Zones diagram describing zones available in each region\footnotemark}
-    \label{fig:partitioning}
-  \end{figure}  
-\footnotetext{Source:\url{https://cloud.google.com/compute/docs/zones}}
+\begin{tabular}{@{}|l|l|l|@{}}
+\toprule
+Role                        & Description                                                                                                                         & Permissions                                                                        \\ \midrule \midrule
+roles/storage.objectCreator & \begin{tabular}[c]{@{}l@{}}Allows users to create objects. \\ Does not give permission to delete or overwrite objects.\end{tabular} & storage.objects.create                                                             \\ \midrule
+roles/storage.objectViewer  & \begin{tabular}[c]{@{}l@{}}Grants access to view objects and\\ their metadata, excluding ACLs.\end{tabular}                         & \begin{tabular}[c]{@{}l@{}}storage.objects.get\\ storage.objects.list\end{tabular} \\ \midrule
+roles/storage.objectAdmin   & Grants full control of objects.                                                                                                     & storage.objects.*                                                                  \\ \midrule
+roles/storage.admin         & Grants full control of objects and buckets.                                                                                         & \begin{tabular}[c]{@{}l@{}}storage.buckets.*\\ storage.objects.*\end{tabular}      \\ \bottomrule
+\end{tabular}
+\caption{Cloud Storage Roles covered by IAM}
+\label{iam}
+\end{scriptsize}
+\end{table}
+	
+
+\paragraph{Policy} of Cloud IAM can grant roles to users. It is designed as collection of statements that specify who has what type of access. Policy is linked to resources and control it`s access. In figure(\ref{fig:iam}, (b)) is shown policy principle based on relation between collection of statements IAM and Resources of Google Platform. Resources of Google Platform are organized hierarchically. Figure (\ref{fig:iam}, (c)) demonstrated example of the nodes in hierarchy. \textit{Organisation} represent root of the hierarchy and each children has only one parent. Inheritance of hierarchy allows to handle in easy way sets and subsets of abstract classes, such as Organization, Project and Resources. 
 
 
+\begin{figure}[h!]
+    \centering
+    %\subfloat[Roles]{ \includegraphics[width=0.4\textwidth]{./img/iamroles.png} }%
+    %\qquad
+    %\subfloat[Cloud IAM policy management]{ \includegraphics[width=0.5\textwidth]{./img/iampolicy.png} }%
+    	\subfloat[Cloud IAM Policy and Roles management]{ \includegraphics[width=0.8\textwidth]{./img/iam_overview.png} }%
+    	
+    \subfloat[Policy hierarchy]{ \includegraphics[width=0.7\textwidth]{./img/iampolicy-hierarchy.png} }%
+	
+    \caption[access]{Concepts of Cloud Identity and Access Management   \centering }
+    \label{fig:iam}
+\end{figure}
 
-		\subsection{Datastore}
+
+		\subsection{Cloud Storage}
 		\label{subsub:datastore}
+Google Cloud Storage allows storing data in high level of availability and durability over the world. Storage of data is highly persistent by replication data over Google infrastructure. Service provide security protection based on model end-to-end, thus in-flight and at rest. For handling of data is available command line interface \textit{gsutil} and programming API for build reliable and fast networking application. The pricing model provide different tariffs according data durability, availability and performance of storage.
 		
 
+\paragraph{Storage classes} are represented by three types of storage. The classification is based on characteristic of storage. \textit{Standard storage}, offers high availability and low latency. This storage is suitable for frequent access such as data of web services or mobile applications.
+Next class is \textit{Durable Reduced Availability} with less availability than  \textit{standard}. This class is suited for jobs, where unavailability is accepted or for cost-sensitive project. Last class, \textit{Cloud Storage Nearline} is designed covered gap between mentioned classes. It provide slightly lower availability and slightly higher latency than Standard storage but for lower cost. Storage for data backup or archiving data are two explanation of use cases.
+
+\paragraph{Buckets location} are configurable by three properties, specifically: global unique name, storage class and geographical location of where the bucket is stored.
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+#creating two new buckets using command-line
+$ gsutil mb -p my-project gs://mwdata gs://mwprocessed -c durable_reduced_availability
+\end{lstlisting} \end{figure}
+
+All buckets are covered under single namespace, thus the name of bucket must be unique. Google defined rules for naming buckets which are based on DNS naming conventions. Validator during creation process responds error message in wrong case. 
+
+\paragraph{Objects} represents peace of data placed in storage. Object have two components: user data and metadata of quality. All \textit{objects} are immutable after creation. Thus incremental changes are not available. However, object can be overwrite. Before new version of object is available, the old version is still reachable for reading. Overwriting of a single object can be proceed up to one second. Otherwise \textit{503 Service Unavailable errors} is responded.
+
+\paragraph{Consistency} of data are provided by global Google network of data centres. When success response is received, uploaded data are available from any location in Google network. Google has designed and constructed private network for fast data transfer between theirs data centres around the word. Thus, data throughput of Google backbone network is higher than capability of internet-facing network. The latency for writing is slightly higher for replicated store than non-replicated. As example of strongly consistent behaviour is not accessible meta data of object immediately after deletion object. 
+It is handled by \textit{404 Not Found} status code.
+
+
+\subsubsection{Access control}
+The configuration of access control can be set using \textit{gsutil} command-line tool or API. Cloud storage offers three different ways for access management for buckets and objects, which are described below.
+\begin{itemize}
+\item\textbf{Access Control lists (ACLs)} provide way manage read or write access for specified Google accounts and groups.
+\item\textbf{Signed URLs (query string authentication)} provide way to establish time limited rad or write access to anyone who disposes url address. This way is option for users without Google account.   
+\item\textbf{Signed Policy Documents} allows to specify what can be uploaded to a bucket. Size, content type and other specification can be set by policy handler. 
+\end{itemize}
+Additionally is available access control on the Project level. To control user's ability to access bucket on the project level is developed   \textit{Google Cloud Identity and Access Management}(IAM). This service is described on the and of section.
+
+\paragraph{Permissions} is logically divided to read, write and owner. For \textit{objects}, is available to let user download \textit{object} and modify metadata by owner. By default, \textit{objects} are owned by original requester who upload the \textit{object}. As \textit{object}, \textit{Buckets} are readable. In addition, list of user let them to create, overwrite and delete objects in \textit{bucket}. Owner can let user to read and write permission on the bucket include metadata. By default, \textit{buckets} are owned by the project owner group.
+
+\paragraph{Scopes}\label{par:scopes}of authentication consists six methods for specifying ACL such as  Google Storage ID, Google account email address, Google group email address, Google Apps domain, Special identifier for all Google account holders and Special identifier for all users.
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+#Identify an object that the user uploaded.
+gsutil acl get gs://mwdata
+\end{lstlisting} \end{figure}
+
+\paragraph{Access control list} is configurable by command line tools \textit{gsutil acl} or by API based on JSON or XML structures. The management of ACL is based on concentric permissions which provide faster configuration. When user grant write permission, automatically get also read permission. In case of grant of owner permission, read and write is also reachable. In addition, is available list of predefined ACL for quick settings of access restrictions such as project-private, private, public-read, public-read-write, authenticated-read, bucket-owner-read and bucket-owner-full-control.
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+#usage of a predefined ACL to an object during object upload
+gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
+\end{lstlisting} \end{figure}\vskip-3ex
+
+
+
+\paragraph{Accessing endpoints}
+\textit{Role}
 		\subsection{DataProc: Cluster services}
 		\label{subsub:dataproc}
 \textbf{DataProc} is a package of tools for managing Hadoop\ref{sec:hadoop} and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
@@ -1048,11 +1133,33 @@ functionality licensed under Apache Public License."}
 	
 \newpage
 \chapter*{Experiment framework}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Practical framework}
+\paragraph{Goals}
 
 
-\section{Deploying Hadoop Cluster}
-	\subsection{Google Claude: DataProc}
+\section{Deploying Hadoop Cluster: Google Cloud DataProc}
+		\subsection{Set up project}
+		\subsection{Cluster deployment: bdutil}
+			\subsubsection{Cluster properties}
+			\subsubsection{Cluster machine types}
+			\subsubsection{Scaling cluster}
+			\subsubsection{Submit Job}
+		
+\section{GRASS Hadoop interface}
+	\subsection{Functionality}
+	\subsection{Implementation}
+	\subsection{Usage}
+				
+\section{Test case: MW data}
+	\subsection{Data description}
+	\subsection{Storing data}
+	\subsection{Query data}
 	
+	
+
+			
+		
+	
+\section{}
 
 
 
