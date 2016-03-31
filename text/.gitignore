@@ -6,3 +6,6 @@ dp-krejci.pdf
 *.toc
 *.dvi
 *.gz
+*.bbl
+*.blg
+

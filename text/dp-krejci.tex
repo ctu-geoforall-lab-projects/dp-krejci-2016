@@ -972,11 +972,11 @@ quotas:
 
 
 \subsection{Identity and Access Management}
-Cloud Identity and Access Management(Cloud IAM) provide another way for handling privacy and permissions for \textit{Google Cloud} services. Currently alpha  or beta versions are supported for nine services over Google Cloud portfolio, includes \textit{Google Cloud Storage}. IAM design is based on three main pillars, such as \textit{Roles}, \textit{Policy} and \textit{Resources}. Identity of user is handled by four different authentication methods such a Google account, Service account, Google group and Google Apps domain.
+Cloud Identity and Access Management(Cloud IAM) provide another way for handling privacy and permissions for \textit{Google Cloud} services. Currently, alpha  or beta versions are supported for nine services over Google Cloud portfolio, includes \textit{Google Cloud Storage}. IAM design is based on three main pillars, such as \textit{Roles}, \textit{Policy} and \textit{Resources}. The identity of a user is handled by four different authentication methods such a Google account, Service account, Google group and Google Apps domain.
 
 \paragraph{Resources} Allowed grant access to users for Cloud Platform resources. Thus to available services of Google Cloud portfolio. To allow permissions for using given service is declared syntax \textless service\textgreater.\textless resource\textgreater.\textless verb\textgreater, for example \emph{pubsub.topics.publish}.
 
-\paragraph{Roles} A role represent collection of permissions. Two kinds of role are available, such as Primitive roles and Curated roles. The first mentioned, concentric roles, thus Owner role can also Edit and Edit role includes Read role. These basic role approach is applied e.g. in Cloud Storage as default. Second, curated roles are new and allows more advanced policy management. Currently(28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a)) are in alpha or beta development version and are not suggested to use for production use. However these Curated roles provides additional granular access to specific services from Google Cloud portfolio and prevent unwanted access to other resources. In figure
+\paragraph{Roles} A role represent the collection of permissions. Two kinds of the role are available, such as Primitive roles and Curated roles. The first mentioned, concentric roles, thus, Owner role can also Edit and Edit role includes Read role. This basic role approach is applied e.g. in Cloud Storage as default. Second, curated roles are new and allow more advanced policy management. Currently(28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a)) are in alpha or beta development version and are not suggested to use for production use. However, these Curated roles provide additional granular access to specific services from Google Cloud portfolio and prevent unwanted access to other resources. In figure
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
 \begin{table}[]
@@ -996,7 +996,7 @@ roles/storage.admin         & Grants full control of objects and buckets.       
 \end{table}
 	
 
-\paragraph{Policy} of Cloud IAM can grant roles to users. It is designed as collection of statements that specify who has what type of access. Policy is linked to resources and control it`s access. In figure(\ref{fig:iam}, (b)) is shown policy principle based on relation between collection of statements IAM and Resources of Google Platform. Resources of Google Platform are organized hierarchically. Figure (\ref{fig:iam}, (c)) demonstrated example of the nodes in hierarchy. \textit{Organisation} represent root of the hierarchy and each children has only one parent. Inheritance of hierarchy allows to handle in easy way sets and subsets of abstract classes, such as Organization, Project and Resources. 
+\paragraph{Policy} of Cloud IAM can grant roles to users. It is designed as a collection of statements that specify who has what type of access. The policy is linked to resources and control it's accessed. In figure(\ref{fig:iam}, (b)) is shown policy principle based on the relation between the collection of statements IAM and Resources of Google Platform. Resources of Google Platform are organized hierarchically. Figure (\ref{fig:iam}, (c)) demonstrated example of the nodes in hierarchy. \textit{Organisation} represent the root of the hierarchy and each child has only one parent. Inheritance of hierarchy allows handling in easy way sets and subsets of abstract classes, such as Organization, Project and Resources. 
 
 
 \begin{figure}[h!]
@@ -1015,11 +1015,11 @@ roles/storage.admin         & Grants full control of objects and buckets.       
 
 		\subsection{Cloud Storage}
 		\label{subsub:datastore}
-Google Cloud Storage allows storing data in high level of availability and durability over the world. Storage of data is highly persistent by replication data over Google infrastructure. Service provide security protection based on model end-to-end, thus in-flight and at rest. For handling of data is available command line interface \textit{gsutil} and programming API for build reliable and fast networking application. The pricing model provide different tariffs according data durability, availability and performance of storage.
-		
+Google Cloud Storage allows storing data in a high level of availability and durability over the world. Storage of data is highly persistent by replication data over Google infrastructure. Service provide security protection based on model end-to-end, thus in-flight and at rest. For handling of data is available command line interface \textit{gsutil} and programming API for build reliable and fast networking application. The pricing model provides different tariffs according to data durability, availability and performance of storage.
+        
 
-\paragraph{Storage classes} are represented by three types of storage. The classification is based on characteristic of storage. \textit{Standard storage}, offers high availability and low latency. This storage is suitable for frequent access such as data of web services or mobile applications.
-Next class is \textit{Durable Reduced Availability} with less availability than  \textit{standard}. This class is suited for jobs, where unavailability is accepted or for cost-sensitive project. Last class, \textit{Cloud Storage Nearline} is designed covered gap between mentioned classes. It provide slightly lower availability and slightly higher latency than Standard storage but for lower cost. Storage for data backup or archiving data are two explanation of use cases.
+\paragraph{Storage classes} are represented by three types of storage. The classification is based on a characteristic of storage. \textit{Standard storage}, offers high availability and low latency. This storage is suitable for frequent access such as data of web services or mobile applications.
+Next class is \textit{Durable Reduced Availability} with less availability than  \textit{standard}. This class is suited for jobs, where unavailability is accepted or for a cost-sensitive project. Last class, \textit{Cloud Storage Nearline} is designed covered gap between mentioned classes. It provides slightly lower availability and slightly higher latency than Standard storage but for lower cost. Storage for data backup or archiving data is two explanation of use cases.
 
 \paragraph{Buckets location} are configurable by three properties, specifically: global unique name, storage class and geographical location of where the bucket is stored.
 \begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
@@ -1028,11 +1028,11 @@ Next class is \textit{Durable Reduced Availability} with less availability than 
 $ gsutil mb -p my-project gs://mwdata gs://mwprocessed -c durable_reduced_availability
 \end{lstlisting} \end{figure}
 
-All buckets are covered under single namespace, thus the name of bucket must be unique. Google defined rules for naming buckets which are based on DNS naming conventions. Validator during creation process responds error message in wrong case. 
+All buckets are covered under a single namespace thus, the name of bucket must be unique. Google defined rules for naming buckets which are based on DNS naming conventions. Validator during creation process responds error message in the wrong case. 
 
-\paragraph{Objects} represents peace of data placed in storage. Object have two components: user data and metadata of quality. All \textit{objects} are immutable after creation. Thus incremental changes are not available. However, object can be overwrite. Before new version of object is available, the old version is still reachable for reading. Overwriting of a single object can be proceed up to one second. Otherwise \textit{503 Service Unavailable errors} is responded.
+\paragraph{Objects} represents peace of data placed in storage. Object have two components: user data and metadata of quality. All \textit{objects} are immutable after creation. Thus incremental changes are not available. However, an object can be overwritten. Before the new version of an object is available, the old version is still reachable for reading. Overwriting of a single object can proceed up to one second. Otherwise \textit{503 Service Unavailable errors} is responded.
 
-\paragraph{Consistency} of data are provided by global Google network of data centres. When success response is received, uploaded data are available from any location in Google network. Google has designed and constructed private network for fast data transfer between theirs data centres around the word. Thus, data throughput of Google backbone network is higher than capability of internet-facing network. The latency for writing is slightly higher for replicated store than non-replicated. As example of strongly consistent behaviour is not accessible meta data of object immediately after deletion object. 
+\paragraph{Consistency} of data are provided by global Google network of data centres. When success response is received, uploaded data are available from any location in Google network. Google has designed and constructed a private network for fast data transfer between their data centres around the word. Thus, data throughput of Google backbone network is higher than the capability of the internet-facing network. The latency for writing is slightly higher for replicated store than non-replicated. As an example of a strongly consistent behaviour is not accessible metadata of object immediately after deletion object. 
 It is handled by \textit{404 Not Found} status code.
 
 
@@ -1040,10 +1040,10 @@ It is handled by \textit{404 Not Found} status code.
 The configuration of access control can be set using \textit{gsutil} command-line tool or API. Cloud storage offers three different ways for access management for buckets and objects, which are described below.
 \begin{itemize}
 \item\textbf{Access Control lists (ACLs)} provide way manage read or write access for specified Google accounts and groups.
-\item\textbf{Signed URLs (query string authentication)} provide way to establish time limited rad or write access to anyone who disposes url address. This way is option for users without Google account.   
-\item\textbf{Signed Policy Documents} allows to specify what can be uploaded to a bucket. Size, content type and other specification can be set by policy handler. 
+\item\textbf{Signed URLs (query string authentication)} provide a way to establish time limited read or write access to anyone who disposes of URL address. This way is a choice for users without Google account.   
+\item\textbf{Signed Policy Documents} allows specifying what can be uploaded to a bucket. Size, content type and other specification can be set by policy handler. 
 \end{itemize}
-Additionally is available access control on the Project level. To control user's ability to access bucket on the project level is developed   \textit{Google Cloud Identity and Access Management}(IAM). This service is described on the and of section.
+Additionally is available access control on the Project level. To control user's ability to access bucket on the project level is developed   \textit{Google Cloud Identity and Access Management}(IAM). This service is described on the and of the section.
 
 \paragraph{Permissions} is logically divided to read, write and owner. For \textit{objects}, is available to let user download \textit{object} and modify metadata by owner. By default, \textit{objects} are owned by original requester who upload the \textit{object}. As \textit{object}, \textit{Buckets} are readable. In addition, list of user let them to create, overwrite and delete objects in \textit{bucket}. Owner can let user to read and write permission on the bucket include metadata. By default, \textit{buckets} are owned by the project owner group.
 
@@ -1068,16 +1068,15 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 		\subsection{DataProc: Cluster services}
 		\label{subsub:dataproc}
 \textbf{DataProc} is a package of tools for managing Hadoop\ref{sec:hadoop} and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
-The process of deploying cluster is fully automatized using default configuration. Hadoop and Spark deployment is compatible with official
-releases even offers more. By default, the configuration of automatic deployment is simple. On the other hand in the most cases it is 
+The process of a deploying cluster is fully automatized using the default configuration. Hadoop and Spark deployment is compatible with official
+releases even offers more. By default, the configuration of automatic deployment is simple. On the other hand in the most cases, it is 
 necessary to configure cluster manually. The helper software  \emph{bdutil} for deploying cluster allows complex configuration includes 
 defining hardware configuration, combining services from wide Google cloud portfolio and custom additional tasks for installation and configuration cluster. 
 
-In list of the main characteristic of \textit{DataProc} solution is a low cost, quick starting and integration with Google Cloud services. 
-The pricing is  \$0.01 per CPU for hour(19.3.2016). DataProc service can include \textit{Preemptible instances} which offers pricing 
-per minutes(min 10 minute). This choice is suitable for batch jobs and fault-tolerant workloads. The time for starting cluster is up to 
-90 seconds in average. To compare e.g with Amazon cloud services(EMR)\cite{amazon_emr}, starting Google cluster is 3 time faster.
-
+In the list of the main characteristic of \textit{DataProc} solution is a low cost, quick starting and integration with Google Cloud services. 
+The pricing is  \$0.01 per CPU for an hour(19.3.2016). DataProc service can include \textit{Preemptible instances} which offers pricing 
+per minutes(min 10 minutes). This choice is suitable for batch jobs and fault-tolerant workloads. The time for starting cluster is up to 
+90 seconds in average. To compare e.g with Amazon cloud services(EMR)\cite{amazon_emr}, starting Google cluster is 3 times faster.
 \subsubsection{bdutil}\label{sub:bdutil}
 	
     
