@@ -1,4 +1,4 @@
-FILE=BP
+FILE=dp-krejci
 
 #SVGFILES = $(shell ls *.svg)
 #SVGPDF = $(patsubst %.svg, %.pdf, $(SVGFILES))
