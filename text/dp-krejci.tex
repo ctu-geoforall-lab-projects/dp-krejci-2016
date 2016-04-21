@@ -292,7 +292,7 @@ for large scale data processing.
 Beside main modules, there are many Hadoop extensions for cluster management, 
 data access and helpers for storing data in HDFS.
 
-		\subsection{HDFS: Hadoop Distributed File System}
+		\subsection{HDFS: Hadoop Distributed File System}\label{subsec:hdfs}
 As the main source for describing HDFS have been used the official documentation (\textit{hadoop.apache.org} 
 \cite{hadoop_web}) and book (\textit{Hadoop: The Definitive Guide}\cite{hadoop_definitive})
 		\paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files on several 
@@ -770,6 +770,7 @@ When decision which framework is suitable for a specific application must be mad
 key factor can be access of data  or programming language choice. While SpatialHadoop 
 uses binary format for representation data in memory and disk, HadoopGIS 
 uses Hadoop streams. Thus, HadoopGIS representing all side results as text and access 
+
 of data is only sequential. In contrast, SpatialHadoop binary approach allows 
 accessing data randomly.
 These facts make SpatialHadoop more efficient since parsing text are an expensive task. 
@@ -808,7 +809,7 @@ Group                       & Framework                                         
 Networking                  & Cloud networking                                                 & load balancing, VPN, DNS,                                                                                                                                \\ \midrule
 \multirow{5}{*}{Big Data}   & BigQuery                                                         & real time analysis(100,000 rows)of data per second                                                                                                       \\ \cmidrule(l){2-3} 
                             & DataFlow                                                         & real-time data processing for batch and stream data processing                                                                                           \\ \cmidrule(l){2-3} 
-                            & DataProc\ref{subsub:dataproc}                                                        & management for Spark and Hadoop services. Quick deployment                                                                                               \\ \cmidrule(l){2-3} 
+                            & Dataproc\ref{subsub:dataproc}                                                        & management for Spark and Hadoop services. Quick deployment                                                                                               \\ \cmidrule(l){2-3} 
                             & DataLab                                                          & analysis and visualisation of large-scaled data                                                                                                          \\ \cmidrule(l){2-3} 
                             & Pub/Sub                                                          & \begin{tabular}[c]{@{}l@{}}real-time messaging service for sending up to\\ 1 milion messages per second\end{tabular}                                     \\ \midrule
 \multirow{2}{*}{Services}   & Cloud Endpoinds                                                  & API for access to backend servers for mobile platforms                                                                                                   \\ \cmidrule(l){2-3} 
@@ -825,9 +826,10 @@ Networking                  & Cloud networking                                  
 
 
 		
-	\section{Google cloud platform}
+	\section{Google Cloud Platform}
 \textbf{Cloud} in IT field generally means deploying an application and running it on a platform which is 
-provided by someone else. Services allow to developers  work efficiently  with requisite resources which are necessary for an application to work.
+provided by someone else. Services allow to developers  work efficiently  with 
+requisite resources which are necessary for an application to work.
 
 \textbf{Google cloud platform}, supports building, testing and deploying an application on highly-scalable 
 infrastructure.
@@ -841,67 +843,47 @@ interface and programming API. The most user-friendly interface is web based. Th
 user quick overview and a better understanding of 
 options over each service. On the other hand, the range of configuration possibilities is limited compared with the rest 
 interfaces. \textit{Google Cloud SDK} is a 
-package of tools for managing resources and application on Google Cloud Platform. Package includes \textit{gcloud tool} for Google Compute Engine resources and \textit{gsutil} for working with Cloud Storage.
+package of tools for managing resources and application on Google Cloud Platform. 
+Package includes \textit{gcloud tool} for Google Compute Engine resources and \textit{gsutil} for working with Cloud Storage.
 
 
 
-\paragraph{Command-line interface} called \textit{gcloud} enables to manage Google Compute Engines resources in friendly way 
+\paragraph{Command-line interface} called \textit{gcloud} enables to manage Google Compute Engines resources in faster way 
 to compare with Compute Engine API. It uses concept of configurations for managing different accounts on Google Cloud. 
 Interface of \textit{gcloud} is suited for handling services of Google cloud platform using command line. For example, 
 deploying VM, handling containers, configuring network and the other.
-\vskip-2ex
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
-$ gcloud init
-\end{lstlisting} \end{figure}
-\vskip-3ex To check available regions.
-command will set new configuration, creating a new named or reinitialize an existing named configuration
-\vskip-2ex
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
-$ gcloud config configurations create my-config
-\end{lstlisting} \end{figure}
-\vskip-3ex
-Configuration is aimed for setting default general variables like: account, project, default region and zone, proxy etc.
-To check project properties call:
-\vskip-2ex
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
-$ gcloud compute project-info describe
-\end{lstlisting} \end{figure}
-\vskip-3ex
-Prints summary of project properties: ssh key, name project, usage and limit quotes of project. 
-
-After creation of configuration profile set up default zone, region are appropriate. The variables can be set by 
-\textit{gcloud} or with using local variables. After creating instance of cloud computer(default properties).
-\vskip-2ex
+%\vskip-2ex
+%\begin{figure}[!htbp]
+%\lstset{extendedchars=false,escapeinside=''}
+%\begin{lstlisting}[style=mybash]
+%$ gcloud config configurations create my-config
+%\end{lstlisting} \end{figure}
+%\vskip-3ex
+Configuration allows to set default general variables: account, project, default region 
+and zone, proxy etc. To set up configuration profile: default zone, region is appropriate. 
+The variables can be set by \textit{gcloud} or with using 
+local variables.
+Below is an example of deploying VM instance with default configuration. The instance 
+is accessible by \textit{gcloud} ssh tool(e.g. instance run in zone asia-east1). Access can be also provided 
+by standard ssh protocol.
 \begin{figure}[!htbp]
 \lstset{extendedchars=false,escapeinside=''}
 \begin{lstlisting}[style=mybash]
 $ gcloud compute instances create my-instance
-\end{lstlisting} \end{figure}
-\vskip-3ex
-The instance is accessible by \textit{gcloud} ssh tool(for instance run in zone asia-east1). Access can be also provided 
-by standard ssh protocol.
-\vskip-2ex
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+...
 $ gcloud compute ssh my-instance --zone asia-east1
+...
 \end{lstlisting} \end{figure}
-\vskip-3ex
-   
-   
+
 \textit{gcloud dataproc}\ref{subsub:dataproc} tools support deployment of clusters with limited configuration. For deploying 
 clusters with distributed file system, like Hadoop and spark, is suitable to use \textit{bdutil}\ref{sub:bdutil} tools. 
 This example demonstrate, that command line tools doesn’t fully cover full portfolio of Google Cloud Platform. 
    
 \paragraph{Google Cloud Client Libraries} give programmatic access to Google Cloude Platform services. For development of applications 
 linked to cloud services it ensure better language integration, security handling and easy general access. Libraries are currently 
-available in five languages: Go, Java, Note.js, Python and Ruby. Below is shown example of Python API library. In this case the sample of code allows to initialize  instance of Cloud Dataproc and get JSON object represented list of clusters.
+available in five languages: Go, Java, Note.js, Python and Ruby. Below is shown 
+example of Python API library. In this case the sample of code allows to initialize  
+instance of Cloud Dataproc and get JSON object represented list of clusters.
 \begin{figure}[!htbp]
 \lstset{extendedchars=false,escapeinside=''}
 \begin{lstlisting}[style=python]
@@ -914,8 +896,7 @@ result = dataproc.projects().regions().clusters().list(
          region = region).execute()
 \end{lstlisting} \end{figure}\vskip-3ex
 
- 
-   
+
 		\subsection{Geography and Regions}
 Google cloud platform is available across three \textit{locations}: North America, Europe, and Asia. Each location includes 
 \textit{regions} and \textit{zones}. The choice of place, where service is running is on developer. The statistics of data 
@@ -972,11 +953,28 @@ quotas:
 
 
 \subsection{Identity and Access Management}
-Cloud Identity and Access Management(Cloud IAM) provide another way for handling privacy and permissions for \textit{Google Cloud} services. Currently, alpha  or beta versions are supported for nine services over Google Cloud portfolio, includes \textit{Google Cloud Storage}. IAM design is based on three main pillars, such as \textit{Roles}, \textit{Policy} and \textit{Resources}. The identity of a user is handled by four different authentication methods such a Google account, Service account, Google group and Google Apps domain.
+Cloud Identity and Access Management(Cloud IAM) provide another way for handling privacy 
+and permissions for \textit{Google Cloud} services. Currently, alpha  or beta versions are 
+supported for nine services over Google Cloud portfolio, 
+includes \textit{Google Cloud Storage}. IAM design is based on three main pillars, 
+such as \textit{Roles}, \textit{Policy} and \textit{Resources}. The 
+identity of a user is handled by four different authentication methods such a Google 
+account, Service account, Google group and Google Apps domain.
 
-\paragraph{Resources} Allowed grant access to users for Cloud Platform resources. Thus to available services of Google Cloud portfolio. To allow permissions for using given service is declared syntax \textless service\textgreater.\textless resource\textgreater.\textless verb\textgreater, for example \emph{pubsub.topics.publish}.
+\paragraph{Resources} Allowed grant access to users for Cloud Platform resources. Thus 
+to available services of Google Cloud portfolio. To allow permissions for using given 
+service is declared syntax \textless service\textgreater.\textless resource\textgreater.\textless verb\textgreater, for example \emph{pubsub.topics.publish}.
 
-\paragraph{Roles} A role represent the collection of permissions. Two kinds of the role are available, such as Primitive roles and Curated roles. The first mentioned, concentric roles, thus, Owner role can also Edit and Edit role includes Read role. This basic role approach is applied e.g. in Cloud Storage as default. Second, curated roles are new and allow more advanced policy management. Currently(28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a)) are in alpha or beta development version and are not suggested to use for production use. However, these Curated roles provide additional granular access to specific services from Google Cloud portfolio and prevent unwanted access to other resources. In figure
+\paragraph{Roles} A role represent the collection of permissions. Two kinds of the role 
+are available, such as Primitive roles and Curated roles. The first mentioned, concentric 
+roles, thus, Owner role can also Edit and Edit role includes 
+Read role. This basic role approach is applied e.g. in Cloud Storage as default. Second, 
+curated roles are new and allow more advanced policy management. 
+Currently(28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a)) are in alpha or beta 
+development version and are not suggested to use for production 
+use. However, these Curated roles provide additional granular access to specific services 
+from Google Cloud portfolio and prevent unwanted access to 
+other resources. In figure
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
 \begin{table}[]
@@ -996,7 +994,15 @@ roles/storage.admin         & Grants full control of objects and buckets.       
 \end{table}
 	
 
-\paragraph{Policy} of Cloud IAM can grant roles to users. It is designed as a collection of statements that specify who has what type of access. The policy is linked to resources and control it's accessed. In figure(\ref{fig:iam}, (b)) is shown policy principle based on the relation between the collection of statements IAM and Resources of Google Platform. Resources of Google Platform are organized hierarchically. Figure (\ref{fig:iam}, (c)) demonstrated example of the nodes in hierarchy. \textit{Organisation} represent the root of the hierarchy and each child has only one parent. Inheritance of hierarchy allows handling in easy way sets and subsets of abstract classes, such as Organization, Project and Resources. 
+\paragraph{Policy} of Cloud IAM can grant roles to users. It is designed as a collection 
+of statements that specify who has what type of access. The policy is linked to resources 
+and control it's accessed. In figure(\ref{fig:iam}, (b)) is 
+shown policy principle based on the relation between the collection of statements IAM and 
+Resources of Google Platform. Resources of Google Platform 
+are organized hierarchically. Figure (\ref{fig:iam}, (c)) demonstrated example of the nodes 
+in hierarchy. \textit{Organisation} represent the root of 
+the hierarchy and each child has only one parent. Inheritance of hierarchy allows handling 
+in easy way sets and subsets of abstract classes, such as Organization, Project and Resources. 
 
 
 \begin{figure}[h!]
@@ -1004,7 +1010,7 @@ roles/storage.admin         & Grants full control of objects and buckets.       
     %\subfloat[Roles]{ \includegraphics[width=0.4\textwidth]{./img/iamroles.png} }%
     %\qquad
     %\subfloat[Cloud IAM policy management]{ \includegraphics[width=0.5\textwidth]{./img/iampolicy.png} }%
-    	\subfloat[Cloud IAM Policy and Roles management]{ \includegraphics[width=0.8\textwidth]{./img/iam_overview.png} }%
+	    	\subfloat[Cloud IAM Policy and Roles management]{ \includegraphics[width=0.8\textwidth]{./img/iam_overview.png} }%
     	
     \subfloat[Policy hierarchy]{ \includegraphics[width=0.7\textwidth]{./img/iampolicy-hierarchy.png} }%
 	
@@ -1015,46 +1021,93 @@ roles/storage.admin         & Grants full control of objects and buckets.       
 
 		\subsection{Cloud Storage}
 		\label{subsub:datastore}
-Google Cloud Storage allows storing data in a high level of availability and durability over the world. Storage of data is highly persistent by replication data over Google infrastructure. Service provide security protection based on model end-to-end, thus in-flight and at rest. For handling of data is available command line interface \textit{gsutil} and programming API for build reliable and fast networking application. The pricing model provides different tariffs according to data durability, availability and performance of storage.
+Google Cloud Storage allows storing data in a high level of availability and durability 
+over the world. Storage of data is highly persistent by replication data over Google 
+infrastructure. Service provide security protection based 
+on model end-to-end, thus in-flight and at rest. For handling of data is available command 
+line interface \textit{gsutil} and programming API for build 
+reliable and fast networking application. The pricing model provides different tariffs 
+according to data durability, availability and performance of storage.
         
 
-\paragraph{Storage classes} are represented by three types of storage. The classification is based on a characteristic of storage. \textit{Standard storage}, offers high availability and low latency. This storage is suitable for frequent access such as data of web services or mobile applications.
-Next class is \textit{Durable Reduced Availability} with less availability than  \textit{standard}. This class is suited for jobs, where unavailability is accepted or for a cost-sensitive project. Last class, \textit{Cloud Storage Nearline} is designed covered gap between mentioned classes. It provides slightly lower availability and slightly higher latency than Standard storage but for lower cost. Storage for data backup or archiving data is two explanation of use cases.
+\paragraph{Storage classes} are represented by three types of storage. The classification is based 
+on a characteristic of storage. \textit{Standard storage}, offers high availability and low 
+latency. This storage is suitable for frequent access such 
+as data of web services or mobile applications.
+Next class is \textit{Durable Reduced Availability} with less availability than  \textit{standard}. 
+This class is suited for jobs, where unavailability is accepted or for a cost-sensitive project. 
+Last class, \textit{Cloud Storage Nearline} is designed 
+covered gap between mentioned classes. It provides slightly lower availability and slightly higher 
+latency than Standard storage but for lower cost. 
+Storage for data backup or archiving data is two explanation of use cases.
 
-\paragraph{Buckets location} are configurable by three properties, specifically: global unique name, storage class and geographical location of where the bucket is stored.
+\paragraph{Buckets location} are configurable by three properties, specifically: global unique 
+name, storage class and geographical location of where the bucket is stored.
 \begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
 \begin{lstlisting}[style=mybash]
-#creating two new buckets using command-line
+#creating two new buckets using command-line tool gsutil
 $ gsutil mb -p my-project gs://mwdata gs://mwprocessed -c durable_reduced_availability
 \end{lstlisting} \end{figure}
 
-All buckets are covered under a single namespace thus, the name of bucket must be unique. Google defined rules for naming buckets which are based on DNS naming conventions. Validator during creation process responds error message in the wrong case. 
+All buckets are covered under a single namespace thus, the name of bucket must be unique. 
+Google defined rules for naming buckets which are based on DNS naming conventions. Validator 
+during creation process responds error message in the wrong case. 
 
-\paragraph{Objects} represents peace of data placed in storage. Object have two components: user data and metadata of quality. All \textit{objects} are immutable after creation. Thus incremental changes are not available. However, an object can be overwritten. Before the new version of an object is available, the old version is still reachable for reading. Overwriting of a single object can proceed up to one second. Otherwise \textit{503 Service Unavailable errors} is responded.
+\paragraph{Objects} represents peace of data placed in storage. Object have two components: 
+user data and metadata of quality. All \textit{objects} are immutable after creation. Thus 
+incremental changes are not available. However, an object 
+can be overwritten. Before the new version of an object is available, the old version is still 
+reachable for reading. Overwriting of a single object 
+can proceed up to one second. Otherwise \textit{503 Service Unavailable errors} is responded.
 
-\paragraph{Consistency} of data are provided by global Google network of data centres. When success response is received, uploaded data are available from any location in Google network. Google has designed and constructed a private network for fast data transfer between their data centres around the word. Thus, data throughput of Google backbone network is higher than the capability of the internet-facing network. The latency for writing is slightly higher for replicated store than non-replicated. As an example of a strongly consistent behaviour is not accessible metadata of object immediately after deletion object. 
+\paragraph{Consistency} of data are provided by global Google network of data centres. 
+When success response is received, uploaded data are available from any location in Google network. Google has designed and constructed a private network 
+for fast data transfer between their data centres around the word. Thus, data throughput 
+of Google backbone network is higher than the capability of the 
+internet-facing network. The latency for writing is slightly higher for replicated store 
+than non-replicated. As an example of a strongly consistent behaviour 
+is not accessible metadata of object immediately after deletion object. 
 It is handled by \textit{404 Not Found} status code.
 
 
 \subsubsection{Access control}
-The configuration of access control can be set using \textit{gsutil} command-line tool or API. Cloud storage offers three different ways for access management for buckets and objects, which are described below.
+The configuration of access control can be set using \textit{gsutil} command-line tool 
+or API. Cloud storage offers three different ways for access management for buckets and objects, which are described below.
 \begin{itemize}
-\item\textbf{Access Control lists (ACLs)} provide way manage read or write access for specified Google accounts and groups.
-\item\textbf{Signed URLs (query string authentication)} provide a way to establish time limited read or write access to anyone who disposes of URL address. This way is a choice for users without Google account.   
-\item\textbf{Signed Policy Documents} allows specifying what can be uploaded to a bucket. Size, content type and other specification can be set by policy handler. 
+\item\textbf{Access Control lists (ACLs)} provide way manage read or write access for 
+specified Google accounts and groups.
+\item\textbf{Signed URLs (query string authentication)} provide a way to establish time 
+limited read or write access to anyone who disposes of URL address. This way is a choice for users without Google account.   
+\item\textbf{Signed Policy Documents} allows specifying what can be uploaded to a bucket. 
+Size, content type and other specification can be set by policy handler. 
 \end{itemize}
-Additionally is available access control on the Project level. To control user's ability to access bucket on the project level is developed   \textit{Google Cloud Identity and Access Management}(IAM). This service is described on the and of the section.
+Additionally is available access control on the Project level. To control user's ability 
+to access bucket on the project level is developed   \textit{Google Cloud Identity and Access Management}(IAM). This service is described on 
+the and of the section.
 
-\paragraph{Permissions} is logically divided to read, write and owner. For \textit{objects}, is available to let user download \textit{object} and modify metadata by owner. By default, \textit{objects} are owned by original requester who upload the \textit{object}. As \textit{object}, \textit{Buckets} are readable. In addition, list of user let them to create, overwrite and delete objects in \textit{bucket}. Owner can let user to read and write permission on the bucket include metadata. By default, \textit{buckets} are owned by the project owner group.
+\paragraph{Permissions} is logically divided to read, write and owner. For \textit{objects}, 
+is available to let user download \textit{object} and modify metadata by owner. By default, \textit{objects} are owned by original requester who 
+upload the \textit{object}. As \textit{object}, \textit{Buckets} are readable. In addition, list of user let them to create, overwrite and delete objects 
+in \textit{bucket}. Owner can let user to read and write permission on the bucket include metadata. By default, \textit{buckets} are owned by the project 
+owner group.
 
-\paragraph{Scopes}\label{par:scopes}of authentication consists six methods for specifying ACL such as  Google Storage ID, Google account email address, Google group email address, Google Apps domain, Special identifier for all Google account holders and Special identifier for all users.
+\paragraph{Scopes}\label{par:scopes}of authentication consists six methods for 
+specifying ACL such as  Google Storage ID, Google account email address, Google group email address, Google Apps domain, Special identifier for all Google 
+account holders and Special identifier for all users.
 \begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
 \begin{lstlisting}[style=mybash]
 #Identify an object that the user uploaded.
 gsutil acl get gs://mwdata
 \end{lstlisting} \end{figure}
 
-\paragraph{Access control list} is configurable by command line tools \textit{gsutil acl} or by API based on JSON or XML structures. The management of ACL is based on concentric permissions which provide faster configuration. When user grant write permission, automatically get also read permission. In case of grant of owner permission, read and write is also reachable. In addition, is available list of predefined ACL for quick settings of access restrictions such as project-private, private, public-read, public-read-write, authenticated-read, bucket-owner-read and bucket-owner-full-control.
+\paragraph{Access control list} is configurable by command line tools \textit{gsutil acl} 
+or by API based on JSON or XML structures. The management of ACL is based on concentric 
+permissions which provide faster configuration. When user grant 
+write permission, automatically get also read permission. In case of grant of owner 
+permission, read and write is also reachable. In addition, is available 
+list of predefined ACL for quick settings of access restrictions such as project-private, 
+private, public-read, public-read-write, authenticated-read, 
+bucket-owner-read and bucket-owner-full-control.
 \begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
 \begin{lstlisting}[style=mybash]
 #usage of a predefined ACL to an object during object upload
@@ -1062,35 +1115,115 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 \end{lstlisting} \end{figure}\vskip-3ex
 
 
+\subsubsection{Data control}
+?
 
 \paragraph{Accessing endpoints}
-\textit{Role}
-		\subsection{DataProc: Cluster services}
+?
+
+		\subsection{Dataproc: Cluster services}
 		\label{subsub:dataproc}
-\textbf{DataProc} is a package of tools for managing Hadoop\ref{sec:hadoop} and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
-The process of a deploying cluster is fully automatized using the default configuration. Hadoop and Spark deployment is compatible with official
-releases even offers more. By default, the configuration of automatic deployment is simple. On the other hand in the most cases, it is 
-necessary to configure cluster manually. The helper software  \emph{bdutil} for deploying cluster allows complex configuration includes 
-defining hardware configuration, combining services from wide Google cloud portfolio and custom additional tasks for installation and configuration cluster. 
+\textbf{Dataproc} is a package of tools for managing Hadoop\ref{sec:hadoop} 
+and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
+The process of a deploying cluster is fully automatized using the default 
+configuration. Hadoop and Spark deployment are compatible with official
+releases. By default, the configuration of automatic deployment is simple. 
+On the other hand in the most cases, it is 
+necessary to configure cluster manually to fulfil custom requirements. 
+Next to standard command-line tool \textit{gcloud} for handling deployment is helper software \emph{bdutil} for deploying cluster allows complex 
+configuration includes 
+defining hardware configuration, combining services from wide Google cloud 
+portfolio and custom additional tasks for installation and configuration cluster. This command-line utility are based on authentication provide by \textit{gcloud} interface
 
-In the list of the main characteristic of \textit{DataProc} solution is a low cost, quick starting and integration with Google Cloud services. 
-The pricing is  \$0.01 per CPU for an hour(19.3.2016). DataProc service can include \textit{Preemptible instances} which offers pricing 
-per minutes(min 10 minutes). This choice is suitable for batch jobs and fault-tolerant workloads. The time for starting cluster is up to 
-90 seconds in average. To compare e.g with Amazon cloud services(EMR)\cite{amazon_emr}, starting Google cluster is 3 times faster.
-\subsubsection{bdutil}\label{sub:bdutil}
-	
-    
+In the list of the main characteristic of \textit{Dataproc} solution is a 
+low cost, quick starting and integration with Google Cloud services. 
+The pricing is  \$0.01 per CPU for an hour(19.3.2016). Dataproc service can 
+include \textit{Preemptible instances} which offers pricing 
+per minutes(min 10 minutes). This choice is suitable for batch jobs and 
+fault-tolerant workloads. The time for starting cluster is up to 
+90 seconds in average. To compare e.g with Amazon cloud services(EMR)\cite{amazon_emr}, 
+starting Google cluster is 3 times faster.
 
-		
-		
-		\subsection{Networking}
+\paragraph{Create a manage Cluster} Deploying process can be handled by three main 
+ways. First, using \textit{gcloud} command-line tool. Second, by running \textit{bdutil}\ref{subsub:bdutil} script and the last option, with using 
+\textit{Cloud Dataproc API} - \textit{cluster.create}. Google Cloud web interface offers framework for cluster deployment as well, but the configuration and 
+management is considerably limited. 
+Command-line tool \textit{gcloud} consist parameters: \textit{cluster} for managing and 
+describing cluster, \textit{jobs} for submitting 
+and managing jobs on cluster, finally parameter \textit{operation} for handling operation, 
+like cancel or delete active
+ operation by \emph{operation\_id}. For more advanced cluster deployment is suited script 
+ tool \textit{bdutil} which is 
+ package for custom configuration of cluster. The advantages is easy redeployment and 
+ reproducibility custom
+  configuration of cluster. 
+
+
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+#creation of cluster with default settings using command-line tool gcloud
+$ gcloud dataproc clusters create <cluster-name>
+\end{lstlisting} \end{figure}
+
+\paragraph{Cluster Properties} are by default configured to deploy cluster with desired 
+number of nodes. The configuration behind is not trivial but Google \textit{Dataproc} provide automatic deployment without big investments. The 
+configuration of open source software as Spark, Hadoop  and extensions as Hive are based on several XML and plain text configuration files. For cluster deployment 
+using \textit{Dataproc}, the configuration is based on the same configuration files.Some properties are reserved by Google and cannot be overridden 
+to protect functionality of Cloud Dataproc. The crucial feature of cluster is immutable configuration after start. Thus, all configuration must be set 
+properly before starts of daemons on cluster. For apply changes must be cluster redeployed. 
+
+\paragraph{File system}
+Google Cloud Dataproc offers two different storages based on distributed file systems. In 
+chapter Hadoop\ref{subsec:hdfs} is described Hadoop Distributed File system(HDFS) which is 
+default file system for Apache Hadoop framework and is as optional in Google Services. As 
+default file system for Hadoop and Spark deployment provided by Google Cloud is \textit{Google Cloud storage}. 
+
+Google Claude Storage offers direct data access in available storage for the rest of Google 
+services. In addition the interoperability provide access between Spark and Hadoop on Google. Next advantage is high data availability provided by Cloud
+ Storages, with high availability and global replication without less performance. The key feature is data access after cluster is shouted down. The 
+pricing of cluster instance is based on time. Thus, to save costs, cluster should run only when is used. With using HDFS as distributed file system, after 
+shutting down cluster instance, data are removed and lost as well. In contrast, data stored on Claude Storage are available after cluster is stopped and 
+can be linked again in further cluster deployment.
+
+Interaction between Hadoop Distributed System and Dataproc cloud is limited to compare default 
+Google Storage. HDFS is scalable across VM’s, but doesn’t scale per instance as well as Claude Storage due to VM disk bandwidth limits. 
+
+\paragraph{Machine type} Google Cloud Datagram clusters are built on Google Compute Engine instances.
+\textit{Machine types} configuration define the virtualized hardware resources available to an 
+virtual machine instance. Two ways how to define configuration are available: \textit{predefined instance} and \textit{custom machine types}.  
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+# print list of predefined instances
+$ gcloud compute machine-types list
+NAME           ZONE           CPUS MEMORY_GB DEPRECATED
+f1-micro       asia-east1-c   1     0.60
+g1-small       asia-east1-c   1     1.70
+n1-highcpu-16  asia-east1-c   16   14.40
+...
+\end{lstlisting} \end{figure}
+
+Customization of machines availability is suitable for project with workloads where the computing engine require high performance machine resources or just where predefined machines are not a good fit to workloads. Once a custom machine template is defined, the configuration is available for all connected services over Google Claude portfolio.
+
+\subsubsection{bdutil: Spark and Hadoop on Google Cloud}\label{subsub:bdutil}
+As has been already mentioned, \textit{bdutil} is a command line script designed for
+managing Hadoop instance on Google Compute Engine. It provide deployment, configuration
+and shut-down Hadoop instances in quickly and reproducible way, even for complex configuration. Script is based on Bash v3 or later which is available on VM of Google Compute Engine or most of Linux distributions. In addition to shell command-line
+tools \textit{gcloud dataproc}, \textit{bdutil} includes configurable scripts for deployment 
+Spark and Hadoop. The default configuration is Hadoop 1 with Cloud Storage as the storage system. 
+Furthermore, \textit{bdutil} is designed to allow writing custom environment variable configuration 
+files. For example: \emph{CONFIGBUCKET} - path to Google Storage, \emph{PROJECT} - ID of Google Platform 
+project or \emph{GCE\_MACHINE\_TYPE} - machine type of the Google Compute Engine.
+
 	
-	\section{Related Technologies Behind}
+\section{Related Technologies Behind}
 	\subsection{Geospatial framework GRASS GIS}
 
-\textit{"\textbf{Geographic Resources Analysis Support System}\footnote{Cited from: \url{https://grass.osgeo.org/documentation/general-overview/}}, 
-commonly referred to as GRASS GIS, is a Geographic Information System (GIS) used for data management, image processing, graphics production, 
-spatial modelling, and visualization of many types of data. It is Free (Libre) Software/Open Source released under GNU General Public License 
+\textit{"\textbf{Geographic Resources Analysis Support System}\footnote{Cited from:
+ \url{https://grass.osgeo.org/documentation/general-overview/}}, 
+commonly referred to as GRASS GIS, is a Geographic Information System (GIS) used for
+ data management, image processing, graphics production, 
+spatial modelling, and visualization of many types of data. It is Free (Libre) Software/Open
+ Source released under GNU General Public License 
 (GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial Foundation."}
 
 \paragraph{Vector data processing} 
@@ -1135,10 +1268,69 @@ functionality licensed under Apache Public License."}
 \paragraph{Goals}
 
 
-\section{Deploying Hadoop Cluster: Google Cloud DataProc}
-		\subsection{Set up project}
-		\subsection{Cluster deployment: bdutil}
-			\subsubsection{Cluster properties}
+\section{Setup working environment}
+As main resource of data storage and computing engine for practical framework has been used Google Cloud Platform.
+ Thus, all configuration of Hadoop cluster, data storage and networking is linked to cloud services. Additionally,
+  development of GRASS client framework for Hadoop and consequential testing  as well.
+
+Google Cloud Platform offers free trial 60 days promotion for using their services. The offer is limited by two
+ months or 300 \$ for which ever services of Google Cloud portfolio.
+		\subsection{Set up project: gcloud}
+Using Google Cloud Platform web interface has been created new project placed in App Engine 
+location \textit{europe-west}. The project is characterized by Project name, Project ID and billing account.
+On local computer has been installed Cloud SDK which includes \textit{gcloud} 
+and \textit{gsutil} tools for remote control Google Cloud services.
+Initialization of gcloud using command \emph{gcloud init}\footnote{To initialize project on remote computer without X Window System forwarding must be use flag \emph{--console-only}.} provide authentication process using web browser 
+and request of access to the project.
+
+Compute Engine uses a default zone and region based on information from the project metadata. In this case configuration has been inherited from the Project settings without an additional configuration.
+
+
+\subsection{Data management}
+        Google Data Store is used as a main data house for for project. Command line tool \textit{gsutil} allows object operations stored in buckets of Google. For copying large object is very suitable to use function for slicing which allows parallel downloading and uploading.
+        
+For downloading object using HTTP request gsutil perform slicing object on Google Storage  and preallocate space in destination folder. The final file is renamed after all slices are processed. For downloading is not required additional space on local disk. The performing of slices is configurable by parameter \textit{sliced\_object\_download\_threshold} which define maximum number of slices. It can be useful to protect disk from overloading. For efficient uploading of large files is crcmod which required installation  of CRC32C package. 
+
+\paragraph{SQL data migration} Within project have been created several buckets for storing exported data from SQL. Data captured by microwave operator T-Mobile has been described in my bachelor theses\cite{bp_krejci}. Date are stored in relation database PostgreSQL and includes over $3e9$ rows. Due to big data characteristic has been developed python\ref{py:export} script for exporting data in defined time interval. It protect database from overloading by queries for all rows in one query. 
+
+As machine for exporting, merging and uploading data to bucket was used VM instance from Google Compute engine.
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+#create compute engine with 500 GB persistent disk
+$ gcloud compute --project "spatial-hadoop" disks create "vmexport" --size "500" \
+--zone "europe-west1-b" --type "pd-standard" --image \
+"/debian-cloud/backports-debian-7-wheezy-v20160418"
+\end{lstlisting} \end{figure}
+Table public.record from mwdb database has been exported in time step one week. The merge of each exported csv files has been merged using Unix \textit{cat} command. The size of exported table record is around 98 GB or 17 GB tarball.
+
+\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
+\begin{lstlisting}[style=mybash]
+#create bucket 
+$ gsutil mb -l EU gs://mwdata_export
+#copy big file with slicing
+$ gsutil -m -o GSUtil:parallel_composite_upload_threshold=100M cp \
+mwdump.csv gs://mwdata_export/
+\end{lstlisting} \end{figure}
+
+
+		\subsection{Cluster deployment}
+For deployment of Hadoop cluster is used bdutil command line package build from several shall files and XML configuration files of Hadoop and its extensions. The main script called bdutil,\_env.sh consists mandatory and free environmental variables.
+
+\paragraph{Environment variables}
+provide setting which refers to id of the project and to the default bucket in GCS. The defined bucket holds SSH keys and configuration of file system. In case of usage GCS as file system for Hadoop, the defined GCS is linked  during cluster deployment and all files are naively accessible by standard Hadoop commands e.g copy file \textit{hadoop fs -cp  /data/* /tmp/}.
+
+\paragraph{Hardware configuration} 
+allows to specify name, shape, location and size of cluster. As important can be assume definition of machine type, with reflect final performance of cluster and pricing of service as well. In addition the parameter for number of workers and size of disk are also crucial.
+
+Hardware configuration allows to set different disk size and  disk type to master and workers. Furthermore extra persistent disks(PDs) can be listed. Available virtual machines of service-account can be attached to further cluster. For that case the GCS connector must by allowed.
+
+\paragraph{Deployment} section consist parameters for customizing Hadoop installation on VMs workers and master. The configuration of GCS support and BIGQUERRY connector offers to provide interface between cluster and Google Bigtable. File system of cluster is set by default to gs(google storage), the second option is standard HDFS. 
+
+
+
+
+
+			\subsubsection{Cluster configuration}
 			\subsubsection{Cluster machine types}
 			\subsubsection{Scaling cluster}
 			\subsubsection{Submit Job}
@@ -1287,7 +1479,7 @@ URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/cluster_setup.html#Hado
 \chapter*{Attachment}
 \renewcommand\thesection{\Alph{section}}
 
-\section{priloha 123}
+\section{Attachment:python script for SQL export}
 \section{priloha 123}
 
 \end{document}
