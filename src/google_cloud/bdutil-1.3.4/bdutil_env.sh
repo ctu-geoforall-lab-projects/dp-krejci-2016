@@ -22,7 +22,7 @@
 ############### REQUIRED ENVIRONMENT VARIABLES (no defaults) ##################
 
 # A GCS bucket used for sharing generated SSH keys and GHFS configuration.
-CONFIGBUCKET="  "
+CONFIGBUCKET="mwdata_export"
 
 # The Google Cloud Platform text-based project-id which owns the GCE resources.
 PROJECT="spatial-hadoop"
@@ -36,8 +36,8 @@ PROJECT="spatial-hadoop"
 
 # GCE settings.
 GCE_IMAGE='debian-7-backports'
-GCE_MACHINE_TYPE='n1-standard-4'
-GCE_ZONE=""
+GCE_MACHINE_TYPE='n1-standard-2'
+GCE_ZONE="europe-west1-b"
 # When setting a network it's important for all nodes be able to communicate
 # with eachother and for SSH connections to be allowed inbound to complete
 # cluster setup and configuration.
@@ -46,7 +46,7 @@ GCE_NETWORK='default'
 # If non-empty, specifies the machine type for the master node separately from
 # worker nodes. If empty, defaults to using the same machine type as workers
 # specified in GCE_MACHINE_TYPE.
-GCE_MASTER_MACHINE_TYPE='europe-west1-b'
+GCE_MASTER_MACHINE_TYPE=''
 
 # If non-zero, specifies the fraction (between 0.0 and 1.0) of worker
 # nodes that should be run as preemptible VMs.

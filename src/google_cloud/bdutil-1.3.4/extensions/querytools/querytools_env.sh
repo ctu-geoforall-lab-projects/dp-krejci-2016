@@ -22,12 +22,13 @@
 # be vulnerable to eventual list consistency. Okay to read initially from GCS
 # using explicit gs:// URIs and likewise to write the final output to GCS,
 # letting any intermediate cross-stage items get stored in HDFS temporarily.
-DEFAULT_FS='hdfs'
+DEFAULT_FS='gs'
 
 # URIs of tarballs to install.
 PIG_TARBALL_URI='gs://querytools-dist/pig-0.12.0.tar.gz'
+#PIG_TARBALL_URI='gs://install_hive/pig-0.15.0.tar.gz'
 HIVE_TARBALL_URI='gs://querytools-dist/hive-0.12.0-bin.tar.gz'
-
+#HIVE_TARBALL_URI='gs://install_hive/apache-hive-1.2.1-bin.tar.gz'
 # Constants normally in project_properties.sh from the sampleapp, but which we
 # can propagate out here as shared environment variables instead.
 HADOOP_MAJOR_VERSION='1'

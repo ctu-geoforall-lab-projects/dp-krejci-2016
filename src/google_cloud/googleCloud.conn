@@ -13,6 +13,8 @@ gcloud compute ssh --zone=europe-west1-b --ssh-flag="-D 1080" --ssh-flag="-N" --
 
 *********************************************************
 #deply new cluster
+*********************************************************
+
 1download bdutil
 2create bucket
 
@@ -30,12 +32,11 @@ gcloud dataproc clusters describe cluster-1
 matt@cluster-1-m:/$ mc ./usr/local/share/google/dataproc/bdutil-dataproc-20160216-151931-RC0
 #delete cluster
 ./bdutil delete
-*********************************************************
 
 *********************************************************
 Access data from google starage 
-https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists
 *********************************************************
+https://cloud.google.com/storage/docs/access-control#About-Access-Control-Lists
 
 
 #Check your quota
@@ -48,3 +49,16 @@ gcloud compute regions describe example-region
 
 #hadoop check config
  hadoop org.apache.hadoop.conf.Configuration | grep webhdfs
+
+
+
+
+#creating VM for copy data 
+gcloud compute --project "spatial-hadoop" instances create "mwcopy" --zone "europe-west1-b" --machine-type "custom-2-7680" --network "default" --no-restart-on-failure --maintenance-policy "TERMINATE" --scopes default="https://www.googleapis.com/auth/cloud-platform" --image "/ubuntu-os-cloud/ubuntu-1404-trusty-v20160314" --boot-disk-size "60" --boot-disk-type "pd-standard" --boot-disk-device-name "mwcopy"
+
+#copy slice (CRC32C and Installing crcmod)
+#https://cloud.google.com/storage/docs/gsutil/addlhelp/CRC32CandInstallingcrcmod
+
+gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://mwdata_export/* ./mwdbe
+xport
+

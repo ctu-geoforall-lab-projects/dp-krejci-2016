@@ -1,10 +1,9 @@
 <?xml version="1.0" ?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-  </property>
-        <property>
-        <name>dfs.webhdfs.enabled</name>
-        <value>true</value>
+   <property>
+      <name>dfs.webhdfs.enabled</name>
+      <value>true</value>
   </property>
   <property>
     <name>dfs.namenode.rpc-address</name>
