@@ -145,16 +145,12 @@ class Connection(Base):
                        descriptor=property(cls.get_extra, cls.set_extra))
 
     def get_hook(self):
-        from  hdfswrapper import hive_hook, sqlite_hook,jdbc_hook,webhdfs_hook, hdfs_hook
+        from  hdfswrapper import hive_hook,webhdfs_hook, hdfs_hook
 
         if self.conn_type == 'hive_cli':
             return hive_hook.HiveCliHook(hive_cli_conn_id=self.conn_id)
         elif self.conn_type == 'hiveserver2':
             return hive_hook.HiveServer2Hook(hiveserver2_conn_id=self.conn_id)
-        elif self.conn_type == 'sqlite':
-            return sqlite_hook.SqliteHook(sqlite_conn_id=self.conn_id)
-        elif self.conn_type == 'jdbc':
-            return jdbc_hook.JdbcHook(jdbc_conn_id=self.conn_id)
         elif self.conn_type == 'webhdfs':
             return webhdfs_hook.WebHDFSHook(webhdfs_conn_id=self.conn_id)
         elif self.conn_type == 'hdfs':

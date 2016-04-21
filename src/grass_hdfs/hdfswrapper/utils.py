@@ -22,31 +22,6 @@ def TemporaryDirectory(suffix='', prefix=None, dir=None):
                     raise e
 
 
-def import_module_attrs(parent_module_globals, module_attrs_dict):
-    '''
-    Attempts to import a set of modules and specified attributes in the
-    form of a dictionary. The attributes are copied in the parent module's
-    namespace. The function returns a list of attributes names that can be
-    affected to __all__.
-    This is used in the context of ``operators`` and ``hooks`` and
-    silence the import errors for when libraries are missing. It makes
-    for a clean package abstracting the underlying modules and only
-    brings functional operators to those namespaces.
-    '''
-    imported_attrs = []
-    for mod, attrs in list(module_attrs_dict.items()):
-        try:
-            path = os.path.realpath(parent_module_globals['__file__'])
-            folder = os.path.dirname(path)
-            f, filename, description = imp.find_module(mod, [folder])
-            module = imp.load_module(mod, f, filename, description)
-            for attr in attrs:
-                parent_module_globals[attr] = getattr(module, attr)
-                imported_attrs += [attr]
-        except Exception as err:
-            logging.debug("Error importing module {mod}: {err}".format(
-                mod=mod, err=err))
-    return imported_attrs
 
 def generate_fernet_key():
     try:
