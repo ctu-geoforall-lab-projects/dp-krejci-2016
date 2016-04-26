@@ -46,11 +46,11 @@ GCE_NETWORK='default'
 # If non-empty, specifies the machine type for the master node separately from
 # worker nodes. If empty, defaults to using the same machine type as workers
 # specified in GCE_MACHINE_TYPE.
-GCE_MASTER_MACHINE_TYPE=''
+GCE_MASTER_MACHINE_TYPE='n1-standard-4'
 
 # If non-zero, specifies the fraction (between 0.0 and 1.0) of worker
 # nodes that should be run as preemptible VMs.
-PREEMPTIBLE_FRACTION=0.0
+PREEMPTIBLE_FRACTION=1
 
 # Prefix to be shared by all VM instance names in the cluster, as well as for
 # SSH configuration between the JobTracker node and the TaskTracker nodes.
@@ -76,12 +76,12 @@ DELETE_ATTACHED_PDS_ON_DELETE=${DELETE_ATTACHED_PDS_ON_DELETE:-true}
 # Only applicable during deployment if USE_ATTACHED_PDS is true and
 # CREATE_ATTACHED_PDS_ON_DEPLOY is true. Specifies the size, in GB, of
 # each non-boot PD to create for the worker nodes.
-WORKER_ATTACHED_PDS_SIZE_GB=500
+WORKER_ATTACHED_PDS_SIZE_GB=300
 
 # Only applicable during deployment if USE_ATTACHED_PDS is true and
 # CREATE_ATTACHED_PDS_ON_DEPLOY is true. Specifies the size, in GB, of
 # the non-boot PD to create for the master node.
-MASTER_ATTACHED_PD_SIZE_GB=500
+MASTER_ATTACHED_PD_SIZE_GB=300
 
 # Only applicable during deployment if USE_ATTACHED_PDS is true and
 # CREATE_ATTACHED_PDS_ON_DEPLOY is true. Specifies the disk type,
@@ -94,7 +94,7 @@ WORKER_ATTACHED_PDS_TYPE='pd-standard'
 MASTER_ATTACHED_PD_TYPE='pd-standard'
 
 # The size of the master boot disk.
-MASTER_BOOT_DISK_SIZE_GB=
+MASTER_BOOT_DISK_SIZE_GB=200
 
 # Number of local SSD devices to attach to each worker node, in range [0, 4].
 WORKER_LOCAL_SSD_COUNT=0
@@ -143,7 +143,7 @@ INSTALL_BIGQUERY_CONNECTOR=false
 
 # Whether or not to configure and start HDFS
 # Must be true if DEFAULT_FS is hdfs
-ENABLE_HDFS=true
+ENABLE_HDFS=false
 
 # Whether or not to check permissions for accessing HDFS files
 ENABLE_HDFS_PERMISSIONS=false
