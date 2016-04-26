@@ -17,6 +17,8 @@
 %\setlength{\belowcaptionskip}{-10pt}
 \newcommand{\squeezeup}{\vspace{-2.5mm}}
 
+\usepackage{enumitem}
+
 \usepackage{url}
 
 
@@ -117,7 +119,12 @@ morekeywords=[2]{y, n, none},
 morecomment=[l]{\#},
 }
 
-
+\lstdefinestyle{XML}{
+  language=XML,
+  basicstyle={\ttfamily\scriptsize},
+  morekeywords={encoding,
+    xs:schema,xs:element,xs:complexType,xs:sequence,xs:attribute}
+}
 
 \lstdefinestyle{script}{
     language=bash,
@@ -274,12 +281,14 @@ filesystem runs as a service that is accessible via APIs and libraries.
 In 2008, Hadoop was mad own top-level project at Apache.\cite{hadoop_web_news} By this time, Hadoop was being used by many
 other companies besides Yahoo!, such as Last.fm, Facebook, and the New York Times. 
 
-
  \begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\textwidth]{./img/schema2.pdf}
-    \caption[Hadoop architecture2]{\centering Hadoop HDFS and MapReduce abstract layer  }
+    \caption[Hadoop architecture2]{\centering Hadoop HDFS and MapReduce layers}
  \end{figure} 
+ 
+ 
+ 
 \paragraph*{The base Apache Hadoop}framework written in Java is composed of the following modules(Hadoop Apache \cite{hadoop_web}):
 \begin{itemize}
 \item \textbf{Hadoop Common} - The common utilities that support the other Hadoop modules;
@@ -289,13 +298,26 @@ other companies besides Yahoo!, such as Last.fm, Facebook, and the New York Time
 \item \textbf{Hadoop MapReduce} - an implementation of the MapReduce programming model 
 for large scale data processing.
 \end{itemize}
+All the modules in Hadoop are designed with a expectation that hardware failures  are common and thus 
+must be automatically managed by the architecture of  software.
+
+The Hadoop framework is written in Java with some native code in C and command line utilities written 
+as shell-scripts. But for development \textit{Map} and \textit{Reduce} parts of the user's program  
+with "Hadoop Streaming" any programming language. 
 Beside main modules, there are many Hadoop extensions for cluster management, 
-data access and helpers for storing data in HDFS.
+data access and helpers for storing data in HDFS. As suitable example of this theses is Apache Hive, 
+which expose higher level user interfaces and provide like SQL query syntax. 
+
+There are two primary components at the core of Apache Hadoop 1.x: the Hadoop Distributed File System 
+(HDFS) and the MapReduce parallel processing framework. For Hadoop 2.x have been developed new MapReduce 
+framework named YARN, which handling better the week point of MapReduce v.1.
+
 
 		\subsection{HDFS: Hadoop Distributed File System}\label{subsec:hdfs}
 As the main source for describing HDFS have been used the official documentation (\textit{hadoop.apache.org} 
 \cite{hadoop_web}) and book (\textit{Hadoop: The Definitive Guide}\cite{hadoop_definitive})
-		\paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files on several 
+
+\paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files on several 
 machines, it is called Hadoop Distributed FileSystem (HDFS). Is designed for handling very large files with streaming
 data access.\cite{hadoop_hdfs_web} In HDFS, large files are broken down into smaller blocks (128MB, by default) which are 
 stored as independent units. The architecture of HDFS is a highly fault-tolerant and provides wide permeability
@@ -313,25 +335,19 @@ a high throughput of data. (5)\textbf{Lots of small files} allows to read and op
 HDFS is based on traditional hierarchical file model. As in other filesystems, HDFS allows basic file operations: 
 read, write, rename, move etc. However it doesn’t support hard and soft links. Below is the example of copying file between HDFS folders. 
 \vskip-2ex
-\begin{figure}[h!]
-\begin{footnotesize}
-\lstset{extendedchars=false,
-escapeinside=''}
-\begin{lstlisting}[style=mybash]
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 $ hadoop fs -cp /user/hadoop/file1 /user/hadoop/file2 
-\end{lstlisting}
-\end{footnotesize} 
-\end{figure}
-\vskip-2ex
+\end{lstlisting}\end{footnotesize} 
+
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{./img/hdfsarchitecture.png}
     \caption[HDFS architecture1]{\centering HDFS architecture \footnotemark}
- \end{figure} 
+\end{figure} 
  \footnotetext{Figure source: \url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}}
 
 		\subsubsection{Organization of data}
-Similarly to  a filesystem, HDFS is based on the disk blocks as well. The traditional
+Similarly to  a common filesystem, HDFS is based on the disk blocks as well. The traditional
 file system is based on blocks which define the minimal size of the amount of data to read and write.
 HDFS blocks have the similar concept based on blocks, but the minimal unit is
 larger. The size of the block is 128 MB by default. Blocks are broken and distributed
@@ -363,18 +379,33 @@ addresses. The priority of transfers is a size of bandwidth availability.  Withi
 where there is more bandwidth available as compared to off-rack transfers for MapReduce jobs on a node. 
 By theory, the better network bandwidth is between machines in the same rack, due to hardware specifics.
 		
+		\subsection{Hadoop server components}
+Hadoop architecture can be categorised into Client Machines, Master Servers and Slave Servers. These are basically daemons or programs that run on different physical servers. Hadoop consists five main components: 
+\begin{itemize}[noitemsep]
+\item NameNode
+\item DataNode
+\item Secondary NameNode
+\item JobTracker
+\item TaskTracker
+\end{itemize}
+
+\paragraph{Client}
+computers have installed Hadoop with  all the configuration but they are not hosted on Master or Slave 
+server. The Clients task is to  load data into the cluster, submit jobs and get the result or looking for jobs when finished.
 		
-		\subsubsection{NameNode and DataNode}
+		\subsubsection{NameNode, DataNode and SecondaryNameNode}
 Hadoop comes with cluster architecture based on master(\textit{Namenode}) and\\ slave(\textit{DataNode}) design pattern. 
-The \textit{Namenode} handles metadata of abstract file system(namespace), which include
-information about the structure of files and directories in the tree. Information about filesystem is stored 
-on local disk in two files: the namespace image and edit log file. 
+The \textit{NameNode} handles metadata of abstract file system(namespace), which include
+information about the structure of files and directories in the tree.  It does not hold any cluster data itself. 
+The  \textit{NameNode} only knows blocks which make up a file and where those blocks are located in the cluster.
+Information about filesystem is stored on local disk in two files: the namespace image and edit log file. 
 The \textit{NameNode} know all locations of  \textit{DataNodes} blocks where data 
 are stored. It also provides the primary user interface to access HDFS. 
 By design \textit{NameNode}  is a single point of failure and should be never overloaded and must 
 be the most reliable node of the cluster.  Without \textit{NameNode}, HDFS is totally unserviceable. 
-In recent Hadoop releases, there is also a backupnode- \textit{SecondaryNameNode}, always up to date 
-with latest \textit{NameNode} status. It receives all the operations done by \textit{NameNode} and 
+
+In recent Hadoop releases, there is also a backup node - \textit{SecondaryNameNode}, always up to date 
+with latest(per 1 hour by default) \textit{NameNode} status. It receives all the operations done by \textit{NameNode} and 
 stores them in local memory. This permits to have the latest, up to date namespace status, when \textit{NameNode} fails. 
         
 As has been mentioned, the blocks of a file are independently stored in nodes, which are called
@@ -388,10 +419,21 @@ mechanisms designed to defend the failure and data loss maintain the availabilit
 load balancing. One important concept of design  is that \textit{NameNode} never directly calls data.
 		
 
+\subsubsection{JobTracker and TaskTrackers}
+Above the file systems is  the MapReduce layer, in other words, MapReduce engine, which consists of 
+JobTracker,  which ensures client applications to submit MapReduce jobs. The JobTracker handle work 
+out to available TaskTracker nodes in the cluster, 
+aiming to keep the jobs close to a data block.  Thus, JobTracker and TaskTracker are two types of 
+nodes for managing the execution process of  task.
+Client submits MapReduce job  to the JobTracker to process a particular file. JobTracke chose the 
+DataNodes which store block with the desired file by asking the NameNode which store metadata of filesystem. 
+JobTracker appends tasks to TaskTracker according to the  information obtained from NameNode and monitors the status of each task.
+
+
 	\subsection{Parallel computing - MapReduce}		
-The \emph{MapReduce} is a programming designed pattern for processing and generating large data
+The \emph{MapReduce} is a programming model for processing and generating large data
 sets. The \emph{MapReduce} abstraction is inspired by the Map and Reduce functions, which is commonly
-found in functional programming languages, such as LISP. Users can easily express their
+found in functional programming languages, such as LISP \cite{lisp}. Users can easily express their
 computation as a series of Map and Reduce functions. The Map function processes a series of
 \textit{$<$ key, value $>$} pairs to generate a set of intermediate \textit{$<$ key, value $>$} pairs.
 
@@ -407,36 +449,41 @@ Thus the \emph{MapReduce} framework transforms a list of (key, value) pairs into
 
 
 \paragraph{As MapReduce demonstration} in this work the use of data from cellular microwaves links(MWL)  is suitable . 
-Assuming that data are already serialized and stored in text files and each file representing 24 hours of captured data, the size amount of weakly data is relatively small(~100Mb) which is adequate.
-We are interesting in computational of then  mean differences between transmitted and received signal for each link in the period between 2014-07-07 and 2015-07-07.
+Assuming that data are already serialized and stored in text files and each file representing 24 hours 
+of captured data, the size amount of weakly data is relatively small(~100Mb) which is adequate.
+We are interesting in computational of then  mean differences between transmitted and received signal for 
+each link in the period between 2014-07-07 and 2015-07-07.
 
 
 Below is the sample of data stored as CSV.
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 linkid;data;rx;tx
 324;"2014-07-07 11:14:56.552";-48.9;10
 256;"2014-07-07 11:14:59.703";-99.9;7
 ...
 324;"2015-07-07 17:10:56.578";-50.1;7;
 256;"2015-07-07 17:10:56.484";-85.3;10;
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
 
 The text lines above are presented to map functions as key-values pairs.
 The map function extracts data from date 2014-07-07 and creates pairs {link:(rx-tx)}
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 {324:-58.9}
 {256:-106.9}
 ...
 {324:-57.1}
 {256:-95.3}
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+
 
 The output is processed by MapReduce framework before is being sent to reduce function.
 Mentioned process sorts pairs by key as shown bellow.
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 {324:[-58.9,-57.1]}
 {256:[-106.9,-95.3]}
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+
 
 Finally reduce program iterates over the list of values for each link and compute mean.
  The final results are stored in Hadoop file system.
@@ -654,15 +701,14 @@ Last phase, building the \textit{global index} provide index structure of all pa
  all local indexes to one file which represent the final index of spatial data are concatenated. This process 
 provides using MapReduce parallel framework.  After this part is done the NameNode creates a global index
 and store it in memory. The index is based on dictionary; key and value.
-\begin{figure}[h!]
-\lstset{extendedchars=false,
-escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 -179.3248215,-54.934357,6.9290401,71.2885321,part-00000_data_00001
 -171.773529,-54.81145,6.9261512,65.1480999,part-00000_data_00001_1
 6.9225032,-46.44586,179.3801209,78.0657531,part-00000_data_00002_2
-\end{lstlisting}
-\end{figure}
+\end{lstlisting}\end{footnotesize}
+
+
  Key is represented by HDFS block and  rectangular boundaries as value. This index keeps all the 
  time in the main memory. That ensure faster access. In critic situation when fail of master or 
  restart of a cluster is possible to rebuild index from rectangular boundaries of the file blocks. 
@@ -855,7 +901,7 @@ deploying VM, handling containers, configuring network and the other.
 %\vskip-2ex
 %\begin{figure}[!htbp]
 %\lstset{extendedchars=false,escapeinside=''}
-%\begin{lstlisting}[style=mybash]
+%\begin{footnotesize}\begin{lstlisting}[style=mybash]
 %$ gcloud config configurations create my-config
 %\end{lstlisting} \end{figure}
 %\vskip-3ex
@@ -866,14 +912,14 @@ local variables.
 Below is an example of deploying VM instance with default configuration. The instance 
 is accessible by \textit{gcloud} ssh tool(e.g. instance run in zone asia-east1). Access can be also provided 
 by standard ssh protocol.
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 $ gcloud compute instances create my-instance
 ...
 $ gcloud compute ssh my-instance --zone asia-east1
 ...
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
 
 \textit{gcloud dataproc}\ref{subsub:dataproc} tools support deployment of clusters with limited configuration. For deploying 
 clusters with distributed file system, like Hadoop and spark, is suitable to use \textit{bdutil}\ref{sub:bdutil} tools. 
@@ -884,9 +930,8 @@ linked to cloud services it ensure better language integration, security handlin
 available in five languages: Go, Java, Note.js, Python and Ruby. Below is shown 
 example of Python API library. In this case the sample of code allows to initialize  
 instance of Cloud Dataproc and get JSON object represented list of clusters.
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=python]
+
+\begin{footnotesize}\begin{lstlisting}[style=python]
 from oauth2client.client import GoogleCredentials
 project = 'my-test-project'
 region = 'global'
@@ -894,7 +939,8 @@ credentials = GoogleCredentials.get_application_default()
 result = dataproc.projects().regions().clusters().list(
          projectId=project,
          region = region).execute()
-\end{lstlisting} \end{figure}\vskip-3ex
+\end{lstlisting}\end{footnotesize}
+ 
 
 
 		\subsection{Geography and Regions}
@@ -920,9 +966,8 @@ Design of network is suited to ensures maintenance  of custom services efficient
  Google suggests to have a backup plan for migration to another one. Fully qualified address of zone   for API access is \textless 
  region\textgreater-\textless zone\textgreater \ e.g. \textit{europe-west1-d}. 
 
-\begin{figure}[!htbp]
-\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 ## view list of available zones.
 $ gcloud compute zones list
 NAME           REGION       STATUS NEXT_MAINTENANCE 
@@ -947,7 +992,8 @@ quotas:
   metric: CPUS
   usage: 0.0
 ..
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
         
 
 
@@ -977,7 +1023,7 @@ from Google Cloud portfolio and prevent unwanted access to
 other resources. In figure
 % Please add the following required packages to your document preamble:
 % \usepackage{booktabs}
-\begin{table}[]
+\begin{table}[!htbp]
 \begin{scriptsize}
 \centering
 \begin{tabular}{@{}|l|l|l|@{}}
@@ -1043,11 +1089,12 @@ Storage for data backup or archiving data is two explanation of use cases.
 
 \paragraph{Buckets location} are configurable by three properties, specifically: global unique 
 name, storage class and geographical location of where the bucket is stored.
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 #creating two new buckets using command-line tool gsutil
 $ gsutil mb -p my-project gs://mwdata gs://mwprocessed -c durable_reduced_availability
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
 
 All buckets are covered under a single namespace thus, the name of bucket must be unique. 
 Google defined rules for naming buckets which are based on DNS naming conventions. Validator 
@@ -1061,7 +1108,8 @@ reachable for reading. Overwriting of a single object
 can proceed up to one second. Otherwise \textit{503 Service Unavailable errors} is responded.
 
 \paragraph{Consistency} of data are provided by global Google network of data centres. 
-When success response is received, uploaded data are available from any location in Google network. Google has designed and constructed a private network 
+When success response is received, uploaded data are available from any location in 
+Google network. Google has designed and constructed a private network 
 for fast data transfer between their data centres around the word. Thus, data throughput 
 of Google backbone network is higher than the capability of the 
 internet-facing network. The latency for writing is slightly higher for replicated store 
@@ -1086,19 +1134,24 @@ to access bucket on the project level is developed   \textit{Google Cloud Identi
 the and of the section.
 
 \paragraph{Permissions} is logically divided to read, write and owner. For \textit{objects}, 
-is available to let user download \textit{object} and modify metadata by owner. By default, \textit{objects} are owned by original requester who 
-upload the \textit{object}. As \textit{object}, \textit{Buckets} are readable. In addition, list of user let them to create, overwrite and delete objects 
-in \textit{bucket}. Owner can let user to read and write permission on the bucket include metadata. By default, \textit{buckets} are owned by the project 
+is available to let user download \textit{object} and modify metadata by owner. By 
+default, \textit{objects} are owned by original requester who 
+upload the \textit{object}. As \textit{object}, \textit{Buckets} are readable. In 
+addition, list of user let them to create, overwrite and delete objects 
+in \textit{bucket}. Owner can let user to read and write permission on the bucket 
+include metadata. By default, \textit{buckets} are owned by the project 
 owner group.
 
 \paragraph{Scopes}\label{par:scopes}of authentication consists six methods for 
-specifying ACL such as  Google Storage ID, Google account email address, Google group email address, Google Apps domain, Special identifier for all Google 
+specifying ACL such as  Google Storage ID, Google account email address, Google 
+group email address, Google Apps domain, Special identifier for all Google 
 account holders and Special identifier for all users.
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 #Identify an object that the user uploaded.
 gsutil acl get gs://mwdata
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
 
 \paragraph{Access control list} is configurable by command line tools \textit{gsutil acl} 
 or by API based on JSON or XML structures. The management of ACL is based on concentric 
@@ -1108,11 +1161,12 @@ permission, read and write is also reachable. In addition, is available
 list of predefined ACL for quick settings of access restrictions such as project-private, 
 private, public-read, public-read-write, authenticated-read, 
 bucket-owner-read and bucket-owner-full-control.
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 #usage of a predefined ACL to an object during object upload
 gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
-\end{lstlisting} \end{figure}\vskip-3ex
+\end{lstlisting}\end{footnotesize}
+ 
 
 
 \subsubsection{Data control}
@@ -1130,10 +1184,12 @@ configuration. Hadoop and Spark deployment are compatible with official
 releases. By default, the configuration of automatic deployment is simple. 
 On the other hand in the most cases, it is 
 necessary to configure cluster manually to fulfil custom requirements. 
-Next to standard command-line tool \textit{gcloud} for handling deployment is helper software \emph{bdutil} for deploying cluster allows complex 
+Next to standard command-line tool \textit{gcloud} for handling deployment is 
+helper software \emph{bdutil} for deploying cluster allows complex 
 configuration includes 
 defining hardware configuration, combining services from wide Google cloud 
-portfolio and custom additional tasks for installation and configuration cluster. This command-line utility are based on authentication provide by \textit{gcloud} interface
+portfolio and custom additional tasks for installation and configuration cluster. 
+This command-line utility are based on authentication provide by \textit{gcloud} interface.
 
 In the list of the main characteristic of \textit{Dataproc} solution is a 
 low cost, quick starting and integration with Google Cloud services. 
@@ -1144,9 +1200,11 @@ fault-tolerant workloads. The time for starting cluster is up to
 90 seconds in average. To compare e.g with Amazon cloud services(EMR)\cite{amazon_emr}, 
 starting Google cluster is 3 times faster.
 
-\paragraph{Create a manage Cluster} Deploying process can be handled by three main 
-ways. First, using \textit{gcloud} command-line tool. Second, by running \textit{bdutil}\ref{subsub:bdutil} script and the last option, with using 
-\textit{Cloud Dataproc API} - \textit{cluster.create}. Google Cloud web interface offers framework for cluster deployment as well, but the configuration and 
+\paragraph{Create and manage cluster} Deploying process can be handled by three main 
+ways. First, using \textit{gcloud} command-line tool. Second, by running \textit{bdutil}\ref{subsub:bdutil} 
+script and the last option, with using 
+\textit{Cloud Dataproc API} - \textit{cluster.create}. Google Cloud web interface offers 
+framework for cluster deployment as well, but the configuration and 
 management is considerably limited. 
 Command-line tool \textit{gcloud} consist parameters: \textit{cluster} for managing and 
 describing cluster, \textit{jobs} for submitting 
@@ -1159,17 +1217,22 @@ like cancel or delete active
   configuration of cluster. 
 
 
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 #creation of cluster with default settings using command-line tool gcloud
 $ gcloud dataproc clusters create <cluster-name>
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
 
 \paragraph{Cluster Properties} are by default configured to deploy cluster with desired 
-number of nodes. The configuration behind is not trivial but Google \textit{Dataproc} provide automatic deployment without big investments. The 
-configuration of open source software as Spark, Hadoop  and extensions as Hive are based on several XML and plain text configuration files. For cluster deployment 
-using \textit{Dataproc}, the configuration is based on the same configuration files.Some properties are reserved by Google and cannot be overridden 
-to protect functionality of Cloud Dataproc. The crucial feature of cluster is immutable configuration after start. Thus, all configuration must be set 
+number of nodes. The configuration behind is not trivial but Google \textit{Dataproc} provide 
+automatic deployment without big investments. The 
+configuration of open source software as Spark, Hadoop  and extensions as Hive are based 
+on several XML and plain text configuration files. For cluster deployment 
+using \textit{Dataproc}, the configuration is based on the same configuration files.Some 
+properties are reserved by Google and cannot be overridden 
+to protect functionality of Cloud Dataproc. The crucial feature of cluster is immutable 
+configuration after start. Thus, all configuration must be set 
 properly before starts of daemons on cluster. For apply changes must be cluster redeployed. 
 
 \paragraph{File system}
@@ -1179,10 +1242,14 @@ default file system for Apache Hadoop framework and is as optional in Google Ser
 default file system for Hadoop and Spark deployment provided by Google Cloud is \textit{Google Cloud storage}. 
 
 Google Claude Storage offers direct data access in available storage for the rest of Google 
-services. In addition the interoperability provide access between Spark and Hadoop on Google. Next advantage is high data availability provided by Cloud
- Storages, with high availability and global replication without less performance. The key feature is data access after cluster is shouted down. The 
-pricing of cluster instance is based on time. Thus, to save costs, cluster should run only when is used. With using HDFS as distributed file system, after 
-shutting down cluster instance, data are removed and lost as well. In contrast, data stored on Claude Storage are available after cluster is stopped and 
+services. In addition the interoperability provide access between Spark and Hadoop on Google. 
+Next advantage is high data availability provided by Cloud
+ Storages, with high availability and global replication without less performance. The key 
+ feature is data access after cluster is shouted down. The 
+pricing of cluster instance is based on time. Thus, to save costs, cluster should run only when 
+is used. With using HDFS as distributed file system, after 
+shutting down cluster instance, data are removed and lost as well. In contrast, data stored on 
+Claude Storage are available after cluster is stopped and 
 can be linked again in further cluster deployment.
 
 Interaction between Hadoop Distributed System and Dataproc cloud is limited to compare default 
@@ -1191,8 +1258,8 @@ Google Storage. HDFS is scalable across VM’s, but doesn’t scale per instance
 \paragraph{Machine type} Google Cloud Datagram clusters are built on Google Compute Engine instances.
 \textit{Machine types} configuration define the virtualized hardware resources available to an 
 virtual machine instance. Two ways how to define configuration are available: \textit{predefined instance} and \textit{custom machine types}.  
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 # print list of predefined instances
 $ gcloud compute machine-types list
 NAME           ZONE           CPUS MEMORY_GB DEPRECATED
@@ -1200,14 +1267,20 @@ f1-micro       asia-east1-c   1     0.60
 g1-small       asia-east1-c   1     1.70
 n1-highcpu-16  asia-east1-c   16   14.40
 ...
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
 
-Customization of machines availability is suitable for project with workloads where the computing engine require high performance machine resources or just where predefined machines are not a good fit to workloads. Once a custom machine template is defined, the configuration is available for all connected services over Google Claude portfolio.
+
+Customization of machines availability is suitable for project with workloads where the computing 
+engine require high performance machine resources or just where predefined machines are not a good 
+fit to workloads. Once a custom machine template is 
+defined, the configuration is available for all connected services over Google Claude portfolio.
 
 \subsubsection{bdutil: Spark and Hadoop on Google Cloud}\label{subsub:bdutil}
 As has been already mentioned, \textit{bdutil} is a command line script designed for
 managing Hadoop instance on Google Compute Engine. It provide deployment, configuration
-and shut-down Hadoop instances in quickly and reproducible way, even for complex configuration. Script is based on Bash v3 or later which is available on VM of Google Compute Engine or most of Linux distributions. In addition to shell command-line
+and shut-down Hadoop instances in quickly and reproducible way, even for complex configuration. 
+Script is based on Bash v3 or later which is available on VM of Google Compute Engine or most of 
+Linux distributions. In addition to shell command-line
 tools \textit{gcloud dataproc}, \textit{bdutil} includes configurable scripts for deployment 
 Spark and Hadoop. The default configuration is Hadoop 1 with Cloud Storage as the storage system. 
 Furthermore, \textit{bdutil} is designed to allow writing custom environment variable configuration 
@@ -1215,135 +1288,427 @@ files. For example: \emph{CONFIGBUCKET} - path to Google Storage, \emph{PROJECT}
 project or \emph{GCE\_MACHINE\_TYPE} - machine type of the Google Compute Engine.
 
 	
+    
 \section{Related Technologies Behind}
-	\subsection{Geospatial framework GRASS GIS}
+    \subsection{Geospatial framework GRASS GIS}
 
-\textit{"\textbf{Geographic Resources Analysis Support System}\footnote{Cited from:
- \url{https://grass.osgeo.org/documentation/general-overview/}}, 
+\textit{"\textbf{Geographic Resources Analysis Support System}, 
 commonly referred to as GRASS GIS, is a Geographic Information System (GIS) used for
  data management, image processing, graphics production, 
 spatial modelling, and visualization of many types of data. It is Free (Libre) Software/Open
  Source released under GNU General Public License 
-(GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial Foundation."}
+(GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial Foundation."\footnote{Cited from:
+ \url{https://grass.osgeo.org/documentation/general-overview/}}}
 
-\paragraph{Vector data processing} 
-%\footnote{Cited from: \url{https://grass.osgeo.org/grass64/manuals/vectorintro.html}}GRASS vectors 
+ 
+GRASS GIS vector map is a data layer which consists number set of a feature in geographic space. 
+These objects are represented by points, lines, polygons, and volumes. Usually, each feature in the 
+map is somehow connected with the set of attribute \textit{layers} stored in a database. 
+
+In GRASS GIS is a available driver which allows using several database backends for manipulation 
+with vector data. The main module for import and export of vectors datasets is v.in.ogr and v.out.ogr 
+which is based on widely used GDAL library. 
+In the current stable version of GRASS GIS is implemented a driver for PostGIS support. PostGIS is 
+an extension of object-rational PosgreSQL database which brings the support for geographic objects. 
+In addition PostGIS extension consist package of 
+location-based function for building a spatial query. Such an ESRI Spatial Framework for Hadoop 
+brings the support of spatial analysis for HIVE analogically PostGIS 
+already have been developed as a spatial extension for PostgreSQL.  
+
+The key feature for this project is the fact that GDAL OGR supports GeoJSON data format, which is suitable 
+for storing and analysing data using MapReduce framework. The description of GeoJSON and its serialization is 
+mandatory due to the design of MapReduce 
+for parallel computing. GeoJSON and its features are described in the second part of the work\ref{json}.
+
+\paragraph{Vector data}
+
+
+GRASS vectors 
 %can be linked to one or many database management systems (DBMS). The db.* set of commands provides 
-%basic SQL support for attribute management, while the v.db.* set of commands operates on a table 
-%linked to a vector map. Import and export of vector data is handled with v.in.ogr module. The 
+%basic SQL support for attribute management while the v.db.* set of commands operates on a table 
+%linked to a vector map. Import and export of vector data are handled with v.in.ogr module. The 
 %v.in.ogr module offers a common interface for many different vector formats. For special cases, 
 %other import modules are available, e.g. v.in.ascii for input from a text file containing coordinate 
 %and attribute data, and v.in.db for input from a database containing coordinate and attribute data. 
 %With v.external external maps can be virtually linked into a mapset, only pseudo-topology is generated 
 %but the vector geometry is not imported. The v.out.* set of commands exports to various formats. 
-%GRASS 7 allows to access PostGIS data directly via virtual mapset called OGR. In this case parameter 
-%map or input is used for OGR data source and layer for table.
+%GRASS 7 allows accessing PostGIS data directly via virtual mapset called OGR. In this case parameter, 
+%map or input is used for OGR data source and layer for a table.
 
 
-	\subsection{Hadoop extensions}
-	\label{sub:hextensions}
-	\paragraph{Data warehouse: Hive}
-\textit{\footnote{Cited from: \url{https://pig.apache.org/}}"Apache Pig is a platform for analyzing 
-large data sets that consists of a high-level language for expressing data analysis programs, coupled 
-with infrastructure for evaluating these programs. The salient property of Pig programs is that their 
-structure is amenable to substantial parallelization, which in turns enables them to handle very large data sets."}
-	\paragraph{Apache Hive TM}
+    \subsection{Apache Hive }
 \textit{\footnote{Cited from: \url{https://hive.apache.org/}}"The Apache Hive ™ data warehouse software 
 facilitates querying and managing large datasets residing in distributed storage. Hive provides a mechanism 
-to project structure onto this data and query the data using a SQL-like language called HiveQL. At the same
-time this language also allows traditional map/reduce programmers to plug in their custom mappers and 
+to project structure onto this data and query the data using an SQL-like language called HiveQL. At the same
+time, this language also allows traditional map/reduce programmers to plug in their custom mappers and 
 reducers when it is inconvenient or inefficient to express this logic in HiveQL."}
-	\paragraph{Pigeon: spatial extension}
-\textit{\footnote{Cited from: \url{https://github.com/aseldawy/pigeon}}"Pigeon is a spatial extension to 
-Pig that allows to process spatial data. All functionality in Pigeon are introduced as user-defined 
-functions (UDFS) which makes it unobtrusive and allows it to work with your existing systems. All the 
-spatial functionality is supported by ESRI Geometry API a native Java open source library for spatial 
-functionality licensed under Apache Public License."}
 
 
 
-	
+
+    
 \newpage
 \chapter*{Experiment framework}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Practical framework}
 \paragraph{Goals}
 
 
 \section{Setup working environment}
-As main resource of data storage and computing engine for practical framework has been used Google Cloud Platform.
- Thus, all configuration of Hadoop cluster, data storage and networking is linked to cloud services. Additionally,
+As the main resource of data storage and computing engine for practical framework has been used Google Cloud Platform.
+ Thus, all configuration of Hadoop cluster, data storage, and networking is linked to cloud services. Additionally,
   development of GRASS client framework for Hadoop and consequential testing  as well.
 
 Google Cloud Platform offers free trial 60 days promotion for using their services. The offer is limited by two
- months or 300 \$ for which ever services of Google Cloud portfolio.
-		\subsection{Set up project: gcloud}
+ months or 300 \$ for whichever services of Google Cloud portfolio.
+        \subsection{Set up project: gcloud}
 Using Google Cloud Platform web interface has been created new project placed in App Engine 
 location \textit{europe-west}. The project is characterized by Project name, Project ID and billing account.
 On local computer has been installed Cloud SDK which includes \textit{gcloud} 
 and \textit{gsutil} tools for remote control Google Cloud services.
-Initialization of gcloud using command \emph{gcloud init}\footnote{To initialize project on remote computer without X Window System forwarding must be use flag \emph{--console-only}.} provide authentication process using web browser 
+Initialization of gcloud using command \emph{gcloud init}\footnote{To initialize project on remote computer 
+without X Window System forwarding must be used flag \emph{--console-only}.} provide authentication process using web browser 
 and request of access to the project.
 
-Compute Engine uses a default zone and region based on information from the project metadata. In this case configuration has been inherited from the Project settings without an additional configuration.
+Compute Engine uses a default zone and region based on information from the project metadata. In this case, 
+configuration has been inherited from the Project settings without an additional configuration.
 
 
 \subsection{Data management}
-        Google Data Store is used as a main data house for for project. Command line tool \textit{gsutil} allows object operations stored in buckets of Google. For copying large object is very suitable to use function for slicing which allows parallel downloading and uploading.
+        Google Data Store is used as the main data house for project. Command line tool \textit{gsutil} 
+        allows object operations stored in buckets of Google. For copying large object is very suitable to use 
+        a function for slicing which allows parallel 
+        downloading and uploading.
         
-For downloading object using HTTP request gsutil perform slicing object on Google Storage  and preallocate space in destination folder. The final file is renamed after all slices are processed. For downloading is not required additional space on local disk. The performing of slices is configurable by parameter \textit{sliced\_object\_download\_threshold} which define maximum number of slices. It can be useful to protect disk from overloading. For efficient uploading of large files is crcmod which required installation  of CRC32C package. 
+For downloading object using HTTP request gsutil perform slicing object on Google Storage  and preallocate 
+space in the destination folder. The final file is renamed after all slices are processed. For downloading 
+is not required additional space on local disk. 
+The performing of slices is configurable by parameter \textit{sliced\_object\_download\_threshold} which 
+define a maximum number of slices. It can be 
+useful to protect the disk from overloading. For efficient uploading of large files is crcmod which required 
+an installation  of CRC32C package. 
 
-\paragraph{SQL data migration} Within project have been created several buckets for storing exported data from SQL. Data captured by microwave operator T-Mobile has been described in my bachelor theses\cite{bp_krejci}. Date are stored in relation database PostgreSQL and includes over $3e9$ rows. Due to big data characteristic has been developed python\ref{py:export} script for exporting data in defined time interval. It protect database from overloading by queries for all rows in one query. 
+\paragraph{SQL data migration} Within project have been created several buckets for storing exported 
+data from SQL. Data captured by microwave operator T-Mobile has been described in my bachelor theses\cite{bp_krejci}. 
+Date are stored in relation database 
+PostgreSQL and includes over $3e9$ rows. Due to big data characteristic has been developed python\ref{py:export} 
+script for exporting data in defined time 
+interval. It protects a database from overloading by queries for all rows in one query. 
 
-As machine for exporting, merging and uploading data to bucket was used VM instance from Google Compute engine.
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+As a machine for exporting, merging and uploading data to bucket was used VM instance from Google Compute engine.
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 #create compute engine with 500 GB persistent disk
 $ gcloud compute --project "spatial-hadoop" disks create "vmexport" --size "500" \
 --zone "europe-west1-b" --type "pd-standard" --image \
 "/debian-cloud/backports-debian-7-wheezy-v20160418"
-\end{lstlisting} \end{figure}
-Table public.record from mwdb database has been exported in time step one week. The merge of each exported csv files has been merged using Unix \textit{cat} command. The size of exported table record is around 98 GB or 17 GB tarball.
+\end{lstlisting}\end{footnotesize}
+ 
+Table public.record from mwdb database has been exported in time step one week. The merge of each exported 
+csv files has been merged using Unix \textit{cat} command. The size of exported table record is around 98 GB or 17 GB tarball.
 
-\begin{figure}[!htbp]\lstset{extendedchars=false,escapeinside=''}
-\begin{lstlisting}[style=mybash]
+
+\begin{footnotesize}\begin{lstlisting}[style=mybash]
 #create bucket 
 $ gsutil mb -l EU gs://mwdata_export
 #copy big file with slicing
 $ gsutil -m -o GSUtil:parallel_composite_upload_threshold=100M cp \
 mwdump.csv gs://mwdata_export/
-\end{lstlisting} \end{figure}
+\end{lstlisting}\end{footnotesize}
+ 
 
 
-		\subsection{Cluster deployment}
-For deployment of Hadoop cluster is used bdutil command line package build from several shall files and XML configuration files of Hadoop and its extensions. The main script called bdutil,\_env.sh consists mandatory and free environmental variables.
+        \subsection{Hadoop deployment}
+        
+For deployment of Hadoop cluster is used bdutil command line package builds from several bash scripts 
+and XML configuration files of Hadoop and its extensions. In the section below is described a essential 
+configuration of Hadoop on Google Dataporoc 
+service. Mainly is shown the important part which touches requirements for using Esri spatial frameworks for Hadoop. 
 
-\paragraph{Environment variables}
-provide setting which refers to id of the project and to the default bucket in GCS. The defined bucket holds SSH keys and configuration of file system. In case of usage GCS as file system for Hadoop, the defined GCS is linked  during cluster deployment and all files are naively accessible by standard Hadoop commands e.g copy file \textit{hadoop fs -cp  /data/* /tmp/}.
+Google Claude Dataproc brings to the cloud field automated deployment of Hadoop cluster. To compare 
+with manual configuration of Hadoop cluster, it allows fast and efficient deployment without spending 
+extra time mainly on network configuration.
 
-\paragraph{Hardware configuration} 
-allows to specify name, shape, location and size of cluster. As important can be assume definition of machine type, with reflect final performance of cluster and pricing of service as well. In addition the parameter for number of workers and size of disk are also crucial.
+The configuration files for \textit{'standard'} Hadoop are stored in \textbf{\$HADOOP\_HOME\\/conf/} 
+and consist  primary xml files. Many of parameters are defined by default and they may be omitted in configuration files. In addition, the default 
+configuration folder  includes shell file which specified environment variables of Hadoop Daemon. Default configuration folder lists:
+\begin{itemize}
+\item \textbf{hadoop-env.sh} The file specifies environment variables that affect JDK used by daemons
+for example \textbf{\$JAVA\_HOME}.
+\item \textbf{core-site.sh}   This file informs Hadoop deamon where namenode runs in the cluster. Furthermore 
+information about port number used for Hadoop instance, memory limit for data size,  memory allocated for HDFS, and size of read and write buffers.
+\item \textbf{hdfs-site.sh}  This file contains the configuration settings for HDFS daemons, the Name 
+Node, the Secondary Name Node, and the data nodes. Usually is configured block replication and permission checking on HDFS. 
+\item \textbf{mapred-site.sh}  This file contains the configuration settings for MapReduce daemons 
+such the JobTracker and the TaskTracker.
+\end{itemize}
 
-Hardware configuration allows to set different disk size and  disk type to master and workers. Furthermore extra persistent disks(PDs) can be listed. Available virtual machines of service-account can be attached to further cluster. For that case the GCS connector must by allowed.
+in addition default configuration directory includes two flat files: \textit{masters} and \textit{slaves}. 
+Both includes hostname of slaves or master where each line represents one address. 
+Master file informs about the Secondary Namenode location to Hadoop daemon. The \textit{masters} 
+file at Master server contains an IP address of Secondary Name Node servers.
+The second one, \textit{slaves} on Slave server contains the IP address of the slave node. Notice 
+that the \textit{slaves} file at Slave node contains only its own IP address and not of any other Data Nodes in the cluster.
 
-\paragraph{Deployment} section consist parameters for customizing Hadoop installation on VMs workers and master. The configuration of GCS support and BIGQUERRY connector offers to provide interface between cluster and Google Bigtable. File system of cluster is set by default to gs(google storage), the second option is standard HDFS. 
+
+\paragraph{Hadoop modes} characterize cluster features of Hadoop and its distributed file system. 
+There are main three approaches of cluster mode which are described below:
+\begin{itemize}
+\item \textbf{Standalone mode} If Hadoop is installed on a machine, by default is preconfigured to a 
+non-distributed mode as a single Java process. This mode  is suitable for MapReduce development and debugging.
+\item \textbf{Pseudo-Distributed mode}  configuration allows to run  Hadoop on single-node and behave
+ like multi-node. It's provided by running Hadoop daemons in separate Java processes. To configure pseudo-distributed Hadoop must be modify \textit{core-site.xml} and \textit{hdfs-site.xml} file\cite{hadoop_modes}.  
+
+
+\begin{footnotesize}\begin{lstlisting}[style=python]
+#etc/hadoop/core-site.xml:
+-
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+
+
+#etc/hadoop/hdfs-site.xml: 
+-
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+</configuration>
+\end{lstlisting}\end{footnotesize}
+
+\item \textbf{Fully distributed cluster} is an ideal approach for harnessing the potential of
+ parallel computations. The nodes are on virtualized machines with assigned machine capability 
+ such a CPU, memory, and disk. The most efficient approach which is used in the production or 
+ in large clusters is an installation of Hadoop directly on the machine with Linux without virtualised environment.
+
+\end{itemize}
+
+
+\subsubsection{bdutil usage}
+In contrast to standard Hadoop deployment, a configuration in \textit{Dataproc} using bdutil is 
+extended by parameters and configuration files which handle automated deployment and other Google
+Cloud Services. The files in bdutil can be divided into two groups. In the first,  are shell scripts 
+which can be run during cluster deployment.
+
+Tool bdutil comes with several bash scripts which set essentials characteristic of the cluster 
+such as a type of framework- Hadoop or Spark, version of Hadoop, Hadoop extension(HIVE,PIG), 
+connectors to other services of Google etc.
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[!htbp]
+\begin{scriptsize}
+\centering
+\begin{tabular}{@{}|l|l|@{}}
+\toprule
+Bash script                              & Description                                                                                                                                              \\ \midrule  \midrule
+bdutil\_env.sh                           & The base of configuration. It is always run by bdutil. Must be modified \ref{bdutilenv}                                                                                  \\ \midrule
+single\_node\_env.sh                     & \begin{tabular}[c]{@{}l@{}}Deploys a pseudo-distributed cluster on a single VM. \\ This approach is suitable for testing clients etc.\end{tabular}       \\ \midrule
+hadoop2\_env.sh                          & \begin{tabular}[c]{@{}l@{}}Deploys a cluster with the latest stable version of  Hadoop 2.x  \\instead of the traditional Hadoop 1.x version.\end{tabular} \\ \midrule
+bigquery\_env.sh                         & \begin{tabular}[c]{@{}l@{}}Deploys a cluster with the BigQuery connector for  Hadoop installed.\\ Not compatible with hadoop2\_env.sh.\end{tabular}      \\ \midrule
+extensions/querytools/querytools\_env.sh & \begin{tabular}[c]{@{}l@{}}Deploys a cluster with Apache Pig and Apache Hive installed. \\ Not compatible with hadoop2\_env.sh.\end{tabular}             \\ \midrule
+extensions/spark/spark\_env.sh           & Deploys a cluster with Apache Spark installed.                                                                                                           \\ \bottomrule
+\end{tabular}
+\caption{Configuration bash scripts of bdutil \cite{gc_hadoop}}
+\label{bdutil:configsh}
+\end{scriptsize}
+\end{table}
 
 
 
+\begin{table}[!htbp]
+\centering
+\begin{scriptsize}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\multicolumn{1}{|l|}{File}                        & \multicolumn{1}{l|}{Name}                         & \multicolumn{1}{l|}{Value}              \\ \midrule \midrule
+\multicolumn{1}{|l|}{\multirow{17}{*}{bdutil\_env.sh}} & \multicolumn{1}{l|}{CONFIGBUCKET}                 & \multicolumn{1}{l|}{mwdata\_export}     \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{PROJECT}                      & \multicolumn{1}{l|}{spatial-hadoop}     \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{GCE\_IMAGE}                   & \multicolumn{1}{l|}{debian-7-backports} \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{GCE\_MACHINE\_TYPE}           & \multicolumn{1}{l|}{n1-standard-2}      \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{GCE\_ZONE}                    & \multicolumn{1}{l|}{europe-west1-b}     \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{GCE\_NETWORK}                 & \multicolumn{1}{l|}{default}            \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{GCE\_MASTER\_MACHINE\_TYPE}   & \multicolumn{1}{l|}{n1-standard-4}      \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{PREEMPTIBLE\_FRACTION}        & \multicolumn{1}{l|}{1.0}                \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{PREFIX}                       & \multicolumn{1}{l|}{hadoop}             \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{NUM\_WORKERS}                 & \multicolumn{1}{l|}{2}                  \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{MASTER\_BOOT\_DISK\_SIZE\_GB} & \multicolumn{1}{l|}{200}                \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{DEFAULT\_FS}                  & \multicolumn{1}{l|}{gs}                 \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{ENABLE\_HDFS}                 & \multicolumn{1}{l|}{false}              \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{ENABLE\_HDFS\_PERMISSIONS}    & \multicolumn{1}{l|}{false}              \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{INSTALL\_GCS\_CONNECTOR}      & \multicolumn{1}{l|}{true}               \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{CORES\_PER\_MAP\_TASK}        & \multicolumn{1}{l|}{1.0}                \\ \cmidrule(l){2-3} 
+\multicolumn{1}{|l|}{}                                 & \multicolumn{1}{l|}{CORES\_PER\_REDUCE\_TASK}     & \multicolumn{1}{l|}{1.0}                \\ \midrule
+\multicolumn{1}{|l|}{hdfs-template.xml}                & \multicolumn{1}{l|}{dfs.webhdfs.enabled}          & \multicolumn{1}{l|}{true}               \\ \midrule
+
+\end{tabular}
+\caption{Selected configuration parameters of bdutil tool}
+\label{bdutil:config.sh}
+\end{scriptsize}
+\end{table}
+\paragraph{bduitl\_env.sh}\label{bdutilenv}The main script called \textit{bdutil\_env.sh} consists mandatory 
+and free environmental variables for setting environment, hardware and deployment configuration.
+
+\begin{itemize}
+\item \textbf{Environment variables} provide the setting which refers to the id of the project and to 
+the default bucket in GCS. The defined bucket holds SSH keys and configuration of the file system. In 
+the case of usage GCS as a file system for Hadoop, the defined GCS is linked  during cluster deployment 
+and all files are natively accessible by standard Hadoop commands e.g copy file \textit{hadoop fs -cp  /data/* /tmp/}.
+
+\item \textbf{Hardware configuration}
+allows to specify name, shape, location and size of a cluster. As important can be a definition of machine
+ type, with reflecting final performance of cluster and pricing of service as well. In addition, the parameter 
+ for a number of workers and size of the disk are also crucial.
+
+Hardware configuration allows setting different disk size and  disk type to master and workers. Furthermore, 
+extra persistent disks(PDs) can be listed. Available virtual machines of service account can be attached to a 
+further cluster. For that case, the GCS connector must by allowed.
+
+\item \textbf{Deployment} section consist parameters for customizing Hadoop installation on VMs workers 
+and master. The configuration of GCS connector allows to use as a distributed file system \textit{GS} and 
+\textit{BIGQUERRY} connector allows read/write access to Google BigQuery. File system of a cluster is set 
+by default to gs(google storage), the second 
+option is standard HDFS. This group consists several path configuration for defining the destination of 
+Hadoop installation and its related files. Furthermore is essential to configure permission  of \textit{HDFS} data access.
+
+Parameter CORES\_PER\_MAP\_TASK and CORES\_PER\_REDUCE\_TASK must be defined as a decimal number which 
+controls the number of maps and reduces slots on each node.The number is computed as a ratio of the 
+number of virtual cores on the node. For example if the machine of specification \textit{ n1-standard-2} 
+is used(2 cores) and the parameter is set to 1 would have $\dfrac{2}{1} = 2$ map/reduce slots.
+\end{itemize}
 
 
-			\subsubsection{Cluster configuration}
-			\subsubsection{Cluster machine types}
-			\subsubsection{Scaling cluster}
-			\subsubsection{Submit Job}
-		
+\paragraph{Hadoop configuration} files  are stored in \textit{conf/hadoop1} for Hadoop version 1.x VM and 
+\textit{conf/hadoop2} for 2.x version both are placed within \textit{bdutil} base directory. In compassion 
+to standard Hadoop configuration files, these are extended by files for configuration Bigtable(Hadoop1.x), 
+BigQuery(Hadoop2.x) and GCS. Particular values of parameters are linked over environment variables to  to 
+the main script \textit{bdutil\_env.sh} and other bash files stored in directory \textit{libexec}. In 
+example below is shown configuration of task tracker where the value is set by global variable 
+\textit{MAP\_SLOTS}. To call global variable must be used convention \textit{envVar name=""}.
+
+\begin{footnotesize}\begin{lstlisting}[style=XML]
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+   <property>
+      <name>mapred.tasktracker.map.tasks.maximum</name>
+      <value><envVar name="MAP_SLOTS" /></value>
+      <description>The maximum number of map tasks that will 
+    be run simultaneously by a tasktracker.</description>
+   </property>
+</configuration>
+\end{lstlisting}\end{footnotesize}
+
+
+ 
+As mentioned, in Dataproc are available two version of Hadoop. For two spatial frameworks as from 
+ESRI and HadoopGIS must be used version 1.x of Hadoop due to dependency on Hive, which is in Google 
+Dataproc incompatible with versions Hadoop 2.x. The main limitation of the versions 1.x is unsupported 
+YARN framework which is the next generation of MapReduce framework also called MapReduce 2.0 (MRv2)\cite{yarn}. 
+The main difference between is the architecture where JobTracker, resource management, and job scheduling are split into separated daemons.
+
+
+
+\paragraph{Running cluster} is done by executing bdutil bash file with flags and parameters.  
+Flag \textit{--env\_var\_files} run selected bash files from the predefined group \ref{bdutil:configsh}. 
+Besides predefined bash files is possible to add a custom script which be executed as well. The  order 
+of files execution is according to the sort in the list. The main script \textit{bduitl\_env.sh} 
+\ref{bdutilenv} is executed as default first without presence in the list. Below is in the list script 
+for downloading and compiling spatial frameworks for Hadoop and their dependency. Bash script \textit{spatial.sh} shown below 
+%
+\begin{footnotesize}\begin{lstlisting}[style=python]
+COMMAND_GROUPS+=(
+  'install_spatial:
+     spatial1.sh
+  '
+)
+
+COMMAND_STEPS+=(
+  'install_spatial'
+)
+\end{lstlisting}\end{footnotesize}
+is defined by command group where is defined a path to the bash for execution. List of command steps is a
+ global variable and its items appends to execution the list.
+ 
+ 
+\begin{itemize}
+\item \textbf{Case 1 - development configuration}  This configuration of cluster suits well to debugging 
+of Hadoop and Hive client site. Cluster is configured as pseudo mode.
+\begin{footnotesize}\begin{lstlisting}[style=python]
+$ ./bdutil -P spatial-cluster --env_var_files \
+extensions/querytools/querytools_env.sh,single_node_env.sh,spatial.sh deploy
+\end{lstlisting}\end{footnotesize}
+
+
+\item \textbf{Case 2 - computational configuration}  To compare configuration above, Case 2 is fully 
+distributed deployment of cluster. To modify temporally settings of hardware, storage etc. can be used 
+additional reconfiguration using flags, which overwrite default one.
+%
+\begin{footnotesize}\begin{lstlisting}[style=python]
+$ ./bdutil -P spatial-cluster --num_workers 10 \
+     --machine_type n1-standard-6\
+     --env_var_files \
+     extensions/querytools/querytools_env.sh,spatial.sh deploy
+\end{lstlisting}\end{footnotesize}
+
+\end{itemize}
+
+
+%# Set the default filesystem to be 'hdfs' since Pig and Hive will tend to rely
+%# on multi-stage pipelines more heavily than plain Hadoop MapReduce, and thus
+%# be vulnerable to eventual list consistency. Okay to read initially from GCS
+%# using explicit gs:// URIs and likewise to write the final output to GCS,
+%# letting any intermediate cross-stage items get stored in HDFS temporarily.
+%DEFAULT_FS='gs'
+
+
+            \subsubsection{Scaling cluster}
+            \subsubsection{Logging}
+        
 \section{GRASS Hadoop interface}
+!!!!!!
+Desktop application GRASS GIS became as a powerful environment for analysing spatial data, which can 
+reach characteristic of big data. In a box of GRASS GIS are thousands of modules   The main motivation 
+behind GRASS GIS framework for Hadoop is a vision of processing of that  the field of free desktop GIS 
+application is not known functionalities which provide interaction between Hadoop and its spatial 
+frameworks. In proprietary GIS world, ESRI comes with package \textit{Geoprocessing tools for Hadoop}\cite{esri_gtfp} 
+which has been implemented for ArcMap desktop application as a native interface for interaction with 
+their Java library Esri Spatial framework for Hadoop. More specifically, tools enable:
+
+\begin{itemize}
+\item exchange data between  ArcGIS Geodatabase and a Hadoop system, and allows ArcGIS to run Hadoop workflows jobs,
+\item copy data files from ArcGIS to Hadoop, and copy files from Hadoop to ArcGIS, and 
+\item run an Oozie workflow in Hadoop, and to check the status of a submitted workflow.
+\end{itemize}
+ 
+
+
 	\subsection{Functionality}
 	\subsection{Implementation}
-	\subsection{Usage}
 				
-\section{Test case: MW data}
-	\subsection{Data description}
+\section{Usage: Spatial data processing}
+	\subsection{Input data}
+		\subsubsection{CSV}
+		\subsubsection{GeoJSON}\label{json}	
+			\paragraph{Standard GeoJSON}	
+			\paragraph{ESRI GeoJSON}
+				\begin{enumerate}
+					\item[Enclosed]
+					\item[Unenclosed]
+				\end{enumerate}
+	
+	
 	\subsection{Storing data}
+	external table
+	load from local
+	
+	
 	\subsection{Query data}
+	Hive vs Postges vs BigQuery
 	
 	
 
@@ -1430,7 +1795,8 @@ FOX, Anthony, Chris EICHELBERGER, James HUGHES a Skylar LYON. \textit{Spatio-tem
 \bibitem{google_fs}
 GHEMAWAT, Sanjay, Howard GOBIOFF a Shun-Tak LEUNG. \textit{The Google file system. ACM SIGOPS Operating Systems Review.} 2003, 37(5), 29-. DOI: 10.1145/1165389.945450. ISSN 01635980.  URL:  \textless\url{http://portal.acm.org/citation.cfm?doid=1165389.945450}
 
-
+\bibitem{lisp}
+DEAN, Jeffrey a Sanjay GHEMAWAT. \textit{MapReduce: Simplified Data Processing on Large Clusters}  2008, 51(1), 107-. DOI: 10.1145/1327452.1327492. ISSN 00010782. URL:  \textless\url{http://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf}
 
 
 
@@ -1466,6 +1832,23 @@ URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}
 \bibitem{hadoop_rack_web}
 Hadoop Rack Awareness. Apache Hadoop [online]. [2016-03-18]. 
 URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/cluster_setup.html#Hadoop+Rack+Awareness}
+
+\bibitem{gc_hadoop}
+Google Cloud, Hadoop Configuration [online]. [2016-04-18]. 
+URL: \textless\url{https://cloud.google.com/hadoop/setting-up-a-hadoop-cluster#setupscripts}
+
+\bibitem{yarn}
+Apache Hadoop docs. Apache Hadoop [online]. [2016-05-18]. 
+URL: \textless\url{https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/YARN.html}
+
+\bibitem{hadoop}
+Apache Hadoop setting up Single cluster node, Apache Hadoop [online]. [2016-05-18]. 
+URL: \textless\url{https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/YARN.html}
+
+
+\bibitem{esri_gtfp}
+Geoprocessing Tools for Hadoop, GitHub. [online]. [2016-05-18]. 
+URL: \textless\url{https://github.com/Esri/geoprocessing-tools-for-hadoopl}
 
 \end{thebibliography}
 
