@@ -22,7 +22,7 @@
 #%end
 
 #%option
-#% key: conn_type
+#% key: driver
 #% type: string
 #% required: yes
 #% answer: hiveserver2
@@ -102,8 +102,8 @@ import grass.script as grass
 def main():
     conn=ConnectionManager()
 
-    conn.getCurrentConnection(options["conn_type"])
-    hive = conn.getHook()
+    conn.get_current_connection(options["driver"])
+    hive = conn.get_hook()
     hive.create_csv_table(table=options['table'],
                           field_dict=options['attributes'],
                           partition=options['partition'],

@@ -22,7 +22,7 @@
 #%end
 
 #%option
-#% key: conn_type
+#% key: driver
 #% type: string
 #% required: yes
 #% answer: hiveserver2
@@ -40,8 +40,13 @@
 #%option
 #% key: attributes
 #% type: string
-#% required: yes
 #% description: python dictionary {attribute:datatype}
+#% guisection: table
+#%end
+#%option
+#% key: struct
+#% type: string
+#% description: structure of json, see https://github.com/krejcmat/bdutil-spatial#hive-serde-schema-generator
 #% guisection: table
 #%end
 #%flag
@@ -50,19 +55,10 @@
 #% guisection: table
 #%end
 #%option
-#% key: jsonformat
-#% type: string
-#% required: yes
-#% answer: enclosed
-#% description: Enclosed is GRASS default
-#% options: enclosed, unenclosed
-#% guisection: table
-#%end
-#%option
 #% key: serde
 #% type: string
 #% required: yes
-#% answer: com.esri.hadoop.hive.serde.JsonSerde
+#% answer: org.openx.data.jsonserde.JsonSerDe
 #% description: java class for serialization of json
 #% guisection: table
 #%end
@@ -97,14 +93,16 @@ import grass.script as grass
 
 
 def main():
+    if not options['table'] and not options['struct']:
+        grass.fatal("Must be defined <attributes> or <struct> parameter")
 
     conn=ConnectionManager()
-    conn.getCurrentConnection(options["conn_type"])
-    hive = conn.getHook()
+    conn.get_current_connection(options["conn_type"])
+    hive = conn.get_hook()
     hive.create_geom_table( table=options['table'],
                             field_dict=options['attributes'],
+                            struct=options['struct'],
                             serde=options['serde'],
-                            inputformat=options['jsonformat'],
                             outputformat=options['outformat'],
                             external=flags['e'],
                             recreate=flags['d'],

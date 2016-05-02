@@ -55,8 +55,8 @@ import grass.script as grass
 def main():
     conn=ConnectionManager()
 
-    conn.getCurrentConnection(options["conn_type"])
-    hive = conn.getHook()
+    conn.get_current_connection(options["conn_type"])
+    hive = conn.get_hook()
 
     if not options['schema']:
         options['schema']='default'

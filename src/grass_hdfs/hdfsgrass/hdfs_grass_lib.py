@@ -21,9 +21,21 @@ from grass.script.core import PIPE
 
 class ConnectionManager:
     """
-
+    >>> conn = ConnectionManager()
+    >>> conn.set_connection(conn_type='hiveserver2',
+    >>>                   conn_id='testhiveconn1',
+    >>>                   host='172.17.0.2',
+    >>>                   port=10000,
+    >>>                   login='root',
+    >>>                   password='test',
+    >>>                   schema='default')
+    >>> conn.drop_connection_table()
+    >>> conn.show_connections()
+    >>> conn.add_connection()
+    >>> conn.test_connection(conn.get_current_Id())
+    >>> conn.remove_conn_Id('testhiveconn1')
+    >>> print(conn.get_current_Id())
     """
-
     def __init__(self):
 
         self.conn_id = None
@@ -60,26 +72,26 @@ class ConnectionManager:
                 self.connectionDict['port'] = self.port
         self.connection = Connection(**self.connectionDict)
 
-    def addNewConnection(self):
+    def add_connection(self):
         print('***' * 30)
         print("\n     Adding new connection \n       conn_type: %s  \n" % self.conn_type)
         self.session.add(self.connection)
         try:
             self.session.commit()
-            self._setActiveConnection(self.conn_type, self.connectionDict['conn_id'])
+            self._set_active_connection(self.conn_type, self.connectionDict['conn_id'])
         except IntegrityError, e:
             print("       ERROR conn_id already exists. Will be overwritten...\n")
             print('***' * 30)
             self.session.rollback()
             self.session.flush()
-            self.removeConnById(self.connectionDict['conn_id'])
-            self.addNewConnection()
+            self.remove_conn_Id(self.connectionDict['conn_id'])
+            self.add_connection()
             print('***' * 30)
 
-    def setConenction(self, conn_id, conn_type,
-                      host=None, port=None,
-                      login=None, password=None,
-                      schema=None, authMechanism=None):
+    def set_connection(self, conn_id, conn_type,
+                       host=None, port=None,
+                       login=None, password=None,
+                       schema=None, authMechanism=None):
         if None in [conn_id, conn_type]:
             print("ERROR: no conn_id or conn_type defined")
             return None
@@ -95,7 +107,7 @@ class ConnectionManager:
         self._connect()
 
     @staticmethod
-    def dropConnectionTable():
+    def drop_connection_table():
         from sqlalchemy import MetaData
         try:
             md = MetaData()
@@ -113,7 +125,7 @@ class ConnectionManager:
 
 
     @staticmethod
-    def showConnections():
+    def show_connections():
         cn = settings.engine.connect()
         print('***' * 30)
         print("\n     Table of connection \n")
@@ -127,11 +139,11 @@ class ConnectionManager:
             print("        No connection\n")
         print('***' * 30)
 
-    def setActiveConnection(self, conn_type=None, idc=None):
-        self.setConenction(conn_type=conn_type, conn_id=idc)
-        self._setActiveConnection()
+    def set_active_connection(self, conn_type=None, idc=None):
+        self.set_connection(conn_type=conn_type, conn_id=idc)
+        self._set_active_connection()
 
-    def _setActiveConnection(self, conn_type=None, idc=None):
+    def _set_active_connection(self, conn_type=None, idc=None):
         # print("Saving connection: %s"%settings.grass_config)
         if conn_type is None:
             conn_type = self.conn_type
@@ -142,7 +154,7 @@ class ConnectionManager:
         saveDict(settings.grass_config, cfg)
 
     @staticmethod
-    def getCurrentId(conn_type):
+    def get_current_Id(conn_type):
         cfg = readDict(settings.grass_config)
         if cfg:
             if cfg.has_key(conn_type):
@@ -151,7 +163,7 @@ class ConnectionManager:
             return None
 
     @staticmethod
-    def showActiveConnections():
+    def show_active_connections():
         cfg = readDict(settings.grass_config)
         if cfg:
             print('***' * 30)
@@ -162,21 +174,21 @@ class ConnectionManager:
             print('      No connection defined\n')
         print('***' * 30)
 
-    def getCurrentConnection(self, conn_type):
-        idc = self.getCurrentId(conn_type)
+    def get_current_connection(self, conn_type):
+        idc = self.get_current_Id(conn_type)
         if id:
-            self.setConenction(conn_id=idc, conn_type=conn_type)
+            self.set_connection(conn_id=idc, conn_type=conn_type)
             self._connect()
         else:
             self.connection = None
 
-    def getHook(self):
+    def get_hook(self):
         if self.connection:
             return self.connection.get_hook()
         return None
 
     @staticmethod
-    def removeConnById(id):
+    def remove_conn_Id(id):
         cn = settings.engine.connect()
         print('***' * 30)
         print("\n     Removing connection %s " % id)
@@ -189,61 +201,36 @@ class ConnectionManager:
             # print('     No connection with conn_id %s'%id)
         print('***' * 30)
 
-    def setConnectionURI(self, uri):
+    def set_connection_uri(self, uri):
         self.uri = uri
         self._connect()
 
-    def testConnection(self, conn_type=None):
+    def test_connection(self, conn_type=None):
         if conn_type is not None:
-            self.getCurrentConnection(conn_type)
+            self.get_current_connection(conn_type)
 
-        hook = self.getHook()
+        hook = self.get_hook()
         if hook:
             if not hook.test():
                 print('Cannot establish connection')
                 return False
 
 
-                # def HOW_TO+USE():
-                #     conn = ConnectionManager()
-                #     conn.setConenction(conn_type='hiveserver2',
-                #                       conn_id='testhiveconn1',
-                #                       host='172.17.0.2',
-                #                       port=10000,
-                #                       login='root',
-                #                       password='test',
-                #                       schema='default')
-                #     #conn.dropConnectionTable()
-                #     conn.showConnections()
-                #     #conn.addNewConnection()
-                #     conn.testConnection(conn.getCurrentId())
-                #     #conn.removeConnById('testhiveconn1')
-                #     #print(conn.getCurrentId())
 
 
 class JSONBuilder:
-    def __init__(self, grass_map=None, json_file=None, json_type=None):
-
-        if grass_map is None:
-            if json_file is None and json_type is None:
-                print("Must be initialized json_file and json_type")
-                raise ValueError
-            if not json_type in ['ENCLOSED', 'UNENCLOSED']:
-                print("json_type must be 'ENCLOSED' or 'UNENCLOSED'")
-                raise ValueError
+    def __init__(self, grass_map=None, json_file=None):
 
         self.grass_map = grass_map
         self.json_file = json_file
-        self.json_type = json_type
-        self.json = str()
+        self.json = ''
 
-    def getJSON(self):
+    def get_JSON(self):
         if self.grass_map:
-            self.json_type = 'ENCLOSED'
-            self.json = self._getGRASSJSON()
+            self.json = self._get_grass_json()
         else:
             filename, file_extension = os.path.splitext(self.json_file)
-            self.json = os.path.join(getTmpFolder(), "%s_%s.json" % (filename, self.json_type))
+            self.json = os.path.join(getTmpFolder(), "%s_%s.json" % (filename))
         return self.json
 
     def rm_last_lines(self, path, rm_last_line=3):
@@ -272,7 +259,7 @@ class JSONBuilder:
         file.close()
 
     @staticmethod
-    def removeLine2(filename, lineNumber):
+    def remove_line(filename, lineNumber):
         with open(filename, 'r+') as outputFile:
             with open(filename, 'r') as inputFile:
 
@@ -293,7 +280,7 @@ class JSONBuilder:
 
             outputFile.truncate()
 
-    def _getGRASSJSON(self):
+    def _get_grass_json(self):
         if self.grass_map['type'] not in ['point', 'line', 'boundary', 'centroid', 'area', 'face', 'kernel', 'auto']:
             self.grass_map['type'] = 'auto'
         out = "%s_%s_%s.json" % (self.grass_map['map'],
@@ -311,12 +298,13 @@ class JSONBuilder:
                       format='GeoJSON',
                       stderr_=PIPE,
                       overwrite=True)
-        self.rm_last_lines(out, 3)
-        for i in range(5):  # todo optimize
-            self.removeLine2(out, 0)
 
         print(out1.outputs["stderr"].value.strip())
-        print("out", out)
+
+        self.rm_last_lines(out, 3)
+        #remove first 5 lines and last 3 to enseure format for serializetion
+        for i in range(5):  # todo optimize
+            self.remove_line(out, 0)
 
         return out
 
@@ -328,18 +316,20 @@ class GRASS2HDFS(object):
         self.conn = None
         self.hook = None
         self.conn_type = conn_type
-        self._initConnection()
+        self._init_connection()
         if self.hook is None:
             print("connection is not established")
             sys.exit()  # TODO
 
-    def _initConnection(self):
+    def _init_connection(self):
         self.conn = ConnectionManager()
-        self.conn.getCurrentConnection(self.conn_type)
-        self.hook = self.conn.getHook()
+        self.conn.get_current_connection(self.conn_type)
+        self.hook = self.conn.get_hook()
 
-    def printInfo(self, hdfs):
+    def printInfo(self, hdfs,msg=None):
         print('***' * 30)
+        if msg:
+            print("  \n    %s \n"%msg)
         print('\n   path to hdfs:\n    %s\n' % hdfs)
         print('***' * 30)
 
@@ -354,6 +344,7 @@ class GRASS2HDFSweb(GRASS2HDFS):
         #sys.exit()
         logging.debug('Trying to connect to: \nfs: %s\nhdfs:%s   ' % (hdfs, fs))
         self.hook.load_file(fs, hdfs, overwrite, parallelism)
+        self.printInfo(hdfs,"")
 
 
     def mkdir(self, hdfs):

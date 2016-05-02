@@ -124,49 +124,49 @@ def main():
     #add new connection
     conn = ConnectionManager()
     if options['connectionuri']:
-        conn.setConnectionURI(options['connectionuri'])
-        conn.addNewConnection()
-        conn.testConnection()
+        conn.set_connection_uri(options['connectionuri'])
+        conn.add_connection()
+        conn.test_connection()
         return
 
     if options['host'] and options['conn_type'] and options['conn_id']:
-        conn.setConenction(conn_type=options['conn_type'],
-                          conn_id=options['conn_id'],
-                          host=options['host'],
-                          port=options['port'],
-                          login=options['login'],
-                          password=options['passwd'],
-                          schema=options['schema']
-                          )
-        conn.addNewConnection()
-        conn.testConnection()
+        conn.set_connection(conn_type=options['conn_type'],
+                            conn_id=options['conn_id'],
+                            host=options['host'],
+                            port=options['port'],
+                            login=options['login'],
+                            password=options['passwd'],
+                            schema=options['schema']
+                            )
+        conn.add_connection()
+        conn.test_connection()
         return
 
     if options['rmid']:
-        conn.removeConnById(options['rmid'])
+        conn.remove_conn_Id(options['rmid'])
         return
     #print table of connection
     elif flags['c']:
-        conn.showConnections()
+        conn.show_connections()
         return
     #drop table with connections
     elif flags['r']:
-        conn.dropConnectionTable()
-        conn.showConnections()
+        conn.drop_connection_table()
+        conn.show_connections()
         return
     #print active connection
     elif flags['p']:
-        conn.showActiveConnections()
+        conn.show_active_connections()
         return
     elif flags['t']:
         if options['conn_type']:
-            conn.testConnection(options['conn_type'])
+            conn.test_connection(options['conn_type'])
         else:
             print('conn_type is not set')
         return
     elif flags['a']:
         if not options['conn_type'] and options['conn_id']:
-            conn.setActiveConnection(options['conn_type'] ,options['conn_id'])
+            conn.set_active_connection(options['conn_type'], options['conn_id'])
         else:
             print("ERROR parameter 'conn_type' and 'conn_id' must be set")
 

@@ -63,8 +63,7 @@ def main():
                  "type": options['type'],
                  }
     json = JSONBuilder(grass_map)
-    json = json.getJSON()
-
+    json = json.get_JSON()
     print('cp %s'%json)
    # if options['driver'] == "hdfs":
    #     transf = GRASS2HDFSsnakebite()
@@ -72,7 +71,6 @@ def main():
    #     return
 
     if options['driver'] == "webhdfs":
-
         transf = GRASS2HDFSweb()
         transf.cp(json,options['hdfs'])
         return

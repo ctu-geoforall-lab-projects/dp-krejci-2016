@@ -28,7 +28,9 @@
 
 
 #csv.hive.table
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/csv.hive.table.py conn_type=hiveserver2 table=csv attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=tmp/test.csv -e
+##textfile
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/csv.hive.table.py conn_type=hiveserver2 table=csv attributes="{'x':'INT','y':'INT','Z':'INT'}" csvpath=tmp/test.csv stored=textfile -e -d
+
 
 ##################################################################################################################
 

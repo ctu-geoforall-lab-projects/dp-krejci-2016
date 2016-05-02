@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       db.hive.load
+# MODULE:       db.hive.execute
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset
@@ -30,37 +30,27 @@
 #% options: hive_cli, hiveserver2
 #%end
 #%option
-#% key: table
+#% key: hsql
 #% type: string
 #% required: yes
-#% description: name of table
+#% description: hive sql command
 #%end
-#%option
-#% key: path
-#% type: string
-#% required: yes
-#% description: path of hdfs file
-#%end
-#%option
-#% key: partition
-#% type: string
-#% required: no
-#% description: arget partition as a dict of partition columns and values
-#% guisection: data
-#%end
+
 
 from hdfs_grass_lib import ConnectionManager
 import grass.script as grass
 
+
 def main():
     conn=ConnectionManager()
 
-    conn.getCurrentConnection(options["conn_type"])
-    hive = conn.getHook()
-    hive.data2table( filepath=options['path'],
-                     table=options['table'],
-                     #overwrite=options['path'],#TODO
-                     partition=options['partition'])
+    conn.get_current_connection(options["conn_type"])
+    hive = conn.get_hook()
+    result=hive.run_cli(options['hsql'])
+    for i in result:
+        print(i)
+
+
 
 if __name__ == "__main__":
     options, flags = grass.parser()

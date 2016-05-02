@@ -68,7 +68,7 @@ def main():
         if not options['jsontype']:
             print("ERROR: set json input type")
         json = JSONBuilder(json_file=options['jsoninput'],json_type=options['jsontype'])
-        localfile = json.getJSON()
+        localfile = json.get_JSON()
 
     if options['csv']:
         localfile=options['csv']
