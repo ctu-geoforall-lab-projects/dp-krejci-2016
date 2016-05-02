@@ -1,0 +1,100 @@
+!!!!!https://cloud.google.com/bigquery/docs/reference/v2/tables
+https://cloud.google.com/bigquery/preparing-data-for-bigquery
+https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/bigquery/api/load_data_from_csv.py
+https://cloud.google.com/bigquery/loading-data-into-bigquery
+{
+  "kind": "bigquery#table",
+  "etag": etag,
+  "id": string,
+  "selfLink": string,
+  "tableReference": {
+    "projectId": string,
+    "datasetId": string,
+    "tableId": string
+  },
+  "friendlyName": string,
+  "description": string,
+  "schema": {
+      "fields": [
+        {
+          "name": linkid,
+          "type": integer,
+          "mode": REQUIRED,
+        },
+        {
+          "name": time,
+          "type": TIMESTAMP,
+          "mode": REQUIRED,
+        },
+        {
+          "name": txpower,
+          "type": FLOAT ,
+        },
+        {
+          "name": rxpower,
+          "type": FLOAT ,
+        }
+      ]
+  },
+  "numBytes": long,
+  "numRows": unsigned long,
+  "creationTime": long,
+  "expirationTime": long,
+  "lastModifiedTime": unsigned long,
+  "type": string,
+  "view": {
+    "query": string,
+    "userDefinedFunctionResources": [
+      {
+        "resourceUri": string,
+        "inlineCode": string
+      }
+    ]
+  },
+  "externalDataConfiguration": {
+    "sourceUris": [
+      string
+    ],
+    "schema": {
+      "fields": [
+        {
+          "name": linkid,
+          "type": integer,
+          "mode": REQUIRED,
+        },
+        {
+          "name": time,
+          "type": TIMESTAMP,
+          "mode": REQUIRED,
+        },
+        {
+          "name": txpower,
+          "type": FLOAT ,
+        },
+        {
+          "name": rxpower,
+          "type": FLOAT ,
+        }
+      ]
+    },
+    "sourceFormat": CSV,
+    "maxBadRecords": integer,
+    "autodetect": boolean,
+    "ignoreUnknownValues": boolean,
+    "compression": string,
+    "csvOptions": {
+      "fieldDelimiter": string,
+      "skipLeadingRows": integer,
+      "quote": string,
+      "allowQuotedNewlines": boolean,
+      "allowJaggedRows": boolean,
+      "encoding": string
+    }
+  },
+  "location": string,
+  "streamingBuffer": {
+    "estimatedRows": unsigned long,
+    "estimatedBytes": unsigned long,
+    "oldestEntryTime": unsigned long
+  }
+}
