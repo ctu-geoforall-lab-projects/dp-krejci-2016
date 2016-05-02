@@ -4,6 +4,7 @@ import errno
 import os
 import imp
 import logging
+import json
 try:
     from cryptography.fernet import Fernet
 except:
@@ -33,7 +34,9 @@ def generate_fernet_key():
 
 def string2dict(string):
     try:
-        return eval(string)
+        print(string)
+        return json.loads(string.replace("'",'"'))
+
     except Exception,e:
         print('Dictonary is not valid: %s'%e)
         return None

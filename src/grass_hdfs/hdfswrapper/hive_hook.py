@@ -15,10 +15,10 @@ import security_utils as utils
 from base_hook import BaseHook
 from utils import string2dict, findSTfnc
 
-class HiveBase(object):
 
-    def execute(self,hql):
-        NotImplementedError()
+class HiveBase(object):
+    def execute(self, hql):
+        NotImplementedError
 
     def add_functions(self, fce_dict, temporary=False):
         """
@@ -37,7 +37,6 @@ class HiveBase(object):
                 hql += "CREATE FUNCTION %s as '%s';\n" % (key, val)
         self.execute(hql)
 
-
     def find_table_location(self, table):
         hql = "DESCRIBE formatted %s" % table
         out = self.execute(hql)
@@ -46,7 +45,6 @@ class HiveBase(object):
             words = line.split(' ')
             if 'Location:' in words:
                 return words[1]
-
 
     def esri_query(self, hsql, temporary=True):
         STfce = ''
@@ -77,7 +75,6 @@ class HiveBase(object):
             print('-' * 40, '\n')
             return False
 
-
     def add_jar(self, jar_list):
         """
 
@@ -96,7 +93,6 @@ class HiveBase(object):
         hql += ";"
         logging.info(hql)
         self.execute(hql)
-
 
     def create_geom_table(self,
                           table,
@@ -132,13 +128,13 @@ class HiveBase(object):
         :rtype:
         """
 
-        if type(field_dict)  is type(str()):
+        if type(field_dict) is type(str()):
             field_dict = string2dict(field_dict)
             if field_dict is None:
                 return None
 
-        logging.info('field_dict: %s'%field_dict)
-        logging.info('type field_dict: %s'%type(field_dict))
+        logging.info('field_dict: %s' % field_dict)
+        logging.info('type field_dict: %s' % type(field_dict))
 
         if inputformat == 'enclosed':
             inputformat = 'com.esri.json.hadoop.EnclosedJsonInputFormat'
@@ -164,7 +160,6 @@ class HiveBase(object):
         if filepath:
             self.data2table(filepath, table, overwrite)
 
-
     def data2table(self, filepath, table, overwrite, partition=False):
         """
 
@@ -188,11 +183,10 @@ class HiveBase(object):
         if partition:
             pvals = ", ".join(
                 ["{0}='{1}'".format(k, v) for k, v in partition.items()])
-            hql += "PARTITION ({pvals});"
+            hql += "PARTITION ({pvals})"
         hql = hql.format(**locals())
         logging.info(hql)
         self.execute(hql)
-
 
     def create_csv_table(
             self,
@@ -200,9 +194,13 @@ class HiveBase(object):
             table,
             delimiter=",",
             field_dict=None,
+            stored=None,
+            outputformat=None,
             create=True,
+            external=False,
             overwrite=True,
             partition=None,
+            tblproperties=None,
             recreate=False):
         """
         Loads a local file into Hive
@@ -233,38 +231,65 @@ class HiveBase(object):
         :rtype:
         """
 
-        if type(field_dict) is str():
-            field_dict = string2dict(string2dict)
+        if field_dict and field_dict is not isinstance(field_dict,dict):
+            field_dict = string2dict(field_dict)
             if field_dict is None:
                 return None
-        if type(partition) is str():
-            partition = string2dict(string2dict)
+
+        if partition and partition is not isinstance(partition,dict):
+            partition = string2dict(partition)
             if partition is None:
                 return None
 
+        print(type(field_dict))
+
+        if not delimiter:
+            delimiter=','
+
+        if external:
+            external='external'
+        else:
+            external=''
+        if stored == 'textfile':
+            stored=None
+
         hql = ''
+        print(table)
         if recreate:
-            hql += "DROP TABLE IF EXISTS {table};\n"
-        fields = ",\n    ".join(
+            self.execute("DROP TABLE IF EXISTS %s"%table)
+
+        fields = ", ".join(
             [k + ' ' + v for k, v in field_dict.items()])
-        hql += "CREATE TABLE IF NOT EXISTS {table} (\n{fields})\n"
+        print(fields)
+        hql += "CREATE {external} TABLE IF NOT EXISTS {table} ({fields}) "
         if partition:
-            pfields = ",\n    ".join(
+            pfields = ",".join(
                 [p + " STRING" for p in partition])
-            hql += "PARTITIONED BY ({pfields})\n"
-        hql += "ROW FORMAT DELIMITED\n"
-        hql += "FIELDS TERMINATED BY '{delimiter}'\n"
-        hql += "STORED AS textfile;"
+            hql += "PARTITIONED BY ({pfields}) "
+        hql += "ROW FORMAT DELIMITED "
+        hql += "FIELDS TERMINATED BY '{delimiter}' "
+        if not stored :
+            hql += "STORED AS textfile"
+        else:
+            hql += "STORED AS INPUTFORMAT '{stored}'"
+        if outputformat: hql += "OUTPUTFORMAT '{outputformat}' "
+        if tblproperties: hql += '("{tblproperties}"'
+
+
+
         hql = hql.format(**locals())
         logging.info(hql)
         self.execute(hql)
+        import sys
+        sys.exit()
         if filepath:
             self.data2table(filepath, table, overwrite, partition)
 
     def drop_table(self, name):
-        self.execute('DROP TABLE %s;' % name)
+        self.execute('DROP TABLE %s' % name)
 
-class HiveCliHook(BaseHook,HiveBase):
+
+class HiveCliHook(BaseHook, HiveBase):
     """
     Simple wrapper around the hive CLI.
 
@@ -598,7 +623,7 @@ class HiveMetastoreHook(BaseHook):
             return False
 
 
-class HiveServer2Hook(BaseHook,HiveBase):
+class HiveServer2Hook(BaseHook, HiveBase):
     '''
     Wrapper around the pyhs2 library
 
@@ -681,24 +706,24 @@ class HiveServer2Hook(BaseHook,HiveBase):
         try:
             cur.execute(sql)
             res = cur.fetchall()
-            print("\n-----Test connection (show databases;) -----")
-            print("     %s" % res[0])
-            print('-' * 40, '\n')
+            print('***' * 30)
+            print("\n   Test connection (show databases;) \n    %s\n" % res[0])
+            print('***' * 30)
             return True
         except Exception, e:
             print("     EROOR: connection can not be established: %s" % e)
-            print('-' * 40, '\n')
+            print('***' * 30)
             return False
 
     def get_records(self, hql, schema='default'):
-        '''
+        """
         Get a set of records from a Hive query.
 
         >>> hh = HiveServer2Hook()
         >>> sql = "SELECT * FROM default.static_babynames LIMIT 100"
         >>> len(hh.get_records(sql))
         100
-        '''
+        """
         return self.get_results(hql, schema=schema)['data']
 
     def get_cursor(self):
@@ -706,12 +731,12 @@ class HiveServer2Hook(BaseHook,HiveBase):
         return conn.cursor()
 
     def execute(self, hql):
-        try:
-            cur = self.get_cursor()
-            cur.execute(hql)
-            return cur.fetchall()
-        except Exception,e:
-            print("Execute error: %s"%e)
-            return None
+        with self.get_conn() as conn:
+            with conn.cursor() as cur:
+                logging.info("Running query: " + hql)
+                try:
+                    cur.execute(hql)
 
-
+                except Exception, e:
+                    print("Execute error: %s" % e)
+                    return None

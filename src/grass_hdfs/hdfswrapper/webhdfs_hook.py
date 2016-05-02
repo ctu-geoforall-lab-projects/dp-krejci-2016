@@ -13,7 +13,6 @@ if _kerberos_security_mode:
     raise
 
 
-
 class WebHDFSHook(BaseHook):
     """
     Interact with HDFS. This class is a wrapper around the hdfscli library.
@@ -21,6 +20,7 @@ class WebHDFSHook(BaseHook):
     def __init__(self, webhdfs_conn_id='webhdfs_default', proxy_user=None):
         self.webhdfs_conn_id = webhdfs_conn_id
         self.proxy_user = proxy_user
+
 
     def get_conn(self):
         """
@@ -46,18 +46,21 @@ class WebHDFSHook(BaseHook):
         no_nn_error = "Read operations failed on the namenodes below:\n{}".format("\n".join(nn_hosts))
         raise Exception(no_nn_error)
 
+
+
     def test(self):
         try:
             path = self.check_for_path("/")
-            print("\n-----Test <webhdfs> connection (is path exists: ls /) -----")
-            print('     %s'%path)
-            print('-'*40 +'\n')
+            print('***' * 30)
+            print("\n   Test <webhdfs> connection (is path exists: ls /) \n    %s \n"%path)
+            print('***' * 30)
             return True
-        except Exception, e:
 
-            print("     EROOR: connection can not be established: %s" % e)
-            print('-'*40 +'\n')
+        except Exception, e:
+            print("\n     EROOR: connection can not be established: %s" % e)
+            print('***' * 30)
             return False
+
     def check_for_path(self, hdfs_path):
         """
         Check for the existence of a path in HDFS by querying FileStatus.

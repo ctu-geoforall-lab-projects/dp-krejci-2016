@@ -1,50 +1,49 @@
 ###connection
 
-##################################################################################################################
-#hdfs
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=hdfsc host=cluster-1-m port=50070
-
-
-
-
-
-
-
-
-
-
-
 
 ##################################################################################################################
 
-#hdfs
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hdfs conn_id=hdfsc host=172.17.0.3 port=50070
 
-#hdfsweb
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=cloudera host=quickstart.cloudera port=50070
+#hdfs google
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hdfs conn_id=hdfsc host=cluster-1-m port=50070
+
+
+#hdfsweb google
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=hdfsc login=dr.who host=cluster-1-m port=50070
+
+#hive_server2 google
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hiveserver2 conn_id=hiveserver2 host=cluster-1-m port=10000 login=matt schema=default
 
 #hive_cli
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=hive_cli host=172.17.0.2 port=50070
-
-#hive_shpy2
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hiveserver2 conn_id=hiveserver2 host=quickstart.cloudera port=50070 user=claudera schema=default
-
-#jdbc
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=jdbc_conn_id host=172.17.0.2 port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=hive_cli host=cluster-1-m port=10000
 
 
 ##################################################################################################################
 #v.out.hdfs.py
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/v.out.hdfs.py driver=webhdfs  hdfs=/ map=cfm layer=1
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/v.out.hdfs.py driver=webhdfs  hdfs=/user map=cfm layer=1
+
 
 #v.hive.table
-/./home/matt/Dropbox/DIPLOMKA/API/grass_hdfs/hdfsgrass/v.hive.table.py driver=hiveserver2 table=cfm attributes={'cat':'INT', 'nazev':'STRING','poityp':'STRING'} jsonpath=/cfm_1_ENCLOSED.json -e
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/v.hive.table.py conn_type=hiveserver2 table=cfm attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=/cfm_1_ENCLOSED.json -e
 
 
+#csv.hive.table
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/csv.hive.table.py conn_type=hiveserver2 table=csv attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=tmp/test.csv -e
+
+##################################################################################################################
+
+#hdfs
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hdfs conn_id=hdfsc host=cloudera.quickstart port=50070
+
+#hdfsweb
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=cloudera host=cloudera.quickstart port=50070
 
 
+#hive_server2
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hiveserver2 conn_id=hiveserver2 host=cloudera.quickstart port=10000 login=cloudera schema=default
 
-
+#jdbc
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=jdbc_conn_id host=172.17.0.2 port=50070
 
 
 
@@ -63,7 +62,16 @@ curl -i "http://172.17.0.2:50070/webhdfs/v1/foo/?op=LISTSTATUS"
 #mkdir
 curl -i -X PUT"http://172.17.0.2:50070/webhdfs/v1/foo2?op=MKDIRS"
 
+curl -i "http://localhost:50070/webhdfs/v1/user?user.name=matt&op=GETFILESTATUS"
+
+curl -i "http://quickstart.cloudera:50070/webhdfs/v1/user?user.name=matt&op=GETFILESTATUS"
+
+curl -i "http://localhost:50070/webhdfs/v1/user?user.name=matt&op=GETFILESTATUS"
 
 
 
-curl -i -X PUT "http://host:port/webhdfs/v1/foo2?op=MKDIRS"
+
+#google cloud
+curl -i "http://cluster-1-m:50070/webhdfs/v1/user?user.name=matt&op=GETFILESTATUS"
+curl -i "http://spatial-cluster-m:50070/webhdfs/v1/user?user.name=matt&op=GETFILESTATUS"
+curl -i -X PUT "http://cluster-1-m:50070/webhdfs/v1/foo3?op=MKDIRS"

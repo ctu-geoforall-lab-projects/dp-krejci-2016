@@ -30,7 +30,7 @@
 #% key: driver
 #% type: string
 #% required: yes
-#% options: hdfs,webhdfs
+#% options: webhdfs
 #% description: HDFS driver
 #%end
 #%option G_OPT_V_MAP
@@ -66,12 +66,13 @@ def main():
     json = json.getJSON()
 
     print('cp %s'%json)
-    if options['driver'] == "hdfs":
-        transf = GRASS2HDFSsnakebite()
-        transf.cp(json,options['hdfs'])
-        return
+   # if options['driver'] == "hdfs":
+   #     transf = GRASS2HDFSsnakebite()
+   #     transf.cp(json,options['hdfs'])
+   #     return
 
     if options['driver'] == "webhdfs":
+
         transf = GRASS2HDFSweb()
         transf.cp(json,options['hdfs'])
         return

@@ -51,13 +51,15 @@ class HDFSHook(BaseHook):
     def test(self):
         try:
             client = self.get_conn()
-            print("\n-----Test connection (ls /) -----")
+            print('***' * 30)
+            print("\n    Test connection (ls /) \n")
+            print('***' * 30)
             print(type(client.count(['/'])))
             print('-'*40 +'\n')
             return False
         except Exception, e:
-            print("     EROOR: connection can not be established: %s" % e)
-            print('-'*40 +'\n')
+            print("     EROOR: connection can not be established: %s \n" % e)
+            print('***' * 30)
             return False
     def get_cursor(self):
         NotImplementedError()

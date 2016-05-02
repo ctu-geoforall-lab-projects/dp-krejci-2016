@@ -44,18 +44,18 @@
 #% guisection: table
 #%end
 #%option
-#% key: external
-#% type: bool
-#% required: yes
-#% description: the EXTERNAL keyword lets you create a table and provide a LOCATION so that Hive does not use a default location for this table. This comes in handy if you already have data generated. When dropping an EXTERNAL table, data in the table is NOT deleted from the file system.
+#% key: outputformat
+#% type: string
+#% required: no
+#% description: java class for handling output format, e.g  org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
 #% guisection: table
 #%end
 #%option
-#% key: outputformat
+#% key: stored
 #% type: string
-#% required: yes
-#% answer: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
-#% description: java class for handling output format
+#% required: no
+#% answer: textfile
+#% description: output
 #% guisection: table
 #%end
 #%option
@@ -90,6 +90,10 @@
 #% description: Firstly drop table if exists
 #% guisection: table
 #%end
+#%flag
+#% key: e
+#% description: the EXTERNAL keyword lets you create a table and provide a LOCATION so that Hive does not use a default location for this table. This comes in handy if you already have data generated. When dropping an EXTERNAL table, data in the table is NOT deleted from the file system.
+#% guisection: table
 
 from hdfs_grass_lib import ConnectionManager
 import grass.script as grass
@@ -103,10 +107,12 @@ def main():
     hive.create_csv_table(table=options['table'],
                           field_dict=options['attributes'],
                           partition=options['partition'],
-                          delimiter=options['delimiter'],
+                          delimiter=options['delimeter'],
+                          stored=options['stored'],
+                          outputformat=options['outputformat'],
                           external=flags['e'],
                           recreate=flags['d'],
-                          filepath=options['jsonpath'],
+                          filepath=options['csvpath'],
                           overwrite=flags['o'])
 
 if __name__ == "__main__":
