@@ -789,7 +789,7 @@ index                                                                 & \begin{t
 \end{footnotesize}
 \end{table}
 	
-		\subsection{Summary}
+		\subsection{Summary}\ref{summary_libs}
 		
  SpatialHadoop, HadoopGIS and ESRI Spatial Framework for Hadoop are
 three open source systems that are designed to process large scale
@@ -1175,6 +1175,17 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 \paragraph{Accessing endpoints}
 ?
 
+		\subsection{Networking}
+		%https://cloud.google.com/compute/docs/networking#networks
+%https://cloud.google.com/compute/docs/vm-ip-addresses
+%%https://cloud.google.com/compute/docs/configure-instance-ip-addresses#internalstaticip
+%https://cloud.google.com/sdk/gcloud/reference/compute/firewall-rules/create
+%Rhttps://cloud.google.com/dataproc/cluster-web-interfaces
+
+
+hive
+https://cwiki.apache.org/confluence/display/Hive/Setting+Up+HiveServer2
+
 		\subsection{Dataproc: Cluster services}
 		\label{subsub:dataproc}
 \textbf{Dataproc} is a package of tools for managing Hadoop\ref{sec:hadoop} 
@@ -1414,6 +1425,9 @@ $ gsutil -m -o GSUtil:parallel_composite_upload_threshold=100M cp \
 mwdump.csv gs://mwdata_export/
 \end{lstlisting}\end{footnotesize}
  
+\subsection{Networking}
+https://dzone.com/articles/hadoop-rest-api-webhdfs
+
 
 
         \subsection{Hadoop deployment}
@@ -1487,7 +1501,7 @@ non-distributed mode as a single Java process. This mode  is suitable for MapRed
 \end{itemize}
 
 
-\subsubsection{bdutil usage}
+\subsubsection{Configuration}
 In contrast to standard Hadoop deployment, a configuration in \textit{Dataproc} using bdutil is 
 extended by parameters and configuration files which handle automated deployment and other Google
 Cloud Services. The files in bdutil can be divided into two groups. In the first,  are shell scripts 
@@ -1612,6 +1626,8 @@ YARN framework which is the next generation of MapReduce framework also called M
 The main difference between is the architecture where JobTracker, resource management, and job scheduling are split into separated daemons.
 
 
+Modification properties during run https://cloud.google.com/dataproc/concepts/cluster-properties
+	
 
 \paragraph{Running cluster} is done by executing bdutil bash file with flags and parameters.  
 Flag \textit{--env\_var\_files} run selected bash files from the predefined group \ref{bdutil:configsh}. 
@@ -1633,6 +1649,18 @@ COMMAND_STEPS+=(
 \end{lstlisting}\end{footnotesize}
 is defined by command group where is defined a path to the bash for execution. List of command steps is a
  global variable and its items appends to execution the list.
+ !!!!Staging binaries
+ 
+ \begin{footnotesize}\begin{lstlisting}[style=python]
+ROLE=$(/usr/share/google/get_metadata_value attributes/role)
+if [[ "${ROLE}" == 'Master' ]]; then 
+	do----
+fi
+\end{lstlisting}\end{footnotesize}
+ 
+\$ gcloud dataproc clusters create my-dataproc-cluster \
+    --initialization-actions gs://my-bucket/download-job-jar.sh
+ 
  
  
 \begin{itemize}
@@ -1666,33 +1694,140 @@ $ ./bdutil -P spatial-cluster --num_workers 10 \
 %DEFAULT_FS='gs'
 
 
+
+
             \subsubsection{Scaling cluster}
             \subsubsection{Logging}
+ 
+ 
+ 
         
-\section{GRASS Hadoop interface}
-!!!!!!
+\section{GRASS Hadoop framework}
 Desktop application GRASS GIS became as a powerful environment for analysing spatial data, which can 
 reach characteristic of big data. In a box of GRASS GIS are thousands of modules   The main motivation 
-behind GRASS GIS framework for Hadoop is a vision of processing of that  the field of free desktop GIS 
-application is not known functionalities which provide interaction between Hadoop and its spatial 
-frameworks. In proprietary GIS world, ESRI comes with package \textit{Geoprocessing tools for Hadoop}\cite{esri_gtfp} 
+behind GRASS GIS framework for Hadoop is a vision to allow user to process processing big data natively from desktop environment. In proprietary GIS field, ESRI comes with package \textit{Geoprocessing tools for Hadoop}\cite{esri_gtfp} 
 which has been implemented for ArcMap desktop application as a native interface for interaction with 
-their Java library Esri Spatial framework for Hadoop. More specifically, tools enable:
+their Java library \textit{Esri Spatial framework for Hadoop}. More specifically, the tools enable:
 
 \begin{itemize}
-\item exchange data between  ArcGIS Geodatabase and a Hadoop system, and allows ArcGIS to run Hadoop workflows jobs,
+\item exchange data between ArcGIS Geodatabase and a Hadoop system, and allows ArcGIS to run Hadoop workflows jobs,
 \item copy data files from ArcGIS to Hadoop, and copy files from Hadoop to ArcGIS, and 
 \item run an Oozie workflow in Hadoop, and to check the status of a submitted workflow.
 \end{itemize}
  
+In first the chapter\ref{summary_libs} of theses has been described and summarized features of three different frameworks for processing large scale data. 
+As the most suitable framework for the this project became Esri framework, which can be deployed without extra customisation, natively includes considerable package of spatial functions, furthermore the documentation  and examples of usage are  the most comprehensive. Selected library has been used for testing and for explanation of usage. On the other hand although other libraries have not been tested, the modular design of framework allows to partition each steps of process which ensure easier future development with another aim. For example, user can generate GeoJSON from GRASS map and load it  to HDFS using \textit{hdfs.import.vector}, after that, create Hive table using \textit{hive.json.table} and load data. These steps are independent on any spatial library. Thus the interface for interaction between GRASS and Hive/Hadoop can be used as library for future development of another project. Currently, the framework supports HadoopGIS as well but the testing is not provided within this work.
+
+\subsection{Functionality}
+The GRASS Hadoop Framework(GHF) can be described as Add-ons package of modules for GRASS GIS which supports interaction between GIS desktop environment and Hadoop/Hive. Although GHF can be used for transferring data between file system and HDFS. The main purpose is to bring possibility of usage of spatial frameworks developed for Hadoop to the GIS desktop application. 
+
+Hadoop based spatial library for data processing can be used externally from the command line console e.g. \textit{hiveserver2} console or \textit{hadoop fs} tool. This approach can be more powerful for experienced users whit administration access to the cluster and knowledges of scripting, best in bash. If we assume that average user prefer friendly interface, than GHF is suitable choice. 
+
+The package includes several modules\ref{tbl:modules} for managing connections, exporting GRASS maps to customised GeoJson(suitable for serialisation), loading them to HDFS, creating tables in Hive, loading data into table and after processing, importing result back to GRASS.
+
+\begin{table}[]
+\centering
+\begin{scriptsize}
+\begin{tabular}{@{}|l|l||l|l|@{}}
+\toprule
+hdfs.* modules  & description                    & hive.* modules  & description               \\ \midrule \midrule
+hdfs.db.connect & Management of connections      & hive.json.table & Create table for GeoJSON  \\ \midrule
+hdfs.in.fs      & Put data to HDFS from local       & hive.csv.table  & Create table for csv data \\ \midrule
+hdfs.in.vector  & Put GRASS vectors to HDFS      & hive.execute    & Execute Hive command      \\ \midrule
+hdfs.out.vector & Put vectors from HDFS to GRASS & hive.select     & Execute Hive query        \\ \midrule
+hdfs.info       & HDFS metadata                  & hive.info       & Hive metadata             \\ \bottomrule
+\end{tabular}%
+\end{scriptsize}
+\caption{Modules of GRASS Hadoop Framework}
+\label{tbl:modules}
+\end{table}
 
 
-	\subsection{Functionality}
+
+\subsubsection{Connection management} 
+The handler of connection drivers for Hadoop and Hive is covered under \textit{hdfs.db.connect}. The module allows to hold connection profiles in default GRASS GIS database backend which is  by default SQLite database. The design of usage of database manager is derived from current GRASS db.* modules. Thus based on setting primary connection which is use for all interaction between database and GRASS. In contrast, database manager for HDFS allows to set connection id and its driver. Thus for each type of database(driver) can be stored several user connections distinct by user defined id(\textit{conn\_ide} parameter) and each driver can has only one primary connection.
+
+\begin{table}[!htbp]
+\begin{scriptsize}
+\centering
+\begin{tabular}{@{}|l|l||l|l|@{}}
+\toprule
+parameters    & description                                                                                               & flags & description                                                                             \\ \midrule \midrule \midrule
+driver        & \begin{tabular}[c]{@{}l@{}}Type of database driver.\\ options: \\ hiveserver2, hdfs, webhdfs\end{tabular} & -c    & Print table of connection                                                               \\ \midrule
+conn\_id      & identificator of connection                                                                               & -p    & Print active connection                                                                  \\ \midrule
+host          & connection host                                                                                           & -r    & Remove all connections                                                                  \\ \midrule
+port          & port of database                                                                                          & -t    & Test connection by conn\_type                                                           \\ \midrule
+login         & user login                                                                                                & -a    & \begin{tabular}[c]{@{}l@{}}Set active connection\\  by conn\_id and driver\end{tabular} \\ \midrule
+passwd        & password to database                                                                                      & --h   & Print usage summary                                                                     \\ \midrule
+schema        & set active schema in db.                                                                                  & --v   & Verbose module output                                                                   \\ \midrule
+authmechanism & support PLAIN mechanism                                                                                   & --q   & Quiet module output                                                                     \\ \midrule
+connectionuri & connection uri of database                                                                                & --ui  & Force launching GUI dialog                                                              \\ \midrule
+rmi           & Remove connection by id                                                                                   &       &                                                                                         \\ \bottomrule
+\end{tabular}
+\caption{Flags and parameters of \textit{hdfs.db.connection} module.}
+\label{tbl:connections}
+\end{scriptsize}
+\end{table}
+
+\paragraph{Defining connection} Parameter \textit{driver} and \textit{conn\_id} are mandatory for any connection profile. Parameter \textit{driver} define the protocol for communication with database and  and \textit{conn\_id} is a free unique string of connection profile. Other parameters as \textit{host}, \textit{port}, \textit{login}, \textit{passwd}, \textit{schema}, \textit{authmechanism} depends on a configuration of database server. After new connection is added, the module automatically set the new one as active. 
+
+\paragraph{Management of connections} Module offers several flags for handling management of connections. In table\ref{tbl:connections} are described flags and theirs functions. In case of controlling several Hadoop clusters is suitable  approach to define its connection profiles  and switching between by setting the primary one by flag -a with parameter \textit{conn\_id} and \textit{driver}.
+
+
+\subsubsection{Hadoop interaction}
+The modules start with \textit{hdfs.*}(exclude \textit{hdfs.db.connection}) provide tools for transferring data between GRASS maps or filsystem and Hadoop distributed file system and its metadata. 
+
+\subsubsection{Hive interaction}
+
+
 	\subsection{Implementation}
 				
 \section{Usage: Spatial data processing}
 	\subsection{Input data}
+
+
+	
+	Note that the 2.3.2 sandbox does not have a directory in HDFS for the root user and this can cause Hive queries to fail. To remedy this you need to issue the following commands as root:
+su hdfs
+hdfs dfs -mkdir /user/root
+hdfs dfs -chown root:hdfs /user/root
+exit
+	
+
+
+
+http://stackoverflow.com/questions/31802908/adding-hive-jars-permanently
+In the hiveserver2 host, create a location something like /var/lib/hive and add all the necessary jars inside that folder. Edit the hive-site.xml and mention all these jars in the property hive.aux.jars.path
+
+Eg: ADD JAR /home/amal/hive/amaludf.jar ADD JAR /home/amal/hive/amaludf2.jar
+
+Instead of using the above commands in each session, you can define it for all sessions.
+
+Create a location for storing these jars in the hiveserver host.
+
+mkdir /var/lib/hive
+Add all these jars to that directory
+
+Set the property in hive-site.xml
+
+<property>
+  <name>hive.aux.jars.path</name>
+  <value>/var/lib/hive</value>
+</property>
+Restart the hiveserver2 after doing this modification.
+
+Instead of creating a directory and putting all the jars, you can specify paths of individual jars also. The only condition is that all these jars should be present in the hiveserver host.
+
+Eg:
+
+<property>
+  <name>hive.aux.jars.path </name>
+  <value>file:///home/amal/hive/udf1.jar,file:///usr/lib/hive/lib/hive-hbase-handler.jar</value>
+</property>
+	
 		\subsubsection{CSV}
+		
+		https://community.hortonworks.com/articles/2834/when-to-use-and-when-not-to-use-hive-csvserde.html
 		\subsubsection{GeoJSON}\label{json}	
 			\paragraph{Standard GeoJSON}	
 			\paragraph{ESRI GeoJSON}
@@ -1705,6 +1840,26 @@ their Java library Esri Spatial framework for Hadoop. More specifically, tools e
 	\subsection{Storing data}
 	external table
 	load from local
+
+
+	\paragraph{HIVE}
+	https://cwiki.apache.org/confluence/display/Hive/DeveloperGuide
+	STORED AS TEXTFILE	
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+  OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
+	
+	
+	What is a SerDe?
+SerDe is a short name for "Serializer and Deserializer."
+Hive uses SerDe (and FileFormat) to read and write table rows.
+HDFS files --> InputFileFormat --> <key, value> --> Deserializer --> Row object
+Row object --> Serializer --> <key, value> --> OutputFileFormat --> HDFS files
+
+	
+	Metastore server describe
+	
 	
 	
 	\subsection{Query data}
