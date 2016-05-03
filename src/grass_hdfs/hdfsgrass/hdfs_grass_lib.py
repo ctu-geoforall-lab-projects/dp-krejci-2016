@@ -14,7 +14,7 @@ from hdfswrapper.connections import Connection
 from hdfswrapper import settings
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Table
-from hdfsgrass.hdfs_grass_util import readDict, saveDict, getTmpFolder
+from hdfs_grass_util import read_dict, save_dict, get_tmp_folder
 from grass.pygrass.modules import Module
 from grass.script.core import PIPE
 
@@ -149,13 +149,13 @@ class ConnectionManager:
             conn_type = self.conn_type
         if idc is None:
             idc = self.conn_id
-        cfg = readDict(settings.grass_config)
+        cfg = read_dict(settings.grass_config)
         cfg[conn_type] = idc
-        saveDict(settings.grass_config, cfg)
+        save_dict(settings.grass_config, cfg)
 
     @staticmethod
     def get_current_Id(conn_type):
-        cfg = readDict(settings.grass_config)
+        cfg = read_dict(settings.grass_config)
         if cfg:
             if cfg.has_key(conn_type):
                 return cfg.get(conn_type)
@@ -164,7 +164,7 @@ class ConnectionManager:
 
     @staticmethod
     def show_active_connections():
-        cfg = readDict(settings.grass_config)
+        cfg = read_dict(settings.grass_config)
         if cfg:
             print('***' * 30)
             print('\n     Primary connection for db drivers\n')
@@ -230,7 +230,7 @@ class JSONBuilder:
             self.json = self._get_grass_json()
         else:
             filename, file_extension = os.path.splitext(self.json_file)
-            self.json = os.path.join(getTmpFolder(), "%s_%s.json" % (filename))
+            self.json = os.path.join(get_tmp_folder(), "%s_%s.json" % (filename))
         return self.json
 
     def rm_last_lines(self, path, rm_last_line=3):
@@ -239,14 +239,8 @@ class JSONBuilder:
         # Move the pointer (similar to a cursor in a text editor) to the end of the file.
         file.seek(-rm_last_line, os.SEEK_END)
 
-        # This code means the following code skips the very last character in the file -
-        # i.e. in the case the last line is null we delete the last line
-        # and the penultimate one
         pos = file.tell() - 1
 
-        # Read each character in the file one at a time from the penultimate
-        # character going backwards, searching for a newline character
-        # If we find a new line, exit the search
         while pos > 0 and file.read(1) != "\n":
             pos -= 1
             file.seek(pos, os.SEEK_SET)
@@ -283,11 +277,10 @@ class JSONBuilder:
     def _get_grass_json(self):
         if self.grass_map['type'] not in ['point', 'line', 'boundary', 'centroid', 'area', 'face', 'kernel', 'auto']:
             self.grass_map['type'] = 'auto'
-        out = "%s_%s_%s.json" % (self.grass_map['map'],
-                                 self.grass_map['layer'],
-                                 self.json_type)
+        out = "%s_%s.json" % (self.grass_map['map'],
+                                 self.grass_map['layer'])
 
-        out = os.path.join(getTmpFolder(), out)
+        out = os.path.join(get_tmp_folder(), out)
         if os.path.exists(out):
             os.remove(out)
         out1 = Module('v.out.ogr',
@@ -308,6 +301,13 @@ class JSONBuilder:
 
         return out
 
+class GrassMapBuilder:
+    def __init__(self,json_file,map):
+        self.file=json_file
+        self.map=map
+
+    def create_map(self):
+        pass
 
 class GRASS2HDFS(object):
     """Base class for transfering data from GRASS to HDFS"""
@@ -329,57 +329,49 @@ class GRASS2HDFS(object):
     def printInfo(self, hdfs,msg=None):
         print('***' * 30)
         if msg:
-            print("  \n    %s \n"%msg)
-        print('\n   path to hdfs:\n    %s\n' % hdfs)
+            print("     %s \n"%msg)
+        print(' path :\n    %s\n' % hdfs)
         print('***' * 30)
 
 
-class GRASS2HDFSweb(GRASS2HDFS):
-    def __init__(self):
-        self.conn_type = 'webhdfs'
-        super(GRASS2HDFSweb, self).__init__(self.conn_type)
+class GrassHdfs(GRASS2HDFS):
+    def __init__(self,conn_type):
+        self.conn_type = conn_type
+        if conn_type !='webhdfs':
+            sys.exit('Interface for conn_type: %s  is not implemented'%conn_type)
 
-    def cp(self, fs, hdfs, overwrite=True, parallelism=1):
-        self.mkdir('/user/test1')
-        #sys.exit()
-        logging.debug('Trying to connect to: \nfs: %s\nhdfs:%s   ' % (hdfs, fs))
-        self.hook.load_file(fs, hdfs, overwrite, parallelism)
-        self.printInfo(hdfs,"")
+        super(GrassHdfs, self).__init__(self.conn_type)
 
+    def upload(self, fs, hdfs, overwrite=True, parallelism=1):
+        #self.mkdir('/user/test1')
+        ##sys.exit()
+        logging.info('Trying copy: fs: %s to  hdfs: %s   ' % ( fs,hdfs))
+        self.hook.upload_file(fs, hdfs, overwrite, parallelism)
+        self.printInfo(hdfs,"File has been copied to:")
 
     def mkdir(self, hdfs):
         self.hook.mkdir(hdfs)
         self.printInfo(hdfs)
 
     def write(self, hdfs, data, **kwargs):
-        """
-        Write file to hdfs
-        :param hdfs:
-        :type hdfs:
-        :param data:
-        :type data:
-        :param kwargs:
-        :type kwargs:
-        :return:
-        :rtype:
-        """
+        #Write file to hdfs
         self.hook.write(hdfs, data, **kwargs)
         self.printInfo(hdfs)
 
+    def download(self, fs, hdfs, overwrite=True, parallelism=1):
+        logging.info('Trying download : hdfs: %s to fs: %s   ' % (hdfs, fs))
+        out=self.hook.download_file(fs, hdfs, overwrite, parallelism)
+        if out:
+            self.printInfo(fs,"File has been copied to:")
+        else:
+            print('Copy error!')
+        return out
 
-class GRASS2HDFSsnakebite(GRASS2HDFS):
-    def __init__(self):
-        self.conn_type = 'hdfs'
-        super(GRASS2HDFSsnakebite, self).__init__(self.conn_type)
-
-    #def cp(self, fs, hdfs, overwrite=True, parallelism=1):
-    ##    self.hook.put(fs, hdfs)
-    #    self.printInfo(hdfs)
 
 
 class HDFS2HIVE(object):
     def __init__(self):
-        NotImplemented()
+        NotImplemented
 
     def connect(self):
         NotImplemented

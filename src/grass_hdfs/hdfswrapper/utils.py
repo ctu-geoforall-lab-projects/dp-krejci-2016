@@ -43,7 +43,7 @@ def string2dict(string):
 
 
 
-def findSTfnc(hsql):
+def find_ST_fnc(hsql):
         '''
         Parse hsql query and find ST_ functions.
         :param hsql: string of hive query.

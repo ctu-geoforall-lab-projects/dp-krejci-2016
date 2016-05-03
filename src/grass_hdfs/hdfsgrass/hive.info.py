@@ -15,66 +15,70 @@
 #############################################################################
 
 #%module
-#% description: Module for creting map from HIVE geometry table
+#% description: Module for geting metadata of tables in hive
 #% keyword: database
 #% keyword: hdfs
 #% keyword: hive
 #%end
+
+#%option
 #% key: driver
 #% type: string
 #% required: yes
-#% options: webhdfs
-#% description: HDFS driver
+#% answer: hiveserver2
+#% description: Type of database driver
+#% options: hiveserver2, hiveserver2
 #%end
 #%option
 #% key: table
 #% type: string
-#% required: yes
-#% description: Name of table for import
+#% required: no
+#% description: Name of table
+#% guisection: Connection
 #%end
-#% key: out
-#% type: string
-#% required: yes
-#% description: Name of output map
+#%option
+
+#%flag
+#% key: p
+#% description: print tables
+#% guisection: table
 #%end
 #%flag
-#% key: r
-#% description: remove temporal file
-#% guisection: data
+#% key: d
+#% description: describe table
+#% guisection: table
+#%end
+#%flag
+#% key: h
+#% description: print hdfs path of table
+#% guisection: table
 #%end
 
+
+
 import grass.script as grass
-import os
-from hdfs_grass_util import get_tmp_folder
-from hdfs_grass_lib import GrassMapBuilder,GrassHdfs,ConnectionManager
+from hdfs_grass_lib import ConnectionManager
+
 #https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
 
 def main():
-
-    tmp_file=os.path.join(get_tmp_folder(),options['out'])
-
     conn=ConnectionManager()
     conn.get_current_connection(options["driver"])
-    transf = GrassHdfs(options['driver'])
+    hive = conn.get_hook()
+    if flags['p']:
+        hive.show_tables()
+    if flags['d']:
+        if not options['table']:
+            grass.fatal("With flag <d> table must be defined")
+            hive.describe_table(options['table'],True)
 
-    if not transf.download(hdfs=options['hdfs'],
-                           fs=tmp_file,
-                           overwrite=flags['r']):
-        return
+    if flags['h']:
+        if not options['table']:
+            grass.fatal("With flag <h> table must be defined")
+            print(hive.find_table_location( options['table']))
 
-    map_build=GrassMapBuilder(tmp_file,options['out'])
-
-
-
-
-
-
-
-
-
-
-
-
+    if options['path']:
+        hive.check_for_content(options['path'])
 
 
 
@@ -82,3 +86,4 @@ def main():
 if __name__ == "__main__":
     options, flags = grass.parser()
     main()
+

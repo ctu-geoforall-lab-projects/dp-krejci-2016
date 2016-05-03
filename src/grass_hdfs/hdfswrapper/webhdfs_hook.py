@@ -2,7 +2,7 @@ import logging
 
 from hdfs import InsecureClient, HdfsError
 from base_hook import BaseHook
-
+import os
 
 _kerberos_security_mode = None#TODO make confugration file for this
 if _kerberos_security_mode:
@@ -46,8 +46,6 @@ class WebHDFSHook(BaseHook):
         no_nn_error = "Read operations failed on the namenodes below:\n{}".format("\n".join(nn_hosts))
         raise Exception(no_nn_error)
 
-
-
     def test(self):
         try:
             path = self.check_for_path("/")
@@ -68,8 +66,17 @@ class WebHDFSHook(BaseHook):
         c = self.get_conn()
         return bool(c.status(hdfs_path, strict=False))
 
-    def load_file(self, source, destination, overwrite=True, parallelism=1,
-                  **kwargs):
+    def check_for_content(self,hdfs_path,recursive=False):
+
+        c=self.get_conn()
+        return c.list(hdfs_path, status=recursive)
+
+    def progress(self,a,b):
+        #print(a)
+        print('progress: chunk_size %s'%b)
+
+    def upload_file(self, source, destination, overwrite=True, parallelism=1,
+                    **kwargs):
         """
         Uploads a file to HDFS
         :param source: Local path to file or folder. If a folder, all the files
@@ -91,8 +98,26 @@ class WebHDFSHook(BaseHook):
                  local_path=source,
                  overwrite=overwrite,
                  n_threads=parallelism,
+                 progress=self.progress,
                  **kwargs)
         logging.debug("Uploaded file {} to {}".format(source, destination))
+
+    def download_file(self,hdfs_path,local_path,overwrite=True,parallelism=1,
+                  **kwargs):
+
+        c = self.get_conn()
+        c.download(hdfs_path=hdfs_path,
+                   local_path=local_path,
+                   overwrite=overwrite,
+                   n_threads=parallelism,
+                   **kwargs)
+
+        logging.debug("Download file {} to {}".format(hdfs_path, local_path))
+
+
+        if os.path.exists(local_path):
+            return None
+        return local_path
 
     def mkdir(self,path, **kwargs):
         c = self.get_conn()

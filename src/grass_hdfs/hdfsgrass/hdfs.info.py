@@ -15,66 +15,44 @@
 #############################################################################
 
 #%module
-#% description: Module for creting map from HIVE geometry table
+#% description: Module for geting metadata of tables in hive
 #% keyword: database
 #% keyword: hdfs
 #% keyword: hive
 #%end
+
+#%option
 #% key: driver
 #% type: string
 #% required: yes
-#% options: webhdfs
-#% description: HDFS driver
+#% answer: hiveserver2
+#% description: Type of database driver
+#% options: webhdfs, hdfs
 #%end
 #%option
-#% key: table
+#% key: path
 #% type: string
-#% required: yes
-#% description: Name of table for import
-#%end
-#% key: out
-#% type: string
-#% required: yes
-#% description: Name of output map
+#% required: no
+#% description: check path
+#% guisection: Connection
 #%end
 #%flag
 #% key: r
-#% description: remove temporal file
-#% guisection: data
+#% description: recursive
 #%end
 
 import grass.script as grass
-import os
-from hdfs_grass_util import get_tmp_folder
-from hdfs_grass_lib import GrassMapBuilder,GrassHdfs,ConnectionManager
-#https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
+from hdfs_grass_lib import ConnectionManager
 
 def main():
-
-    tmp_file=os.path.join(get_tmp_folder(),options['out'])
-
     conn=ConnectionManager()
     conn.get_current_connection(options["driver"])
-    transf = GrassHdfs(options['driver'])
+    hive = conn.get_hook()
 
-    if not transf.download(hdfs=options['hdfs'],
-                           fs=tmp_file,
-                           overwrite=flags['r']):
-        return
+    if options['path']:
 
-    map_build=GrassMapBuilder(tmp_file,options['out'])
-
-
-
-
-
-
-
-
-
-
-
-
+        for path in (hive.check_for_content(options['path'],flags['r'])):
+            print path
 
 
 
@@ -82,3 +60,4 @@ def main():
 if __name__ == "__main__":
     options, flags = grass.parser()
     main()
+

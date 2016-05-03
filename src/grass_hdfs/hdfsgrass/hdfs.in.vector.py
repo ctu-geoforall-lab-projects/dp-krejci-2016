@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       v.in.hive
+# MODULE:       v.out.hdfs
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset
@@ -15,26 +15,64 @@
 #############################################################################
 
 #%module
-#% description: Module for creting map from HIVE geometry table
+#% description: Module for export vector feature to hdfs(JSON)
 #% keyword: database
 #% keyword: hdfs
-#% keyword: hive
 #%end
 #%option
-#% key: table
+#% key: hdfs
 #% type: string
-#% required: no
-#% description: Name of table for import
-#% options: hiveserver2
-#% guisection: Connection
+#% answer: @grass_data_hdfs
+#% required: yes
+#% description: HDFS path or default grass dataset
+#%end
+#%option
+#% key: driver
+#% type: string
+#% required: yes
+#% options: webhdfs,hdfs
+#% description: HDFS driver
+#%end
+#%option G_OPT_V_MAP
+#% key: map
+#% required: yes
+#% label: Name of vector map to export to hdfs
+#%end
+#%option G_OPT_V_TYPE
+#% key: type
+#% required: yes
+#%end
+#%option G_OPT_V_FIELD
+#% key: layer
+#% required: yes
 #%end
 
 import grass.script as grass
-#https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
+from hdfs_grass_lib import JSONBuilder,GrassHdfs
+import os
 
 def main():
-    pass
+    if options['hdfs'] == '@grass_data_hdfs':
+        LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
+        MAPSET = grass.gisenv()['MAPSET']
+        MAPSET_PATH = os.path.join('grass_data_hdfs',LOCATION_NAME,MAPSET,'external')
+        options['hdfs'] = MAPSET_PATH
+    print options['hdfs']
+    grass_map = {"map": options['map'],
+                 "layer": options['layer'],
+                 "type": options['type'],
+                 }
+    json = JSONBuilder(grass_map)
+    json = json.get_JSON()
+
+    print('upload %s'%json)
+
+    transf = GrassHdfs(options['driver'])
+    transf.upload(json, options['hdfs'])
+
+
 
 if __name__ == "__main__":
     options, flags = grass.parser()
     main()
+

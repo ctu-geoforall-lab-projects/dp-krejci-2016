@@ -49,6 +49,13 @@
 #% description: structure of json, see https://github.com/krejcmat/bdutil-spatial#hive-serde-schema-generator
 #% guisection: table
 #%end
+#%option
+#% key: stored
+#% type: string
+#% required: no
+#% description: output
+#% guisection: table
+#%end
 #%flag
 #% key: e
 #% description: The EXTERNAL keyword lets you create a table and provide a LOCATION so that Hive does not use a default location for this table. This comes in handy if you already have data generated. When dropping an EXTERNAL table, data in the table is NOT deleted from the file system.
@@ -65,15 +72,18 @@
 #%option
 #% key: outformat
 #% type: string
-#% required: yes
-#% answer: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
 #% description: java class for handling output format
+#% guisection: table
+#%end
+#%option
+#% key: jar
+#% type: string
+#% description: comma separated list of jar lib to import. must be stored in /usr/local/spatial/jar/
 #% guisection: table
 #%end
 #%option
 #% key: jsonpath
 #% type: string
-#% required: yes
 #% description: hdfs path specifying input data
 #% guisection: data
 #%end
@@ -97,11 +107,12 @@ def main():
         grass.fatal("Must be defined <attributes> or <struct> parameter")
 
     conn=ConnectionManager()
-    conn.get_current_connection(options["conn_type"])
+    conn.get_current_connection(options["driver"])
     hive = conn.get_hook()
     hive.create_geom_table( table=options['table'],
                             field_dict=options['attributes'],
                             struct=options['struct'],
+                            stored=options['stored'],
                             serde=options['serde'],
                             outputformat=options['outformat'],
                             external=flags['e'],

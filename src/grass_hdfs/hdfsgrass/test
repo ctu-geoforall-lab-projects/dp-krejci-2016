@@ -5,17 +5,17 @@
 
 
 #hdfs google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hdfs conn_id=hdfsc host=cluster-1-m port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hdfs conn_id=hdfsc host=cluster-1-m port=50070
 
 
 #hdfsweb google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=hdfsc login=dr.who host=cluster-1-m port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=webhdfs conn_id=hdfsc login=dr.who host=cluster-1-m port=50070
 
 #hive_server2 google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hiveserver2 conn_id=hiveserver2 host=cluster-1-m port=10000 login=matt schema=default
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-1-m port=10000 login=matt schema=default
 
 #hive_cli
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=hive_cli host=cluster-1-m port=10000
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hive_cli conn_id=hive_cli host=cluster-1-m port=10000
 
 
 ##################################################################################################################
@@ -24,28 +24,33 @@
 
 
 #v.hive.table
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/v.hive.table.py conn_type=hiveserver2 table=cfm attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=/cfm_1_ENCLOSED.json -e
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.json.table.py driver=hiveserver2 table=cfm attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=/cfm_1_ENCLOSED.json -e
 
 
 #csv.hive.table
 ##textfile
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/csv.hive.table.py conn_type=hiveserver2 table=csv attributes="{'x':'INT','y':'INT','Z':'INT'}" csvpath=tmp/test.csv stored=textfile -e -d
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.csv.table.py driver=hiveserver2 table=csv attributes="{'x':'INT','y':'INT','Z':'INT'}" stored=textfile -e -d
 
+#v.hive.table
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.json.table.py driver=hiveserver2 table=json struct="type string, properties STRUCT<cat:SMALLINT>, geometry string" -e -d
+
+#hive.info
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.info.py  driver=hiveserver2 -p
 
 ##################################################################################################################
 
 #hdfs
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hdfs conn_id=hdfsc host=cloudera.quickstart port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hdfs conn_id=hdfsc host=cloudera.quickstart port=50070
 
 #hdfsweb
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=webhdfs conn_id=cloudera host=cloudera.quickstart port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=webhdfs conn_id=cloudera host=cloudera.quickstart port=50070
 
 
 #hive_server2
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hiveserver2 conn_id=hiveserver2 host=cloudera.quickstart port=10000 login=cloudera schema=default
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cloudera.quickstart port=10000 login=cloudera schema=default
 
 #jdbc
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py conn_type=hive_cli conn_id=jdbc_conn_id host=172.17.0.2 port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hive_cli conn_id=jdbc_conn_id host=172.17.0.2 port=50070
 
 
 

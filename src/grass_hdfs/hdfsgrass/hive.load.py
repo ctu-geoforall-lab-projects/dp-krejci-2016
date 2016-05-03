@@ -48,6 +48,13 @@
 #% description: arget partition as a dict of partition columns and values
 #% guisection: data
 #%end
+#%option
+#% key: partition
+#% type: string
+#% required: no
+#% description: arget partition as a dict of partition columns and values
+#% guisection: data
+#%end
 
 from hdfs_grass_lib import ConnectionManager
 import grass.script as grass
@@ -59,7 +66,7 @@ def main():
     hive = conn.get_hook()
     hive.data2table( filepath=options['path'],
                      table=options['table'],
-                     #overwrite=options['path'],#TODO
+                     overwrite=options['path'],#TODO
                      partition=options['partition'])
 
 if __name__ == "__main__":

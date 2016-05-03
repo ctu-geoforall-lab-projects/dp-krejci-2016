@@ -56,10 +56,11 @@ class BaseHook(object):
         return connection.get_hook()
 
     def get_conn(self):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def get_records(self, sql):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def run(self, sql):
-        raise NotImplementedError()
+        raise NotImplementedError
+

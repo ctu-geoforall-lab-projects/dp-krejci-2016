@@ -61,8 +61,24 @@ class HDFSHook(BaseHook):
             print("     EROOR: connection can not be established: %s \n" % e)
             print('***' * 30)
             return False
+
+    def download_file(self):
+        raise NotImplementedError
+
+    def mkdir(self):
+        raise NotImplementedError
+
+    def write(self):
+        raise NotImplementedError
+
+    def load_file(self):
+        raise NotImplementedError
+
+    def check_for_path(self):
+        raise NotImplementedError
+
     def get_cursor(self):
-        NotImplementedError()
+        raise NotImplementedError
 
     def execute(self,hql):
-        NotImplementedError()
+        raise NotImplementedError

@@ -2,7 +2,7 @@ import csv
 import os
 import tempfile
 
-def saveDict(fn, dict_rap):
+def save_dict(fn, dict_rap):
     f = open(fn, "wb")
     w = csv.writer(f,delimiter='=')
     for key, val in dict_rap.items():
@@ -11,7 +11,7 @@ def saveDict(fn, dict_rap):
         w.writerow([key, val])
     f.close()
 
-def readDict(fn):
+def read_dict(fn):
     if os.path.exists(fn):
         f = open(fn, 'r')
         dict_rap = {}
@@ -29,5 +29,5 @@ def readDict(fn):
     else:
         return {}
 
-def getTmpFolder():
+def get_tmp_folder():
     return tempfile.gettempdir()

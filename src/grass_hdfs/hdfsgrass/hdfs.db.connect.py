@@ -20,11 +20,11 @@
 #% keyword: hdfs
 #%end
 #%option
-#% key: conn_type
+#% key: driver
 #% type: string
 #% required: no
 #% description: Type of database driver
-#% options: hiveserver2, hdfs, webhdfs, jdbc
+#% options: hiveserver2, hdfs, webhdfs
 #% guisection: Connection
 #%end
 #%option
@@ -113,7 +113,7 @@
 #%end
 #%flag
 #% key: a
-#% description: Set active connection by conn_id and conn_type
+#% description: Set active connection by conn_id and driver
 #% guisection: manager
 #%end
 
@@ -129,8 +129,8 @@ def main():
         conn.test_connection()
         return
 
-    if options['host'] and options['conn_type'] and options['conn_id']:
-        conn.set_connection(conn_type=options['conn_type'],
+    if options['host'] and options['driver'] and options['conn_id']:
+        conn.set_connection(conn_type=options['driver'],
                             conn_id=options['conn_id'],
                             host=options['host'],
                             port=options['port'],
@@ -159,16 +159,16 @@ def main():
         conn.show_active_connections()
         return
     elif flags['t']:
-        if options['conn_type']:
-            conn.test_connection(options['conn_type'])
+        if options['driver']:
+            conn.test_connection(options['driver'])
         else:
-            print('conn_type is not set')
+            print('< driver > is not set')
         return
     elif flags['a']:
-        if not options['conn_type'] and options['conn_id']:
-            conn.set_active_connection(options['conn_type'], options['conn_id'])
+        if not options['driver'] and options['conn_id']:
+            conn.set_active_connection(options['driver'], options['conn_id'])
         else:
-            print("ERROR parameter 'conn_type' and 'conn_id' must be set")
+            print("ERROR parameter < driver > and 'conn_id' must be set")
 
 if __name__ == "__main__":
     options, flags = grass.parser()

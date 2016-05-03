@@ -35,28 +35,16 @@
 #% description: HDFS driver
 #%end
 #%option G_OPT_F_INPUT
-#% key: jsoninput
-#% guisection: json
-#%end
-#%option
-#% key: jsontype
-#% type: string
-#% options: enclosed, unenclosed
-#% description: Select type of input JSON
-#% guisection: json
-#%end
-#%option G_OPT_F_INPUT
-#% key: csv
-#% guisection: csv
+#% key: file
+#% guisection: fileinput
 #%end
 
 
 import grass.script as grass
-from hdfs_grass_lib import JSONBuilder,GRASS2HDFSsnakebite,GRASS2HDFSweb
+from hdfs_grass_lib import JSONBuilder,GrassHdfs
 import os
 
 def main():
-    localfile = None
     if options['hdfs'] == '@grass_data_hdfs':
         LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
         MAPSET = grass.gisenv()['MAPSET']
@@ -64,23 +52,9 @@ def main():
         options['hdfs'] = MAPSET_PATH
     print options['hdfs']
 
-    if options['jsoninput']:
-        if not options['jsontype']:
-            print("ERROR: set json input type")
-        json = JSONBuilder(json_file=options['jsoninput'],json_type=options['jsontype'])
-        localfile = json.get_JSON()
-
-    if options['csv']:
-        localfile=options['csv']
-
-    if localfile:
-        if options['driver'] == "hdfs":
-            transf = GRASS2HDFSsnakebite()
-            transf.cp(localfile,options['hdfs'])
-
-        if options['driver'] == "webhdfs":
-            transf = GRASS2HDFSweb()
-            transf.cp(localfile,options['hdfs'])
+    if options['fileinput']:
+        transf = GrassHdfs(options['driver'])
+        transf.upload(options['fileinput'], options['hdfs'])
 
 if __name__ == "__main__":
     options, flags = grass.parser()
