@@ -28,16 +28,16 @@
     <favorites_list name="python" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.4575718">
+    <splitter split-orientation="horizontal" split-proportion="0.45432693">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="hive.json.table.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.json.table.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="105" column="48" selection-start-line="105" selection-start-column="48" selection-end-line="105" selection-end-column="48" />
+                  <caret line="73" column="8" selection-start-line="73" selection-start-column="8" selection-end-line="73" selection-end-column="8" />
                   <folding>
-                    <element signature="e#2574#2618#0" expanded="true" />
+                    <element signature="e#2409#2453#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -46,66 +46,82 @@
           <file leaf-file-name="hive.load.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.load.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-6.8235292">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="hive.csv.table.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.csv.table.py">
+          <file leaf-file-name="hdfs_hook.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/hdfswrapper/hdfs_hook.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-4.4444447">
-                  <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="86" selection-end-column="5" />
-                  <folding>
-                    <element signature="e#2414#2458#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="hive.info.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.info.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="44" selection-end-column="5" />
-                  <folding>
-                    <element signature="e#1225#1253#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="hdfs.info.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.info.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.8742633">
-                  <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#1014#1042#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="hdfs.in.vector.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.in.vector.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="50" column="44" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.07565012">
+                  <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="18" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="hdfs.out.vector.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.out.vector.py">
+          <file leaf-file-name="hive.select.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.select.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="83" column="10" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="10" />
+                  <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="hive.execute.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.execute.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="connections.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hdfswrapper/connections.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="115" column="25" selection-start-line="115" selection-start-column="25" selection-end-line="115" selection-end-column="25" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+            <entry file="file:///usr/lib/python2.7/json/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="292" column="4" selection-start-line="292" selection-start-column="4" selection-end-line="292" selection-end-column="4" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="hive_hook.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hdfswrapper/hive_hook.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="9.861111">
+                  <caret line="314" column="31" selection-start-line="314" selection-start-column="31" selection-end-line="314" selection-end-column="31" />
                   <folding>
-                    <element signature="e#1073#1101#0" expanded="true" />
+                    <element signature="e#0#37#0" expanded="true" />
+                    <element signature="e#5058#5842#0" expanded="false" />
+                    <element signature="e#5058#5445#1" expanded="false" />
+                    <element signature="e#12840#13198#0" expanded="false" />
+                    <element signature="e#13237#15005#0" expanded="false" />
+                    <element signature="e#15035#15174#0" expanded="false" />
+                    <marker date="1462523441214" expanded="true" signature="4525:4570" placeholder="CREATE TABLE..IF..." />
+                    <marker date="1462523441214" expanded="true" signature="7849:7869" placeholder="DROP TABLE I..." />
+                    <marker date="1462523441214" expanded="true" signature="7849:7870" placeholder="DROP TABLE I..." />
+                    <marker date="1462523441214" expanded="true" signature="8115:8160" placeholder="CREATE TABLE..IF..." />
+                    <marker date="1462523441214" expanded="true" signature="8894:8905" placeholder="DROP TABLE m..." />
+                    <marker date="1462523441214" expanded="true" signature="8894:8915" placeholder="DROP TABLE I..." />
+                    <marker date="1462523441214" expanded="true" signature="15230:15251" placeholder="DROP TABLE m..." />
                   </folding>
                 </state>
               </provider>
@@ -115,18 +131,20 @@
             <entry file="file://$PROJECT_DIR$/hdfswrapper/base_hook.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+                  <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/hdfswrapper/settings.py">
+          <file leaf-file-name="hive.csv.table.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.csv.table.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="16" column="9" selection-start-line="16" selection-start-column="0" selection-end-line="19" selection-end-column="57" />
-                  <folding />
+                  <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="86" selection-end-column="5" />
+                  <folding>
+                    <element signature="e#2414#2458#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -139,12 +157,22 @@
             <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="227" column="8" selection-start-line="227" selection-start-column="8" selection-end-line="227" selection-end-column="8" />
+                  <caret line="196" column="64" selection-start-line="196" selection-start-column="64" selection-end-line="196" selection-end-column="64" />
                   <folding>
                     <element signature="e#0#37#0" expanded="true" />
-                    <marker date="1462226071658" expanded="true" signature="4388:4412" placeholder="select * fro..connection..." />
-                    <marker date="1462226071658" expanded="true" signature="6452:6493" placeholder="DELETE FROM ..." />
+                    <marker date="1462536409998" expanded="true" signature="4408:4432" placeholder="select * fro..connection..." />
+                    <marker date="1462536409998" expanded="true" signature="6473:6514" placeholder="DELETE FROM ..." />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="schema.py" pinned="false" current-in-tab="false">
+            <entry file="file:///usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/schema.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="3269" column="8" selection-start-line="3269" selection-start-column="8" selection-end-line="3269" selection-end-column="8" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -161,11 +189,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="hdfs.db.connect.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="hdfs.db.connect.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.db.connect.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6286837">
-                  <caret line="26" column="38" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -174,44 +202,32 @@
           <file leaf-file-name="hive_hook.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/hdfswrapper/hive_hook.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-21.333334">
-                  <caret line="634" column="0" selection-start-line="634" selection-start-column="0" selection-end-line="634" selection-end-column="0" />
+                <state vertical-scroll-proportion="1.1944444">
+                  <caret line="296" column="7" selection-start-line="296" selection-start-column="7" selection-end-line="296" selection-end-column="7" />
                   <folding>
                     <element signature="e#0#37#0" expanded="true" />
-                    <element signature="e#5054#5838#0" expanded="false" />
-                    <element signature="e#5054#5441#1" expanded="false" />
-                    <element signature="e#8953#15243#0" expanded="false" />
-                    <element signature="e#9650#9954#0" expanded="false" />
-                    <element signature="e#10019#12720#0" expanded="false" />
-                    <element signature="e#12821#13179#0" expanded="false" />
-                    <element signature="e#15285#20686#0" expanded="false" />
-                    <element signature="e#20736#24442#0" expanded="false" />
-                    <marker date="1462204848133" expanded="true" signature="4521:4566" placeholder="CREATE TABLE..IF..." />
-                    <marker date="1462204848133" expanded="true" signature="7935:7955" placeholder="DROP TABLE I..." />
-                    <marker date="1462204848133" expanded="true" signature="7935:7956" placeholder="DROP TABLE I..." />
-                    <marker date="1462204848133" expanded="true" signature="8875:8886" placeholder="DROP TABLE m..." />
-                    <marker date="1462204848133" expanded="true" signature="8875:8896" placeholder="DROP TABLE I..." />
-                    <marker date="1462204848133" expanded="true" signature="15211:15232" placeholder="DROP TABLE m..." />
+                    <element signature="e#5058#5842#0" expanded="false" />
+                    <element signature="e#5058#5445#1" expanded="false" />
+                    <element signature="e#9669#9973#0" expanded="false" />
+                    <element signature="e#12840#13198#0" expanded="false" />
+                    <element signature="e#15304#20705#0" expanded="false" />
+                    <marker date="1462523441214" expanded="true" signature="4525:4570" placeholder="CREATE TABLE..IF..." />
+                    <marker date="1462523441214" expanded="true" signature="7849:7869" placeholder="DROP TABLE I..." />
+                    <marker date="1462523441214" expanded="true" signature="7849:7870" placeholder="DROP TABLE I..." />
+                    <marker date="1462523441214" expanded="true" signature="8115:8160" placeholder="CREATE TABLE..IF..." />
+                    <marker date="1462523441214" expanded="true" signature="8894:8905" placeholder="DROP TABLE m..." />
+                    <marker date="1462523441214" expanded="true" signature="8894:8915" placeholder="DROP TABLE I..." />
+                    <marker date="1462523441214" expanded="true" signature="15230:15251" placeholder="DROP TABLE m..." />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="hdfs_hook.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/hdfswrapper/hdfs_hook.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="webhdfs_hook.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="webhdfs_hook.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/hdfswrapper/webhdfs_hook.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="75" column="35" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
+                <state vertical-scroll-proportion="1.8156028">
+                  <caret line="96" column="14" selection-start-line="96" selection-start-column="14" selection-end-line="96" selection-end-column="14" />
                   <folding>
                     <element signature="e#0#14#0" expanded="true" />
                   </folding>
@@ -234,7 +250,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/hivegrass/db.hdfs.connect.py" />
         <option value="$PROJECT_DIR$/hivegrass/hdfs_grass_lib.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/tests.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/hdfs2_hook.py" />
@@ -245,7 +260,6 @@
         <option value="$PROJECT_DIR$/hdfsgrass/db.hdfs.out.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/http_hook.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/db.hive.table.py" />
-        <option value="$PROJECT_DIR$/hdfsgrass/hive.execute.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/v.hdfs.hive.table.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/v.in.hdfs.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/v.in.hdfs.py" />
@@ -257,8 +271,6 @@
         <option value="$PROJECT_DIR$/hive.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/db.hdfs.connect.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/db.hdfs.connect.py" />
-        <option value="$PROJECT_DIR$/hdfswrapper/connections.py" />
-        <option value="$PROJECT_DIR$/hdfswrapper/connections.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/__init__.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/__init__.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/test" />
@@ -268,23 +280,27 @@
         <option value="$PROJECT_DIR$/hdfsgrass/v.hive.table.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_util.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_util.py" />
-        <option value="$PROJECT_DIR$/hdfsgrass/hive.json.table.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hive.load.table.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/utils.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hive.csv.table.py" />
-        <option value="$PROJECT_DIR$/hdfswrapper/hive_hook.py" />
-        <option value="$PROJECT_DIR$/hdfsgrass/hdfs.in.vector.py" />
-        <option value="$PROJECT_DIR$/hdfswrapper/base_hook.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/hdfs_hook.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/hdfs_hook.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.out.vector.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hive.info.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.info.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/webhdfs_hook.py" />
-        <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py" />
-        <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.in.fs.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.db.connect.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hdfs.in.vector.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hive.json.table.py" />
+        <option value="$PROJECT_DIR$/hdfswrapper/hive_hook.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hive.select.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hive.execute.py" />
+        <option value="$PROJECT_DIR$/hdfswrapper/connections.py" />
+        <option value="$PROJECT_DIR$/hdfswrapper/connections.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py" />
+        <option value="$PROJECT_DIR$/hdfswrapper/base_hook.py" />
       </list>
     </option>
   </component>
@@ -294,10 +310,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1719" />
-    <option name="y" value="-4" />
-    <option name="width" value="1881" />
-    <option name="height" value="1084" />
+    <option name="x" value="39" />
+    <option name="y" value="54" />
+    <option name="width" value="1641" />
+    <option name="height" value="1026" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -343,6 +359,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -391,8 +409,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -775,28 +791,28 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1719" y="-4" width="1881" height="1084" extended-state="6" />
+    <frame x="39" y="54" width="1641" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4204301" sideWeight="0.49700272" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43225807" sideWeight="0.49809265" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33960292" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24086021" sideWeight="0.50190735" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.026666667" sideWeight="0.49700272" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16657534" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16512261" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15799373" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32795697" sideWeight="0.49809265" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959128" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24086021" sideWeight="0.49809265" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24086021" sideWeight="0.50190735" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43225807" sideWeight="0.49809265" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33960292" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24086021" sideWeight="0.49809265" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959128" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -815,9 +831,9 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15585831" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32795697" sideWeight="0.49809265" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24086021" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -833,25 +849,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="32" />
+      <option name="time" value="33" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/attributes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5201005">
-          <caret line="234" column="0" selection-start-line="234" selection-start-column="0" selection-end-line="234" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/UserDict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39949748">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/session.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.55025125">
@@ -870,13 +872,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4977778">
           <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/schema.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="426" column="8" selection-start-line="426" selection-start-column="8" selection-end-line="426" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -929,20 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.select.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.execute.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70454544">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-1247972723/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -961,9 +942,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
-          <folding>
-            <element signature="e#574#605#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -971,7 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="26" column="14" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -979,7 +956,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="963" column="8" selection-start-line="963" selection-start-column="8" selection-end-line="963" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -995,9 +971,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34920636">
           <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#9#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1005,9 +978,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14869888">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding>
-            <element signature="e#98#153#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1015,7 +985,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.62695926">
           <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1023,7 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="117" column="8" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1031,7 +999,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1055,7 +1022,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="68.88326">
           <caret line="3064" column="6" selection-start-line="3064" selection-start-column="6" selection-end-line="3064" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1075,61 +1041,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hdfswrapper/connections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="8" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python2.7/dist-packages/pyhs2/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="4" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.json.table.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="105" column="48" selection-start-line="105" selection-start-column="48" selection-end-line="105" selection-end-column="48" />
-          <folding>
-            <element signature="e#2574#2618#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.load.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.8235292">
-          <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfswrapper/hive_hook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.333334">
-          <caret line="634" column="0" selection-start-line="634" selection-start-column="0" selection-end-line="634" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-            <element signature="e#5054#5838#0" expanded="false" />
-            <element signature="e#5054#5441#1" expanded="false" />
-            <element signature="e#8953#15243#0" expanded="false" />
-            <element signature="e#9650#9954#0" expanded="false" />
-            <element signature="e#10019#12720#0" expanded="false" />
-            <element signature="e#12821#13179#0" expanded="false" />
-            <element signature="e#15285#20686#0" expanded="false" />
-            <element signature="e#20736#24442#0" expanded="false" />
-            <marker date="1462204848133" expanded="true" signature="4521:4566" placeholder="CREATE TABLE..IF..." />
-            <marker date="1462204848133" expanded="true" signature="7935:7955" placeholder="DROP TABLE I..." />
-            <marker date="1462204848133" expanded="true" signature="7935:7956" placeholder="DROP TABLE I..." />
-            <marker date="1462204848133" expanded="true" signature="8875:8886" placeholder="DROP TABLE m..." />
-            <marker date="1462204848133" expanded="true" signature="8875:8896" placeholder="DROP TABLE I..." />
-            <marker date="1462204848133" expanded="true" signature="15211:15232" placeholder="DROP TABLE m..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1145,9 +1061,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42666668">
           <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1155,35 +1068,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5511111">
           <caret line="31" column="18" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.csv.table.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.4444447">
-          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="86" selection-end-column="5" />
-          <folding>
-            <element signature="e#2414#2458#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfswrapper/hdfs_hook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfswrapper/base_hook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1207,33 +1091,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/hdfs/client.py">
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.in.vector.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="402" column="39" selection-start-line="402" selection-start-column="39" selection-end-line="402" selection-end-column="39" />
+          <caret line="56" column="55" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="55" />
+          <folding>
+            <element signature="e#1162#1190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.info.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding>
+            <element signature="e#1014#1042#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.json.table.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="73" column="8" selection-start-line="73" selection-start-column="8" selection-end-line="73" selection-end-column="8" />
+          <folding>
+            <element signature="e#2409#2453#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.csv.table.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="86" selection-end-column="5" />
+          <folding>
+            <element signature="e#2414#2458#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.load.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfswrapper/webhdfs_hook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="75" column="35" selection-start-line="75" selection-start-column="35" selection-end-line="75" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="227" column="8" selection-start-line="227" selection-start-column="8" selection-end-line="227" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-            <marker date="1462226071658" expanded="true" signature="4388:4412" placeholder="select * fro..connection..." />
-            <marker date="1462226071658" expanded="true" signature="6452:6493" placeholder="DELETE FROM ..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1249,27 +1151,127 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.db.connect.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6286837">
-          <caret line="26" column="38" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.in.vector.py">
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.select.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="44" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <caret line="47" column="33" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs.info.py">
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hive.execute.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8742633">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="53" column="18" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/json/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="292" column="4" selection-start-line="292" selection-start-column="4" selection-end-line="292" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/schema.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3269" column="8" selection-start-line="3269" selection-start-column="8" selection-end-line="3269" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/sqlalchemy/ext/declarative/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="245" column="4" selection-start-line="245" selection-start-column="4" selection-end-line="245" selection-end-column="4" />
           <folding>
-            <element signature="e#1014#1042#0" expanded="true" />
+            <element signature="e#300#345#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfswrapper/connections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="115" column="25" selection-start-line="115" selection-start-column="25" selection-end-line="115" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfswrapper/base_hook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfswrapper/hive_hook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="9.861111">
+          <caret line="314" column="31" selection-start-line="314" selection-start-column="31" selection-end-line="314" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <element signature="e#5058#5842#0" expanded="false" />
+            <element signature="e#5058#5445#1" expanded="false" />
+            <element signature="e#12840#13198#0" expanded="false" />
+            <element signature="e#13237#15005#0" expanded="false" />
+            <element signature="e#15035#15174#0" expanded="false" />
+            <marker date="1462523441214" expanded="true" signature="4525:4570" placeholder="CREATE TABLE..IF..." />
+            <marker date="1462523441214" expanded="true" signature="7849:7869" placeholder="DROP TABLE I..." />
+            <marker date="1462523441214" expanded="true" signature="7849:7870" placeholder="DROP TABLE I..." />
+            <marker date="1462523441214" expanded="true" signature="8115:8160" placeholder="CREATE TABLE..IF..." />
+            <marker date="1462523441214" expanded="true" signature="8894:8905" placeholder="DROP TABLE m..." />
+            <marker date="1462523441214" expanded="true" signature="8894:8915" placeholder="DROP TABLE I..." />
+            <marker date="1462523441214" expanded="true" signature="15230:15251" placeholder="DROP TABLE m..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="196" column="64" selection-start-line="196" selection-start-column="64" selection-end-line="196" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <marker date="1462536409998" expanded="true" signature="4408:4432" placeholder="select * fro..connection..." />
+            <marker date="1462536409998" expanded="true" signature="6473:6514" placeholder="DELETE FROM ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/hdfs/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5437353">
+          <caret line="382" column="25" selection-start-line="382" selection-start-column="25" selection-end-line="382" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfswrapper/webhdfs_hook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.8156028">
+          <caret line="96" column="14" selection-start-line="96" selection-start-column="14" selection-end-line="96" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdfswrapper/hdfs_hook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07565012">
+          <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>

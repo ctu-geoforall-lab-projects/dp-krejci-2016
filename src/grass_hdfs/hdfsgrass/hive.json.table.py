@@ -76,12 +76,6 @@
 #% guisection: table
 #%end
 #%option
-#% key: jar
-#% type: string
-#% description: comma separated list of jar lib to import. must be stored in /usr/local/spatial/jar/
-#% guisection: table
-#%end
-#%option
 #% key: jsonpath
 #% type: string
 #% description: hdfs path specifying input data
@@ -103,7 +97,7 @@ import grass.script as grass
 
 
 def main():
-    if not options['table'] and not options['struct']:
+    if not options['attributes'] and not options['struct']:
         grass.fatal("Must be defined <attributes> or <struct> parameter")
 
     conn=ConnectionManager()

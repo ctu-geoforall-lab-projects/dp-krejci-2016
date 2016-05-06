@@ -35,7 +35,11 @@
 #% required: yes
 #% description: hive sql command
 #%end
-
+#%flag
+#% key: f
+#% type: string
+#% description: fetch results
+#%end
 
 from hdfs_grass_lib import ConnectionManager
 import grass.script as grass
@@ -46,9 +50,10 @@ def main():
 
     conn.get_current_connection(options["conn_type"])
     hive = conn.get_hook()
-    result=hive.run_cli(options['hsql'])
-    for i in result:
-        print(i)
+    result=hive.execute(options['hsql'],options['fatch'])
+    if flags['f']:
+        for i in result:
+            print(i)
 
 
 

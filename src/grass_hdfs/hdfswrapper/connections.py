@@ -34,7 +34,7 @@ ENCRYPTION_ON = False
 # except:
 #     pass
 
-class InitStorage():
+class InitStorage:
     def __init__(self,connection):
         self.conn=connection
         self.engine = settings.engine
@@ -157,8 +157,6 @@ class Connection(Base):
             print(self.conn_id)
             return hdfs_hook.HDFSHook(hdfs_conn_id=self.conn_id)
 
-        #except:
-            #return None
 
     def __repr__(self):
         return self.conn_id

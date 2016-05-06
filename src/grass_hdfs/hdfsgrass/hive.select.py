@@ -62,7 +62,7 @@ def main():
         options['schema']='default'
 
     out = hive.get_results(hql=options['hsql'],
-                     schema=options['schema'])
+                            schema=options['schema'])
 
     if options['out']:
         with open(out,'rw') as io:

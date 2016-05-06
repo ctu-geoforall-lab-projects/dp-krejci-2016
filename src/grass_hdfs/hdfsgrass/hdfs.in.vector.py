@@ -52,22 +52,22 @@ from hdfs_grass_lib import JSONBuilder,GrassHdfs
 import os
 
 def main():
+    transf = GrassHdfs(options['driver'])
     if options['hdfs'] == '@grass_data_hdfs':
-        LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
-        MAPSET = grass.gisenv()['MAPSET']
-        MAPSET_PATH = os.path.join('grass_data_hdfs',LOCATION_NAME,MAPSET,'external')
-        options['hdfs'] = MAPSET_PATH
+        options['hdfs'] = transf.get_path_grass_dataset()
+
     print options['hdfs']
     grass_map = {"map": options['map'],
                  "layer": options['layer'],
                  "type": options['type'],
                  }
+
     json = JSONBuilder(grass_map)
     json = json.get_JSON()
 
     print('upload %s'%json)
 
-    transf = GrassHdfs(options['driver'])
+
     transf.upload(json, options['hdfs'])
 
 

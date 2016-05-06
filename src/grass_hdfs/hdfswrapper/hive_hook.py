@@ -99,7 +99,7 @@ class HiveBase(object):
 
     def add_jar(self, jar_list,path=False):
         """
-        Function for adding jars to the hive path
+        Function for adding jars to the hive path.
         :param jar_list: list of jars
         :type jar_list: list
         :param path: if true , jar_list must incliudes path \
@@ -137,7 +137,7 @@ class HiveBase(object):
         if field_dict and field_dict is not isinstance(field_dict,dict):
             field_dict = string2dict(field_dict)
             if field_dict is None:
-                print("Attribut is not defined")
+                print("Attributes are not defined")
                 return None
 
         logging.info('field_dict: %s' % field_dict)
@@ -255,10 +255,7 @@ class HiveBase(object):
         if not delimiter:
             delimiter=','
 
-        if external:
-            external='external'
-        else:
-            external=''
+
         if stored == 'textfile':
             stored=None
 
@@ -268,7 +265,10 @@ class HiveBase(object):
         fields = ", ".join(
             [k + ' ' + v for k, v in field_dict.items()])
         hql=''
-        hql += "CREATE {external} TABLE IF NOT EXISTS {table} ({fields}) "
+        if external:
+            hql += "CREATE EXTERNAL TABLE IF NOT EXISTS {table} ({fields}) "
+        else:
+            hql += "CREATE TABLE IF NOT EXISTS {table} ({fields}) "
         if partition:
             pfields = ",".join(
                 [p + " STRING" for p in partition])

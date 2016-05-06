@@ -17,7 +17,7 @@ from sqlalchemy import Table
 from hdfs_grass_util import read_dict, save_dict, get_tmp_folder
 from grass.pygrass.modules import Module
 from grass.script.core import PIPE
-
+import grass.script as grass
 
 class ConnectionManager:
     """
@@ -109,9 +109,9 @@ class ConnectionManager:
     @staticmethod
     def drop_connection_table():
         from sqlalchemy import MetaData
+        md = MetaData()
+        connTable = Table('connection', md)
         try:
-            md = MetaData()
-            connTable = Table('connection', md)
             connTable.drop(settings.engine)
             os.remove(settings.grass_config)
             print('***' * 30)
@@ -176,7 +176,7 @@ class ConnectionManager:
 
     def get_current_connection(self, conn_type):
         idc = self.get_current_Id(conn_type)
-        if id:
+        if idc:
             self.set_connection(conn_id=idc, conn_type=conn_type)
             self._connect()
         else:
@@ -309,17 +309,17 @@ class GrassMapBuilder:
     def create_map(self):
         pass
 
-class GRASS2HDFS(object):
-    """Base class for transfering data from GRASS to HDFS"""
-
+class GrassHdfs():
     def __init__(self, conn_type):
         self.conn = None
         self.hook = None
         self.conn_type = conn_type
         self._init_connection()
         if self.hook is None:
-            print("connection is not established")
-            sys.exit()  # TODO
+            sys.exit("connection is not established")  # TODO
+
+        if conn_type !='webhdfs':
+            sys.exit('Interface for conn_type: %s  is not implemented'%conn_type)
 
     def _init_connection(self):
         self.conn = ConnectionManager()
@@ -333,18 +333,15 @@ class GRASS2HDFS(object):
         print(' path :\n    %s\n' % hdfs)
         print('***' * 30)
 
-
-class GrassHdfs(GRASS2HDFS):
-    def __init__(self,conn_type):
-        self.conn_type = conn_type
-        if conn_type !='webhdfs':
-            sys.exit('Interface for conn_type: %s  is not implemented'%conn_type)
-
-        super(GrassHdfs, self).__init__(self.conn_type)
+    def get_path_grass_dataset(self):
+        LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
+        MAPSET = grass.gisenv()['MAPSET']
+        dest_path=os.path.join('grass_data_hdfs',LOCATION_NAME,MAPSET,'vector')
+        self.mkdir(dest_path)
+        return dest_path
 
     def upload(self, fs, hdfs, overwrite=True, parallelism=1):
-        #self.mkdir('/user/test1')
-        ##sys.exit()
+
         logging.info('Trying copy: fs: %s to  hdfs: %s   ' % ( fs,hdfs))
         self.hook.upload_file(fs, hdfs, overwrite, parallelism)
         self.printInfo(hdfs,"File has been copied to:")
@@ -371,22 +368,22 @@ class GrassHdfs(GRASS2HDFS):
 
 class HDFS2HIVE(object):
     def __init__(self):
-        NotImplemented
+        raise NotImplemented
 
     def connect(self):
-        NotImplemented
+        raise NotImplemented
 
     def add_jars(self, list):
-        NotImplemented
+       raise NotImplemented
 
     def add_functions(self):
-        NotImplemented
+        raise NotImplemented
 
     def load_data(self, table, fs=None, hdfs=None):
-        NotImplemented
+        raise NotImplemented
 
     def drop_table(self, name):
-        NotImplemented
+        raise NotImplemented
 
     def execute(self, nsql):
-        NotImplemented
+        raise NotImplemented
