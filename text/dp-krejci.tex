@@ -18,9 +18,7 @@
 \newcommand{\squeezeup}{\vspace{-2.5mm}}
 
 \usepackage{enumitem}
-
 \usepackage{url}
-
 
 \usepackage{verbatim}
 %\usepackage{pdfpages}
@@ -266,22 +264,29 @@ morecomment=[l]{\#},
 		  designed to detect and handle failures at the application layer, so delivering a 
 		  highly-available service on top of a cluster of computers,
 		  each of which may be prone to failures."}(Apache Hadoop,\cite{hadoop_web})
+ \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.3\textwidth]{./img/664px-Hadoop_logo.png}
+    \caption[Hadoop architecture2]{\centering Hadoop Logo.}
+ \end{figure}
+		
 		\paragraph*{History}goes back to 2002 when the 
 open-source project Apache Hadoop software for reliable, scalable,
 distributed computing was launched. The project was originally
 developed within Yahoo! company. That was the first company
 which used framework Hadoop in production environments.
 
+ 
 At the beginning of October 2003, Hadoop project was launched to improve performance
 of the Apache Nutch\cite{nutch_web} web search engine and in the short time (in January 2006) was moved to the new Hadoop sub project.
 At the same time  distributed file system called Google
 file system\cite{google_fs}, with the specific, permitting, efficient and reliable access
-the huge amount of data, has been created. This abstract filesystem, widely called "user level"
-filesystem runs as a service that is accessible via APIs and libraries. 
+the huge amount of data, has been created. This abstract file system, widely called "user level"
+file system runs as a service that is accessible via APIs and libraries. 
 In 2008, Hadoop was mad own top-level project at Apache.\cite{hadoop_web_news} By this time, Hadoop was being used by many
 other companies besides Yahoo!, such as Last.fm, Facebook, and the New York Times. 
 
- \begin{figure}[h!]
+ \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.6\textwidth]{./img/schema2.pdf}
     \caption[Hadoop architecture2]{\centering Hadoop HDFS and MapReduce layers}
@@ -335,11 +340,12 @@ a high throughput of data. (5)\textbf{Lots of small files} allows to read and op
 HDFS is based on traditional hierarchical file model. As in other filesystems, HDFS allows basic file operations: 
 read, write, rename, move etc. However it doesn’t support hard and soft links. Below is the example of copying file between HDFS folders. 
 \vskip-2ex
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 $ hadoop fs -cp /user/hadoop/file1 /user/hadoop/file2 
 \end{lstlisting}\end{footnotesize} 
 
-\begin{figure}[h!]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=1\textwidth]{./img/hdfsarchitecture.png}
     \caption[HDFS architecture1]{\centering HDFS architecture \footnotemark}
@@ -430,6 +436,46 @@ DataNodes which store block with the desired file by asking the NameNode which s
 JobTracker appends tasks to TaskTracker according to the  information obtained from NameNode and monitors the status of each task.
 
 
+\subsection{HDFS access} %TODO check grammar
+Several ways how to use HDFS interactively are available. In analogy to file system,  is  the main task to move data from local data to HDFS, access it and remove. As in standard file system, in HDFS is provided permission model as well. In paragraphs below are described access methods to HDFS and permissions models.
+
+\paragraph{Permission model}
+The permission model of HDFS has several levels. The level of files and directory similar to POSIX model. Each file and directory is associated with an owner and a group. Each item in HDFS, such a file and directory has separate permission. Thus, individual permissions for the user, that is a user, for other users that are member of group and the rest of users. Permission are: r for reading, w for writing and x not for execution, but for permission to access a child of the directory.\cite{permission}
+
+There are two different models for checking the user's identity.
+\begin{itemize}
+\item \textbf{simple}  In this model is the identity of user derived from host operating system.
+\item \textbf{Kerberos} In Kreberos model, is managed the identification process by Kerberos credentials system which is based on 'tickets' to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.\cite{kerberos}
+\end{itemize}
+
+The identity mechanisms are  extrinsic to HDFS itself. Thus, within HDFS is not handler for creating user identities, establishing groups, or processing user credentials.
+
+\paragraph{Access tools}
+The basic mechanism to contraction with HDFS is \textit{hadoop fs}  command line tool. 
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
+bin/hadoop fs <args>
+\end{lstlisting}
+\end{footnotesize}
+All fs shell commands take path URIs as arguments. Most of the commands in FS shell are derived from Unix commands. 
+
+The other mechanism for accessing HDFS is through application programming interfaces such a APIs: Native Java API, which has a base class \textit{org.apache.hadoop.fs\\.FileSystem}; C API that works through the \textit{libHDFS} library, and there's a header file, \textit{hdfs.h} which has information on the API calls.
+
+In addition there is REST API which widely used with connection to World Wide Web. REST is an architectural style consisting set of rules and constraints applied to components within distributed system. The WebHDFS REST API components fully cover the standard fs tool. The API consists four main groups of HTTP requests, such as: HTTP GET for fetching information, HTTP PUT for manipulation request, HTTP POST for append or concat file and HTTP DELETE for deleting files and directories.\cite{rest_api}
+The Unix tool \textit{curl}  allows to access API from the Unix terminal. The example below demonstrate submit  HTTP POST request using the URL in the Location header with the file data to be appended.
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
+$ curl -i -X POST -T <LOCAL_FILE> "http://<DATANODE>:<PORT>/webhdfs/v1/<P..."
+\end{lstlisting}
+\end{footnotesize}
+The client receives a response with zero content length:
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
+HTTP/1.1 200 OK
+Content-Length: 0
+\end{lstlisting}
+\end{footnotesize}
+
 	\subsection{Parallel computing - MapReduce}		
 The \emph{MapReduce} is a programming model for processing and generating large data
 sets. The \emph{MapReduce} abstraction is inspired by the Map and Reduce functions, which is commonly
@@ -454,9 +500,9 @@ of captured data, the size amount of weakly data is relatively small(~100Mb) whi
 We are interesting in computational of then  mean differences between transmitted and received signal for 
 each link in the period between 2014-07-07 and 2015-07-07.
 
-
 Below is the sample of data stored as CSV.
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 linkid;data;rx;tx
 324;"2014-07-07 11:14:56.552";-48.9;10
 256;"2014-07-07 11:14:59.703";-99.9;7
@@ -465,10 +511,10 @@ linkid;data;rx;tx
 256;"2015-07-07 17:10:56.484";-85.3;10;
 \end{lstlisting}\end{footnotesize}
  
-
 The text lines above are presented to map functions as key-values pairs.
 The map function extracts data from date 2014-07-07 and creates pairs {link:(rx-tx)}
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 {324:-58.9}
 {256:-106.9}
 ...
@@ -479,7 +525,8 @@ The map function extracts data from date 2014-07-07 and creates pairs {link:(rx-
 
 The output is processed by MapReduce framework before is being sent to reduce function.
 Mentioned process sorts pairs by key as shown bellow.
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 {324:[-58.9,-57.1]}
 {256:[-106.9,-95.3]}
 \end{lstlisting}\end{footnotesize}
@@ -702,7 +749,8 @@ Last phase, building the \textit{global index} provide index structure of all pa
 provides using MapReduce parallel framework.  After this part is done the NameNode creates a global index
 and store it in memory. The index is based on dictionary; key and value.
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 -179.3248215,-54.934357,6.9290401,71.2885321,part-00000_data_00001
 -171.773529,-54.81145,6.9261512,65.1480999,part-00000_data_00001_1
 6.9225032,-46.44586,179.3801209,78.0657531,part-00000_data_00002_2
@@ -830,15 +878,9 @@ and at least significantly more than HadoopGIS. On the other hand, the leader fo
 development of additional functionality is SpatialHadoop.
 
 
-
- 
-
-
 \begin{table}[!htbp]
 \begin{scriptsize}
 \centering
-
-
 \begin{tabular}{@{}|l||l|l|@{}}
 \toprule
 Group                       & Framework                                                        & Description                                                                                                                                                  \\ \midrule \midrule
@@ -901,9 +943,12 @@ deploying VM, handling containers, configuring network and the other.
 %\vskip-2ex
 %\begin{figure}[!htbp]
 %\lstset{extendedchars=false,escapeinside=''}
-%\begin{footnotesize}\begin{lstlisting}[style=mybash]
+%\begin{footnotesize}
+
+\begin{lstlisting}[style=mybash]
 %$ gcloud config configurations create my-config
-%\end{lstlisting} \end{figure}
+%\end{lstlisting} 
+
 %\vskip-3ex
 Configuration allows to set default general variables: account, project, default region 
 and zone, proxy etc. To set up configuration profile: default zone, region is appropriate. 
@@ -913,7 +958,8 @@ Below is an example of deploying VM instance with default configuration. The ins
 is accessible by \textit{gcloud} ssh tool(e.g. instance run in zone asia-east1). Access can be also provided 
 by standard ssh protocol.
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 $ gcloud compute instances create my-instance
 ...
 $ gcloud compute ssh my-instance --zone asia-east1
@@ -931,7 +977,8 @@ available in five languages: Go, Java, Note.js, Python and Ruby. Below is shown
 example of Python API library. In this case the sample of code allows to initialize  
 instance of Cloud Dataproc and get JSON object represented list of clusters.
 
-\begin{footnotesize}\begin{lstlisting}[style=python]
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
 from oauth2client.client import GoogleCredentials
 project = 'my-test-project'
 region = 'global'
@@ -967,7 +1014,8 @@ Design of network is suited to ensures maintenance  of custom services efficient
  region\textgreater-\textless zone\textgreater \ e.g. \textit{europe-west1-d}. 
 
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 ## view list of available zones.
 $ gcloud compute zones list
 NAME           REGION       STATUS NEXT_MAINTENANCE 
@@ -1051,7 +1099,7 @@ the hierarchy and each child has only one parent. Inheritance of hierarchy allow
 in easy way sets and subsets of abstract classes, such as Organization, Project and Resources. 
 
 
-\begin{figure}[h!]
+\begin{figure}[!htbp]
     \centering
     %\subfloat[Roles]{ \includegraphics[width=0.4\textwidth]{./img/iamroles.png} }%
     %\qquad
@@ -1090,10 +1138,12 @@ Storage for data backup or archiving data is two explanation of use cases.
 \paragraph{Buckets location} are configurable by three properties, specifically: global unique 
 name, storage class and geographical location of where the bucket is stored.
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 #creating two new buckets using command-line tool gsutil
 $ gsutil mb -p my-project gs://mwdata gs://mwprocessed -c durable_reduced_availability
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
  
 
 All buckets are covered under a single namespace thus, the name of bucket must be unique. 
@@ -1147,7 +1197,8 @@ specifying ACL such as  Google Storage ID, Google account email address, Google
 group email address, Google Apps domain, Special identifier for all Google 
 account holders and Special identifier for all users.
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 #Identify an object that the user uploaded.
 gsutil acl get gs://mwdata
 \end{lstlisting}\end{footnotesize}
@@ -1162,10 +1213,12 @@ list of predefined ACL for quick settings of access restrictions such as project
 private, public-read, public-read-write, authenticated-read, 
 bucket-owner-read and bucket-owner-full-control.
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 #usage of a predefined ACL to an object during object upload
 gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
  
 
 
@@ -1229,10 +1282,12 @@ like cancel or delete active
 
 
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 #creation of cluster with default settings using command-line tool gcloud
 $ gcloud dataproc clusters create <cluster-name>
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
  
 
 \paragraph{Cluster Properties} are by default configured to deploy cluster with desired 
@@ -1270,7 +1325,8 @@ Google Storage. HDFS is scalable across VM’s, but doesn’t scale per instance
 \textit{Machine types} configuration define the virtualized hardware resources available to an 
 virtual machine instance. Two ways how to define configuration are available: \textit{predefined instance} and \textit{custom machine types}.  
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 # print list of predefined instances
 $ gcloud compute machine-types list
 NAME           ZONE           CPUS MEMORY_GB DEPRECATED
@@ -1278,7 +1334,8 @@ f1-micro       asia-east1-c   1     0.60
 g1-small       asia-east1-c   1     1.70
 n1-highcpu-16  asia-east1-c   16   14.40
 ...
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
 
 
 Customization of machines availability is suitable for project with workloads where the computing 
@@ -1311,7 +1368,11 @@ spatial modelling, and visualization of many types of data. It is Free (Libre) S
 (GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial Foundation."\footnote{Cited from:
  \url{https://grass.osgeo.org/documentation/general-overview/}}}
 
- 
+ \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.2\textwidth]{./img/grasslogo.png}
+    \caption[Logo GRASS]{\centering Logo of GRASS GIS.}
+ \end{figure}   
 GRASS GIS vector map is a data layer which consists number set of a feature in geographic space. 
 These objects are represented by points, lines, polygons, and volumes. Usually, each feature in the 
 map is somehow connected with the set of attribute \textit{layers} stored in a database. 
@@ -1355,9 +1416,11 @@ time, this language also allows traditional map/reduce programmers to plug in th
 reducers when it is inconvenient or inefficient to express this logic in HiveQL."}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-    
 \newpage
 \chapter*{Experiment framework}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Practical framework}
 \paragraph{Goals}
@@ -1406,24 +1469,28 @@ interval. It protects a database from overloading by queries for all rows in one
 
 As a machine for exporting, merging and uploading data to bucket was used VM instance from Google Compute engine.
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 #create compute engine with 500 GB persistent disk
 $ gcloud compute --project "spatial-hadoop" disks create "vmexport" --size "500" \
 --zone "europe-west1-b" --type "pd-standard" --image \
 "/debian-cloud/backports-debian-7-wheezy-v20160418"
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
  
 Table public.record from mwdb database has been exported in time step one week. The merge of each exported 
 csv files has been merged using Unix \textit{cat} command. The size of exported table record is around 98 GB or 17 GB tarball.
 
 
-\begin{footnotesize}\begin{lstlisting}[style=mybash]
+\begin{footnotesize}
+\begin{lstlisting}[style=mybash]
 #create bucket 
 $ gsutil mb -l EU gs://mwdata_export
 #copy big file with slicing
 $ gsutil -m -o GSUtil:parallel_composite_upload_threshold=100M cp \
 mwdump.csv gs://mwdata_export/
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
  
 \subsection{Networking}
 https://dzone.com/articles/hadoop-rest-api-webhdfs
@@ -1472,7 +1539,8 @@ non-distributed mode as a single Java process. This mode  is suitable for MapRed
  like multi-node. It's provided by running Hadoop daemons in separate Java processes. To configure pseudo-distributed Hadoop must be modify \textit{core-site.xml} and \textit{hdfs-site.xml} file\cite{hadoop_modes}.  
 
 
-\begin{footnotesize}\begin{lstlisting}[style=python]
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
 #etc/hadoop/core-site.xml:
 -
 <configuration>
@@ -1491,7 +1559,8 @@ non-distributed mode as a single Java process. This mode  is suitable for MapRed
         <value>1</value>
     </property>
 </configuration>
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
 
 \item \textbf{Fully distributed cluster} is an ideal approach for harnessing the potential of
  parallel computations. The nodes are on virtualized machines with assigned machine capability 
@@ -1604,7 +1673,8 @@ the main script \textit{bdutil\_env.sh} and other bash files stored in directory
 example below is shown configuration of task tracker where the value is set by global variable 
 \textit{MAP\_SLOTS}. To call global variable must be used convention \textit{envVar name=""}.
 
-\begin{footnotesize}\begin{lstlisting}[style=XML]
+\begin{footnotesize}
+\begin{lstlisting}[style=XML]
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
@@ -1615,7 +1685,8 @@ example below is shown configuration of task tracker where the value is set by g
     be run simultaneously by a tasktracker.</description>
    </property>
 </configuration>
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
 
 
  
@@ -1636,7 +1707,8 @@ of files execution is according to the sort in the list. The main script \textit
 \ref{bdutilenv} is executed as default first without presence in the list. Below is in the list script 
 for downloading and compiling spatial frameworks for Hadoop and their dependency. Bash script \textit{spatial.sh} shown below 
 %
-\begin{footnotesize}\begin{lstlisting}[style=python]
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
 COMMAND_GROUPS+=(
   'install_spatial:
      spatial1.sh
@@ -1646,17 +1718,20 @@ COMMAND_GROUPS+=(
 COMMAND_STEPS+=(
   'install_spatial'
 )
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
 is defined by command group where is defined a path to the bash for execution. List of command steps is a
  global variable and its items appends to execution the list.
  !!!!Staging binaries
  
- \begin{footnotesize}\begin{lstlisting}[style=python]
+ \begin{footnotesize}
+\begin{lstlisting}[style=python]
 ROLE=$(/usr/share/google/get_metadata_value attributes/role)
 if [[ "${ROLE}" == 'Master' ]]; then 
 	do----
 fi
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
  
 \$ gcloud dataproc clusters create my-dataproc-cluster \
     --initialization-actions gs://my-bucket/download-job-jar.sh
@@ -1666,22 +1741,26 @@ fi
 \begin{itemize}
 \item \textbf{Case 1 - development configuration}  This configuration of cluster suits well to debugging 
 of Hadoop and Hive client site. Cluster is configured as pseudo mode.
-\begin{footnotesize}\begin{lstlisting}[style=python]
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
 $ ./bdutil -P spatial-cluster --env_var_files \
 extensions/querytools/querytools_env.sh,single_node_env.sh,spatial.sh deploy
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
 
 
 \item \textbf{Case 2 - computational configuration}  To compare configuration above, Case 2 is fully 
 distributed deployment of cluster. To modify temporally settings of hardware, storage etc. can be used 
 additional reconfiguration using flags, which overwrite default one.
 %
-\begin{footnotesize}\begin{lstlisting}[style=python]
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
 $ ./bdutil -P spatial-cluster --num_workers 10 \
      --machine_type n1-standard-6\
      --env_var_files \
      extensions/querytools/querytools_env.sh,spatial.sh deploy
-\end{lstlisting}\end{footnotesize}
+\end{lstlisting}
+\end{footnotesize}
 
 \end{itemize}
 
@@ -1703,6 +1782,7 @@ $ ./bdutil -P spatial-cluster --num_workers 10 \
  
         
 \section{GRASS Hadoop framework}
+\paragraph{Background}
 Desktop application GRASS GIS became as a powerful environment for analysing spatial data, which can 
 reach characteristic of big data. In a box of GRASS GIS are thousands of modules   The main motivation 
 behind GRASS GIS framework for Hadoop is a vision to allow user to process processing big data natively from desktop environment. In proprietary GIS field, ESRI comes with package \textit{Geoprocessing tools for Hadoop}\cite{esri_gtfp} 
@@ -1715,9 +1795,18 @@ their Java library \textit{Esri Spatial framework for Hadoop}. More specifically
 \item run an Oozie workflow in Hadoop, and to check the status of a submitted workflow.
 \end{itemize}
  
+ 
 In first the chapter\ref{summary_libs} of theses has been described and summarized features of three different frameworks for processing large scale data. 
 As the most suitable framework for the this project became Esri framework, which can be deployed without extra customisation, natively includes considerable package of spatial functions, furthermore the documentation  and examples of usage are  the most comprehensive. Selected library has been used for testing and for explanation of usage. On the other hand although other libraries have not been tested, the modular design of framework allows to partition each steps of process which ensure easier future development with another aim. For example, user can generate GeoJSON from GRASS map and load it  to HDFS using \textit{hdfs.import.vector}, after that, create Hive table using \textit{hive.json.table} and load data. These steps are independent on any spatial library. Thus the interface for interaction between GRASS and Hive/Hadoop can be used as library for future development of another project. Currently, the framework supports HadoopGIS as well but the testing is not provided within this work.
+ 
 
+  \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{./img/idea_schema.pdf}
+    \caption[Resources]{\centering Resources for processing big data within desktop GIS}
+ \end{figure} 
+
+				
 \subsection{Functionality}
 The GRASS Hadoop Framework(GHF) can be described as Add-ons package of modules for GRASS GIS which supports interaction between GIS desktop environment and Hadoop/Hive. Although GHF can be used for transferring data between file system and HDFS. The main purpose is to bring possibility of usage of spatial frameworks developed for Hadoop to the GIS desktop application. 
 
@@ -1725,7 +1814,8 @@ Hadoop based spatial library for data processing can be used externally from the
 
 The package includes several modules\ref{tbl:modules} for managing connections, exporting GRASS maps to customised GeoJson(suitable for serialisation), loading them to HDFS, creating tables in Hive, loading data into table and after processing, importing result back to GRASS.
 
-\begin{table}[]
+
+\begin{table}[!htbp]
 \centering
 \begin{scriptsize}
 \begin{tabular}{@{}|l|l||l|l|@{}}
@@ -1771,20 +1861,126 @@ rmi           & Remove connection by id                                         
 
 \paragraph{Defining connection} Parameter \textit{driver} and \textit{conn\_id} are mandatory for any connection profile. Parameter \textit{driver} define the protocol for communication with database and  and \textit{conn\_id} is a free unique string of connection profile. Other parameters as \textit{host}, \textit{port}, \textit{login}, \textit{passwd}, \textit{schema}, \textit{authmechanism} depends on a configuration of database server. After new connection is added, the module automatically set the new one as active. 
 
-\paragraph{Management of connections} Module offers several flags for handling management of connections. In table\ref{tbl:connections} are described flags and theirs functions. In case of controlling several Hadoop clusters is suitable  approach to define its connection profiles  and switching between by setting the primary one by flag -a with parameter \textit{conn\_id} and \textit{driver}.
+\paragraph{Connections management} Module offers several flags for handling management of connections. In table\ref{tbl:connections} are described flags and theirs functions. In case of controlling several Hadoop clusters is suitable  approach to define its connection profiles  and switching between by setting the primary one by flag -a with parameter \textit{conn\_id} and \textit{driver}.
+
+ \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{./img/ghf_overview.pdf}
+    \caption[Components interaction]{\centering Components interaction}
+ \end{figure} 
+\subsubsection{GRASS HDFS interface}
+The modules start with \textit{hdfs.*}(exclude \textit{hdfs.db.connection}) provide tools for transferring data between GRASS maps or filsystem and Hadoop distributed file system. In addition the module \textit{hdfs.info} provide basic metadata of files stored in HDFS.
+
+\paragraph{HDFS metadata} Module \textit{hdfs.info} currently support several basic operation for checking if path exist, recursive listing of directories and creating HDFS directory.
+
+%TODO run cluster and show output
+
+\paragraph{GRASS Map to HDFS} Vector maps in native GRASS format are not suitable for serialisation which is needed to exploiting the potential of spatial frameworks for Hadoop. The effective way, and in the most cases the only possible is to store spatial data in JSON, especially GeoJSON. This format is well suited for serialisation and function for reading it is in standard catalogue of Hive. 
+
+Module \textit{hdfs.in.vector} supports transformation of GRASS map to HDFS in GeoJSON format. The behind the module are two main steps. Firstly, map is converted to GeoJSON using \textit{v.out.ogr} and edited to format which is suitable for parsing by widely known SerDe functions for Hive. After that, custom GeoJSON format is uploaded to the  destination on HDFS. By default, the HDFS path is set to \textit{hdfs://grass\_data\_hdfs/\textless LOCATION\_NAME \textgreater/\textless MAPSET \textgreater /vector}.
+
+In addition, hdfs.* package also include module \textit{hdfs.in.fs} which allows to transfer external files to HDFS. Usage of this module came important for uploading CSV  or GeoJSON files. For uploading external GoeJSON files to HDFS is necessary to modify its standardised format. The serialiser\ref{serialiser}  for JSON has several format requirements. %TODO add ref
+
+\begin{itemize}
+\item Each vector feature must be on separated/new line.
+\item brackets must be at the same line.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+// this will work
+{ "key" : 10 }
+
+// this will not work
+{
+  "key" : 10 
+}
+\end{lstlisting}
+\end{footnotesize}
+
+%{footnotesize}
+\item header of GeoJSON must be erased. For GeoJSON exported by \textit{v.out.ogr} means to remove first 5 lines and last 3.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+//GeoJSON format. Not possible to serialise
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def...
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "cat": 546 }, "geometry":...
+{ "type": "Feature", "properties": { "cat": 539 }, "geometry":...
+]
+}
+
+// possible to serialise
+{ "type": "Feature", "properties": { "cat": 546 }, "geometry":...
+{ "type": "Feature", "properties": { "cat": 539 }, "geometry":...
+\end{lstlisting}
+\end{footnotesize}
+\end{itemize}
 
 
-\subsubsection{Hadoop interaction}
-The modules start with \textit{hdfs.*}(exclude \textit{hdfs.db.connection}) provide tools for transferring data between GRASS maps or filsystem and Hadoop distributed file system and its metadata. 
 
-\subsubsection{Hive interaction}
+\paragraph{HDFS GeoJSON to GRASS map}
+To bring results back from HDFS is ensured by module \textit{hdfs.out.vector}. The module download deserialised GeoJSON file from HDFS and in second step modify file to standard GeoJSON format. The second step is important to make file consistent according to GeoJSON standard. In that time, format is readable by \textit{v.in.ogr} which is based on GDAL/OGR library and can be transformed to the native vector map format.
+
+\subsubsection{GRASS Hive interface}
+Two spatial frameworks, from ESRI and HadoopGIS use Hive as a top layer for usage map reduce based library in more expressive way. The GRASS Hadoop Framework consist several modules starts with prefix hive.* analogically to mentioned hdfs.* modules. Module for connection to Hive is covered by module \textit{hdfs.db.connect} which is an exception in naming nomenclature. The "hive" modules provide functions for creating tables and loading data into. Furthermore is available module for select queries and execute commands. Main two modules \textit{hive.csv.table} and \textit{hive.json.table} support user friendly creation of tables and loading data into. The process of creation table and loading data can be split. The hive.*.table modules support creation table without loading data. This step can be provided by module hive.table.load or simply by Hive command using hive.execute.
 
 
-	\subsection{Implementation}
-				
-\section{Usage: Spatial data processing}
+\paragraph{Creation of table} Spatial framework from Esri supports reading  from several file format.  The Framework allows to create geometric data type from  WKB, JSON and GeoJSON. Table can be crated from \textit{hiveserver2} command line or with using developed module  \textit{hive.json.table} within GHF.D Defining feature of table is provided using parameters and flags of module. It module to user make table with GeoJSON table without advanced knowledges of Hive syntax. In table \ref{hive.json} are described main features of each parameter. The examples of usage are shown in the next section\ref{sec:usage_spatial}. Second, slightly modified module supports creation of table suited for loading CSV data. In hive.* package is also module for loading data to table. This module is not necessary used, because is build-in for hdfs.*.table modules. 
+
+
+
+\begin{table}[!htbp]
+\begin{footnotesize}
+\centering
+\begin{tabular}{@{}|l|l||l|l|@{}}
+\toprule
+parameter  & description                                                                                                                & flag & description                  \\ \midrule  \midrule
+driver     & \begin{tabular}[c]{@{}l@{}}Type of database driver\\ options:\\ hive\_cli,hiveserver2,\end{tabular}                        & -e   & create external table        \\ \midrule
+table      & name of table                                                                                                              & -o   & overwrite data in table      \\ \midrule
+attributes & \begin{tabular}[c]{@{}l@{}}python dictionary\\ \{attribute:datatype\}\end{tabular}                                         & -d   & Firstly drop table if exists \\ \midrule
+struct     & structure of json                                                                                                          &      &                              \\ \midrule
+stored     & output format                                                                                                              &      &                              \\ \midrule
+serde      & \begin{tabular}[c]{@{}l@{}}java class for serialization of json\\ default: org.openx.data.jsonserde.JsonSerDe\end{tabular} &      &                              \\ \midrule
+outformat  & java class for handling output format                                                                                      &      &                              \\ \midrule
+jsonpath   & hdfs path specifying input data                                                                                            &      &                              \\ \bottomrule
+\end{tabular}
+\caption{Description of \textit{hive.json.table} parameters and flags}
+\label{hive.json}
+\end{footnotesize}
+\end{table}
+
+\paragraph{Select and execute} In package are two additional modules for advanced commands. The module \textit{hive.select} allows to build custom query and give the result to standard out or to the file. The second one, module for execution can be used for any command but working properly only with non-optimised query type, as creating table, loading data, dropping databases etc. Thus queries without complex output result.
+
+
+\begin{figure}[!htbp]
+   \centering
+   \includegraphics[width=0.8\textwidth]{./img/modules_schema.pdf}
+   \caption[GHF workflow]{\centering Process workflow of GRASS Hadoop Framework  }
+\end{figure} 
+ 
+\subsection{Implementation}
+Package GRASS Hadoop Framework has been developed in python language. The background of the choice of python language is fact, that GRASS GIS natively support python and consists powerful API. As GRASS GIS modular design, the user interface of package GRASS Hadoop Framework is modular as well. The user interface is provided by command line tools. 
+The design of framework based on several layers. The core library, the middle interface and the top level interface. The core library of this project are wrappers for HDFS and Hive drivers and its management of connection. The middle interface are factories for the top level interface, thus modules  accessible from GRASS GIS user interface.
+
+  \begin{figure}[!htbp]
+   \centering
+   \includegraphics[width=1\textwidth]{./img/implementation.pdf}
+   \caption[Architecture of GHF]{\centering Architecture of GRASS Hadoop Framework}
+\end{figure} 
+ 
+ 
+\subsection{External libraries}
+In this section are introduced the external libraries for interaction with HDFS and Hive which are used in GHF. 
+
+For communication with HDFS are used two libraries. First, wrapper of \textit{HdfsCLI} command line shell wchich is primary developed to makes interaction with HDFS more intuitive than standard \textit{hadoop fs} command line shell. It  has features as completion, command history and ANSI formatting. For this tools is implemented wrapper as a python library. The controlling of remote HDFS is based on WebHDFS REST API and HttpFS supporting both secure and insecure clusters.
+ 
+Second library which has been developed for Spotify project, is called Snakebite. This library is as well as first shared under Apache licence, Version 2.0. The library is written as pure HDFS client due to expensive calling hadoop from python. The HDFS client instead of calling hadoop use Protocol Buffers, which  are a language-neutral, platform-neutral extensible mechanism for serializing structured data.\cite{protobuf}
+
+	
+\section{Usage: Spatial data processing}\label{sec:usage_spatial}
 	\subsection{Input data}
-
 
 	
 	Note that the 2.3.2 sandbox does not have a directory in HDFS for the root user and this can cause Hive queries to fail. To remedy this you need to issue the following commands as root:
@@ -1912,6 +2108,10 @@ Row object --> Serializer --> <key, value> --> OutputFileFormat --> HDFS files
 \bibitem{hadoop_definitive}
 WHITE, Tom. \textit{Hadoop: the definitive guide. Fourth edition.} Beijing: O'Reilly, 2015. ISBN 14-919-0163-2.
 
+\bibitem{kerberos}
+NEUMAN, B.C. a T. TS'O. \textit{Kerberos. IEEE Communications Magazine}. 1994, 32(9). DOI: 10.1109/35.312841. ISSN 0163-6804.  URL: \textless\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=312841}
+
+
 \bibitem{spatial_join}
 JACOX, Edwin H. a Hanan SAMET. \textit{Spatial join techniques}. ACM Transactions on Database Systems. 2007, 32(1), 1-5. DOI: 10.1145/1206049.1206056. ISSN 03625915. URL: \textless\url{http://portal.acm.org/citation.cfm?doid=1206049.1206056}
 
@@ -1956,10 +2156,15 @@ DEAN, Jeffrey a Sanjay GHEMAWAT. \textit{MapReduce: Simplified Data Processing o
 
 
 %%%%%%% online
-
+\bibitem{permission}
+HDFS Permissions Guide, Apache Hadoop  [online]. [2016-05-06]. URL:  \textless\url{https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsPermissionsGuide.html}
 
 \bibitem{esri_framework}
 GIS Tools for Hadoop. Esri GitHub [online]. [2016-03-18]. URL:  \textless\url{http://esri.github.io/gis-tools-for-hadoop/}
+
+\bibitem{rest_api}
+WebHDFS REST API, Apache Hadoop  [online]. [2016-05-06]. URL:  \textless\url{http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/WebHDFS.html#Append_to_a_File
+}
 
 \bibitem{amazon_emr}
 Amazon EMR. Amazon [online]. [2016-03-18]. 
@@ -2004,6 +2209,13 @@ URL: \textless\url{https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn
 \bibitem{esri_gtfp}
 Geoprocessing Tools for Hadoop, GitHub. [online]. [2016-05-18]. 
 URL: \textless\url{https://github.com/Esri/geoprocessing-tools-for-hadoopl}
+
+\bibitem{protobuf}
+Protocol Buffers, Google Developers [online]. [2016-05-29]. 
+URL: \textless\url{https://developers.google.com/protocol-buffers/}
+
+
+
 
 \end{thebibliography}
 
