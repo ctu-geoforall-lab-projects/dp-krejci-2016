@@ -1983,16 +1983,51 @@ Second library which has been developed for Spotify project, is called Snakebite
 As for HDFS for interaction with Hive has been used two libraries. The first, called \textit{pyhs2} for interaction with hiveserver2. It includes all the required packages such as SASL and Thrift wrappers. The second used library is \textit{hive-thrift-py}. From this Thrift based library has been used module for accessing meta-store of Hive.
 
 \subsection{GHF core}
-In the core library is used part of the code from \textit{Airflow}\footnote{Airflow \url{https://github.com/apache/incubator-airflow}} project, which is currently in incubator of Apache\footnote{\textit{airflow.diff} of code is in attachment}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the wrappers and to the connection manager. 
+The core provide API for the middle interface. Consists functions for interaction with HDFS and Hive database. More specifically, allows to put/get data to/from HDFS and interact with HDFS using essential file system commands. The part focused on Hive interaction, allows to create specific table for loading CSV and JSON files, fetch metadata from meta store of Hive, and execute non-optimised queries or fetch result of select query. In the core library is used part of the code from \textit{Airflow} project, which is currently in incubator of Apache\footnote{\textit{airflow.diff} of code is in attachment}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the  wrappers(hooks) and to the connection manager. 
 
 \begin{figure}[!htbp]
    \centering
    \includegraphics[width=1\textwidth]{./img/diag1_small.pdf}
-   \caption[Core diagram]{\centering Diagram of core library}
+   \caption[Core diagram]{\centering Diagram of core library classes}
 \end{figure} 
 
-\paragraph{Connection}
- 
+\paragraph{Connection} management on the  lower level is handled by  class \textit{Connection}. The class is an place holder to store information about different database instances. The class inherits the  base class for declarative class definitions of SQLAlchemy library. 
+It allows to use ORM SQL in expressive/programmatically way.  
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+
+class Connection(Base):
+    __tablename__ = "connection"
+    id = Column(Integer(), primary_key=True)
+    conn_id = Column(String(ID_LEN),unique=True)
+    conn_type = Column(String(500))
+\end{lstlisting}
+\end{footnotesize}
+The class ensure integrity of initialisation of \textit{connection} table in database and the main access point for getting hooks of each connection type, such a hdfs hook, hive hook etc. 
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+def get_hook(self):
+	"""End point for accessing hooks"""
+    if self.conn_type == 'hiveserver2':
+    		return hive_hook.HiveServer2Hook(HiveServer2Hook=self.conn_id)
+    elif self.conn_type == 'webhdfs':
+        return webhdfs_hook.WebHDFSHook(webhdfs_conn_id=self.conn_id)
+\end{lstlisting}
+\end{footnotesize}
+After initialisation instance of the \textit{Connection} class the method \textit{get\_hook} return connection hook according class variable \textit{conn\_id}, which is an unique identifier for each group of connection type, such as \textit{hiveserver2}, \textit{webhdfs} etc.
+
+\paragraph{Connection hooks}
+Python modules called \textit{*\_hook.py} consist classes which inherits from the class \textit{BaseHook} stored in module \textit{base\_hook.py}.
+\textit{BaseHook} is an abstract class for hooks and return object that can handle the connection and interaction to specific instances of these systems, and expose consistent methods to interact with them.
+
+Modules \textit{*\_hook.py} and their hook classes provide wrappers on the external libraries. Module \textit{hdfs\_hook.py} and \textit{webhdfs\_hook.py} provide essential functions as put data to HDFS, get data from HDFS, make directory, check if path exists etc. 
+The module \textit{ hive\_hook.py} consist three classes. The class \textit{HiveServer2Hook} allows to interact with \textit{hiveserver2} cli. The second class is a simple wrapper around the hive CLI. It allso support beeline Hive CLI, which is lighter due to independence on JDBC. Third class of this module -  \textit{HiveMetastoreHook} provide access to meta store of Hive. 
+
+
+These hook are API for the middle interface which is introduced in the next section.
+
 
 \section{Usage: Spatial data processing}\label{sec:usage_spatial}
 	\subsection{Input data}
