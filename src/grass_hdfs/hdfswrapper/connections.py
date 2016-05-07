@@ -18,7 +18,7 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 #from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import  synonym
-from hdfswrapper import settings
+import settings
 
 Base = declarative_base()
 ID_LEN = 250
@@ -61,11 +61,15 @@ class Connection(Base):
     is_extra_encrypted = Column(Boolean, unique=False, default=False)
     _extra = Column('extra', String(5000))
 
-    def __init__(
-            self, conn_id=None, conn_type=None,
-            host=None, login=None, password=None,
-            schema=None, port=None, extra=None,
-            uri=None):
+    def __init__(self, conn_id=None,
+                    conn_type=None,
+                    host=None,
+                    login=None,
+                    password=None,
+                    schema=None,
+                    port=None,
+                    extra=None,
+                    uri=None):
 
         self.conn_id = conn_id
         if uri:

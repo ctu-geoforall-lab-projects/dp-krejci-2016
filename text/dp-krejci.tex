@@ -1961,8 +1961,8 @@ jsonpath   & hdfs path specifying input data                                    
 \end{figure} 
  
 \subsection{Implementation}
-Package GRASS Hadoop Framework has been developed in python language. The background of the choice of python language is fact, that GRASS GIS natively support python and consists powerful API. As GRASS GIS modular design, the user interface of package GRASS Hadoop Framework is modular as well. The user interface is provided by command line tools. 
-The design of framework based on several layers. The core library, the middle interface and the top level interface. The core library of this project are wrappers for HDFS and Hive drivers and its management of connection. The middle interface are factories for the top level interface, thus modules  accessible from GRASS GIS user interface.
+Package GRASS Hadoop Framework has been developed in python language. The background of the choice of python language is fact, that GRASS GIS natively supports python and is fully covered by  API. As GRASS GIS modular design, the user interface of package GRASS Hadoop Framework is modular as well. The user interface is provided by command line modules. 
+The design of framework is based on several layers. The core library, the middle interface and the top level interface. The core library of this project are wrappers for HDFS and Hive drivers and its management of connection. The middle interface are factories for the top level interface, thus modules  accessible from GRASS GIS user interface.
 
   \begin{figure}[!htbp]
    \centering
@@ -1971,14 +1971,29 @@ The design of framework based on several layers. The core library, the middle in
 \end{figure} 
  
  
-\subsection{External libraries}
+\subsection{External libraries(drivers)}
 In this section are introduced the external libraries for interaction with HDFS and Hive which are used in GHF. 
 
+\paragraph{HDFS libraries}
 For communication with HDFS are used two libraries. First, wrapper of \textit{HdfsCLI} command line shell wchich is primary developed to makes interaction with HDFS more intuitive than standard \textit{hadoop fs} command line shell. It  has features as completion, command history and ANSI formatting. For this tools is implemented wrapper as a python library. The controlling of remote HDFS is based on WebHDFS REST API and HttpFS supporting both secure and insecure clusters.
- 
-Second library which has been developed for Spotify project, is called Snakebite. This library is as well as first shared under Apache licence, Version 2.0. The library is written as pure HDFS client due to expensive calling hadoop from python. The HDFS client instead of calling hadoop use Protocol Buffers, which  are a language-neutral, platform-neutral extensible mechanism for serializing structured data.\cite{protobuf}
 
-	
+Second library which has been developed for Spotify project, is called Snakebite. This library is as well as first shared under Apache licence, Version 2.0. The library is written as pure HDFS client to eliminate expensive calling \textit{hadoop} from python. The HDFS client instead of calling hadoop use Protocol Buffers, which  are a language-neutral, platform-neutral extensible mechanism for serializing structured data.\cite{protobuf}. Snakebite relay on protobuf messages and implements the Hadoop RPC protocol description for talking to the NameNode.\cite{snakebite}
+
+\paragraph{Hive libraries}
+As for HDFS for interaction with Hive has been used two libraries. The first, called \textit{pyhs2} for interaction with hiveserver2. It includes all the required packages such as SASL and Thrift wrappers. The second used library is \textit{hive-thrift-py}. From this Thrift based library has been used module for accessing meta-store of Hive.
+
+\subsection{GHF core}
+In the core library is used part of the code from \textit{Airflow}\footnote{Airflow \url{https://github.com/apache/incubator-airflow}} project, which is currently in incubator of Apache\footnote{\textit{airflow.diff} of code is in attachment}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the wrappers and to the connection manager. 
+
+\begin{figure}[!htbp]
+   \centering
+   \includegraphics[width=1\textwidth]{./img/diag1_small.pdf}
+   \caption[Core diagram]{\centering Diagram of core library}
+\end{figure} 
+
+\paragraph{Connection}
+ 
+
 \section{Usage: Spatial data processing}\label{sec:usage_spatial}
 	\subsection{Input data}
 
@@ -2214,8 +2229,10 @@ URL: \textless\url{https://github.com/Esri/geoprocessing-tools-for-hadoopl}
 Protocol Buffers, Google Developers [online]. [2016-05-29]. 
 URL: \textless\url{https://developers.google.com/protocol-buffers/}
 
-
-
+\bibitem{snakebite}
+Snakebite documentation, Snakebite readthedocs [online]. [2016-05-29]. 
+URL: \textless\url{http://snakebite.readthedocs.io/en/latest/index.html
+}
 
 \end{thebibliography}
 
