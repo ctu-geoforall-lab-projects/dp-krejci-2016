@@ -7,25 +7,23 @@ from future.standard_library import install_aliases
 
 install_aliases()
 from builtins import bytes
-
 import json
 import logging
-import os
 from urlparse import urlparse
-
 from sqlalchemy import (
-    Column, Integer, String, Text, Boolean)
+    Column, Integer, String, Boolean)
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
-#from sqlalchemy.dialects.mysql import LONGTEXT
-from sqlalchemy.orm import  synonym
+# from sqlalchemy.dialects.mysql import LONGTEXT
+from sqlalchemy.orm import synonym
 import settings
 
 Base = declarative_base()
 ID_LEN = 250
-#SQL_ALCHEMY_CONN = configuration.get('core', 'SQL_ALCHEMY_CONN')
-#SQL_ALCHEMY_CONN ='sqlite:////home/matt/Dropbox/DIPLOMKA/sqlitedb.db'
+# SQL_ALCHEMY_CONN = configuration.get('core', 'SQL_ALCHEMY_CONN')
+# SQL_ALCHEMY_CONN ='sqlite:////home/matt/Dropbox/DIPLOMKA/sqlitedb.db'
 
 ENCRYPTION_ON = False
+
 
 # try:
 #     from cryptography.fernet import Fernet
@@ -35,10 +33,11 @@ ENCRYPTION_ON = False
 #     pass
 
 class InitStorage:
-    def __init__(self,connection):
-        self.conn=connection
+    def __init__(self, connection):
+        self.conn = connection
         self.engine = settings.engine
         Base.metadata.create_all(self.engine)
+
 
 class Connection(Base):
     """
@@ -50,7 +49,7 @@ class Connection(Base):
     __tablename__ = "connection"
 
     id = Column(Integer(), primary_key=True)
-    conn_id = Column(String(ID_LEN),unique=True)
+    conn_id = Column(String(ID_LEN), unique=True)
     conn_type = Column(String(500))
     host = Column(String(500))
     schema = Column(String(500))
@@ -62,14 +61,14 @@ class Connection(Base):
     _extra = Column('extra', String(5000))
 
     def __init__(self, conn_id=None,
-                    conn_type=None,
-                    host=None,
-                    login=None,
-                    password=None,
-                    schema=None,
-                    port=None,
-                    extra=None,
-                    uri=None):
+                 conn_type=None,
+                 host=None,
+                 login=None,
+                 password=None,
+                 schema=None,
+                 port=None,
+                 extra=None,
+                 uri=None):
 
         self.conn_id = conn_id
         if uri:
@@ -87,7 +86,7 @@ class Connection(Base):
     def init_connection_db(self):
         InitStorage(self)
 
-    def parse_from_uri(self, uri):
+    def parse_from_uriparse_from_uri(self, uri):
         temp_uri = urlparse(uri)
         hostname = temp_uri.hostname or ''
         if '%2f' in hostname:
@@ -149,7 +148,7 @@ class Connection(Base):
                        descriptor=property(cls.get_extra, cls.set_extra))
 
     def get_hook(self):
-        from  hdfswrapper import hive_hook,webhdfs_hook, hdfs_hook
+        from  hdfswrapper import hive_hook, webhdfs_hook, hdfs_hook
 
         if self.conn_type == 'hive_cli':
             return hive_hook.HiveCliHook(hive_cli_conn_id=self.conn_id)
@@ -160,7 +159,6 @@ class Connection(Base):
         elif self.conn_type == 'hdfs':
             print(self.conn_id)
             return hdfs_hook.HDFSHook(hdfs_conn_id=self.conn_id)
-
 
     def __repr__(self):
         return self.conn_id

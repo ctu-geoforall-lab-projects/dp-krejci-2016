@@ -7,7 +7,6 @@ except ImportError:
     snakebite_imported = False
 
 
-
 class HDFSHookException(Exception):
     pass
 
@@ -16,6 +15,7 @@ class HDFSHook(BaseHook):
     '''
     Interact with HDFS. This class is a wrapper around the snakebite library.
     '''
+
     def __init__(self, hdfs_conn_id='hdfs_default', proxy_user=None):
         if not snakebite_imported:
             raise ImportError(
@@ -31,14 +31,14 @@ class HDFSHook(BaseHook):
         Returns a snakebite HDFSClient object.
         '''
         use_sasl = False
-        securityConfig=None
-        if securityConfig == 'kerberos': #TODO make confugration file for thiw
+        securityConfig = None
+        if securityConfig == 'kerberos':  # TODO make confugration file for thiw
             use_sasl = True
 
         connections = self.get_connections(self.hdfs_conn_id)
         client = None
-        #When using HAClient, proxy_user must be the same, so is ok to always take the first
-	effective_user = self.proxy_user or connections[0].login
+        # When using HAClient, proxy_user must be the same, so is ok to always take the first
+        effective_user = self.proxy_user or connections[0].login
         if len(connections) == 1:
             client = Client(connections[0].host, connections[0].port, use_sasl=use_sasl, effective_user=effective_user)
         elif len(connections) > 1:
@@ -55,7 +55,7 @@ class HDFSHook(BaseHook):
             print("\n    Test connection (ls /) \n")
             print('***' * 30)
             print(type(client.count(['/'])))
-            print('-'*40 +'\n')
+            print('-' * 40 + '\n')
             return False
         except Exception, e:
             print("     EROOR: connection can not be established: %s \n" % e)
@@ -80,5 +80,5 @@ class HDFSHook(BaseHook):
     def get_cursor(self):
         raise NotImplementedError
 
-    def execute(self,hql):
+    def execute(self, hql):
         raise NotImplementedError

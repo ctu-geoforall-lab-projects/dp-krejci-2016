@@ -19,7 +19,6 @@
 import re
 import socket
 
-
 # Pattern to replace with hostname
 HOSTNAME_PATTERN = '_HOST'
 

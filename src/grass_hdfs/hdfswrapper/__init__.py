@@ -1,9 +1,12 @@
 import os
-import base_hook,connections,\
-    hdfs_hook,hive_hook,security_utils,\
-    settings,webhdfs_hook
 
-
+import base_hook
+import connections
+import hdfs_hook
+import hive_hook
+import security_utils
+import settings
+import webhdfs_hook
 
 for module in os.listdir(os.path.dirname(__file__)):
     if module == '__init__.py' or module[-3:] != '.py':

@@ -1,14 +1,14 @@
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import inspect
 import logging
 import os
 import sys
 
-path = os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))),os.pardir)
+path = os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))), os.pardir)
 if not path in sys.path:
-    sys.path.append( path)
-
+    sys.path.append(path)
 
 from hdfswrapper.connections import Connection
 from hdfswrapper import settings
@@ -18,6 +18,7 @@ from hdfs_grass_util import read_dict, save_dict, get_tmp_folder
 from grass.pygrass.modules import Module
 from grass.script.core import PIPE
 import grass.script as grass
+
 
 class ConnectionManager:
     """
@@ -36,6 +37,7 @@ class ConnectionManager:
     >>> conn.remove_conn_Id('testhiveconn1')
     >>> print(conn.get_current_Id())
     """
+
     def __init__(self):
 
         self.conn_id = None
@@ -121,8 +123,6 @@ class ConnectionManager:
             print('***' * 30)
             print("\n     No table exists\n")
             print('***' * 30)
-
-
 
     @staticmethod
     def show_connections():
@@ -216,8 +216,6 @@ class ConnectionManager:
                 return False
 
 
-
-
 class JSONBuilder:
     def __init__(self, grass_map=None, json_file=None):
 
@@ -278,7 +276,7 @@ class JSONBuilder:
         if self.grass_map['type'] not in ['point', 'line', 'boundary', 'centroid', 'area', 'face', 'kernel', 'auto']:
             self.grass_map['type'] = 'auto'
         out = "%s_%s.json" % (self.grass_map['map'],
-                                 self.grass_map['layer'])
+                              self.grass_map['layer'])
 
         out = os.path.join(get_tmp_folder(), out)
         if os.path.exists(out):
@@ -295,19 +293,21 @@ class JSONBuilder:
         print(out1.outputs["stderr"].value.strip())
 
         self.rm_last_lines(out, 3)
-        #remove first 5 lines and last 3 to enseure format for serializetion
+        # remove first 5 lines and last 3 to enseure format for serializetion
         for i in range(5):  # todo optimize
             self.remove_line(out, 0)
 
         return out
 
+
 class GrassMapBuilder:
-    def __init__(self,json_file,map):
-        self.file=json_file
-        self.map=map
+    def __init__(self, json_file, map):
+        self.file = json_file
+        self.map = map
 
     def create_map(self):
         pass
+
 
 class GrassHdfs():
     def __init__(self, conn_type):
@@ -318,52 +318,51 @@ class GrassHdfs():
         if self.hook is None:
             sys.exit("connection is not established")  # TODO
 
-        if conn_type !='webhdfs':
-            sys.exit('Interface for conn_type: %s  is not implemented'%conn_type)
+        if conn_type != 'webhdfs':
+            sys.exit('Interface for conn_type: %s  is not implemented' % conn_type)
 
     def _init_connection(self):
         self.conn = ConnectionManager()
         self.conn.get_current_connection(self.conn_type)
         self.hook = self.conn.get_hook()
 
-    def printInfo(self, hdfs,msg=None):
+    def printInfo(self, hdfs, msg=None):
         print('***' * 30)
         if msg:
-            print("     %s \n"%msg)
+            print("     %s \n" % msg)
         print(' path :\n    %s\n' % hdfs)
         print('***' * 30)
 
     def get_path_grass_dataset(self):
         LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
         MAPSET = grass.gisenv()['MAPSET']
-        dest_path=os.path.join('grass_data_hdfs',LOCATION_NAME,MAPSET,'vector')
+        dest_path = os.path.join('grass_data_hdfs', LOCATION_NAME, MAPSET, 'vector')
         self.mkdir(dest_path)
         return dest_path
 
     def upload(self, fs, hdfs, overwrite=True, parallelism=1):
 
-        logging.info('Trying copy: fs: %s to  hdfs: %s   ' % ( fs,hdfs))
+        logging.info('Trying copy: fs: %s to  hdfs: %s   ' % (fs, hdfs))
         self.hook.upload_file(fs, hdfs, overwrite, parallelism)
-        self.printInfo(hdfs,"File has been copied to:")
+        self.printInfo(hdfs, "File has been copied to:")
 
     def mkdir(self, hdfs):
         self.hook.mkdir(hdfs)
         self.printInfo(hdfs)
 
     def write(self, hdfs, data, **kwargs):
-        #Write file to hdfs
+        # Write file to hdfs
         self.hook.write(hdfs, data, **kwargs)
         self.printInfo(hdfs)
 
     def download(self, fs, hdfs, overwrite=True, parallelism=1):
         logging.info('Trying download : hdfs: %s to fs: %s   ' % (hdfs, fs))
-        out=self.hook.download_file(fs, hdfs, overwrite, parallelism)
+        out = self.hook.download_file(fs, hdfs, overwrite, parallelism)
         if out:
-            self.printInfo(fs,"File has been copied to:")
+            self.printInfo(fs, "File has been copied to:")
         else:
             print('Copy error!')
         return out
-
 
 
 class HDFS2HIVE(object):
@@ -374,7 +373,7 @@ class HDFS2HIVE(object):
         raise NotImplemented
 
     def add_jars(self, list):
-       raise NotImplemented
+        raise NotImplemented
 
     def add_functions(self):
         raise NotImplemented

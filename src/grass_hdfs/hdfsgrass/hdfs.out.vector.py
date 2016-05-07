@@ -14,46 +14,49 @@
 #
 #############################################################################
 
-#%module
-#% description: Module for creting map from HIVE geometry table
-#% keyword: database
-#% keyword: hdfs
-#% keyword: hive
-#%end
-#% key: driver
-#% type: string
-#% required: yes
-#% options: webhdfs
-#% description: HDFS driver
-#%end
-#%option
-#% key: table
-#% type: string
-#% required: yes
-#% description: Name of table for import
-#%end
-#% key: out
-#% type: string
-#% required: yes
-#% description: Name of output map
-#%end
-#%flag
-#% key: r
-#% description: remove temporal file
-#% guisection: data
-#%end
+# %module
+# % description: Module for creting map from HIVE geometry table
+# % keyword: database
+# % keyword: hdfs
+# % keyword: hive
+# %end
+# % key: driver
+# % type: string
+# % required: yes
+# % options: webhdfs
+# % description: HDFS driver
+# %end
+# %option
+# % key: table
+# % type: string
+# % required: yes
+# % description: Name of table for import
+# %end
+# % key: out
+# % type: string
+# % required: yes
+# % description: Name of output map
+# %end
+# %flag
+# % key: r
+# % description: remove temporal file
+# % guisection: data
+# %end
+
+import os
 
 import grass.script as grass
-import os
+
+from hdfs_grass_lib import GrassMapBuilder, GrassHdfs, ConnectionManager
 from hdfs_grass_util import get_tmp_folder
-from hdfs_grass_lib import GrassMapBuilder,GrassHdfs,ConnectionManager
-#https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
+
+
+# https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
 
 def main():
+    tmp_file = os.path.join(get_tmp_folder(), options['out'])
 
-    tmp_file=os.path.join(get_tmp_folder(),options['out'])
-
-    conn=ConnectionManager()
+    conn = ConnectionManager()
     conn.get_current_connection(options["driver"])
     transf = GrassHdfs(options['driver'])
 
@@ -62,21 +65,7 @@ def main():
                            overwrite=flags['r']):
         return
 
-    map_build=GrassMapBuilder(tmp_file,options['out'])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    map_build = GrassMapBuilder(tmp_file, options['out'])
 
 
 if __name__ == "__main__":

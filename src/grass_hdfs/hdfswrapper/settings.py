@@ -7,19 +7,18 @@ import logging
 import os
 import sys
 
+import grass.script as grass
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-import grass.script as grass
-
 BASE_LOG_URL = 'log'
-#SQL_ALCHEMY_CONN = 'sqlite:////home/matt/Dropbox/DIPLOMKA/sqlitedb.db'
+# SQL_ALCHEMY_CONN = 'sqlite:////home/matt/Dropbox/DIPLOMKA/sqlitedb.db'
 GISDBASE = grass.gisenv()['GISDBASE']
 LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
 MAPSET = grass.gisenv()['MAPSET']
-MAPSET_PATH = os.path.join(GISDBASE,LOCATION_NAME,MAPSET)
+MAPSET_PATH = os.path.join(GISDBASE, LOCATION_NAME, MAPSET)
 
-SQL_ALCHEMY_CONN = 'sqlite:////%s'%os.path.join(MAPSET_PATH,'sqlite','sqlite.db')
+SQL_ALCHEMY_CONN = 'sqlite:////%s' % os.path.join(MAPSET_PATH, 'sqlite', 'sqlite.db')
 
 LOGGING_LEVEL = logging.INFO
 
@@ -29,7 +28,7 @@ if 'sqlite' not in SQL_ALCHEMY_CONN:
     engine_args['pool_size'] = 5
     engine_args['pool_recycle'] = 3600
 
-#print(SQL_ALCHEMY_CONN)
+# print(SQL_ALCHEMY_CONN)
 engine = create_engine(SQL_ALCHEMY_CONN, **engine_args)
 
 Session = scoped_session(
@@ -39,8 +38,10 @@ LOG_FORMAT = (
     '[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s')
 SIMPLE_LOG_FORMAT = '%(asctime)s %(levelname)s - %(message)s'
 
-grass_config = os.path.join(MAPSET_PATH,'grasshdfs.conf')
-#print(grass_config)
+grass_config = os.path.join(MAPSET_PATH, 'grasshdfs.conf')
+
+
+# print(grass_config)
 
 
 
@@ -48,5 +49,6 @@ def configure_logging():
     logging.root.handlers = []
     logging.basicConfig(
         format=LOG_FORMAT, stream=sys.stdout, level=LOGGING_LEVEL)
+
 
 configure_logging()

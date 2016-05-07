@@ -16,21 +16,19 @@ from base_hook import BaseHook
 from utils import string2dict, find_ST_fnc
 
 
-class HiveBase(object):
-
+class HiveSpatial(object):
     def execute(self, hql):
         NotImplementedError()
 
     def show_tables(self):
         hql = 'show tables'
-        res=self.execute(hql,True)
+        res = self.execute(hql, True)
         if res:
             print('***' * 30)
             print('   show tables:')
             for i in res:
-                print('         %s'%i[0])
+                print('         %s' % i[0])
             print('***' * 30)
-
 
     def add_functions(self, fce_dict, temporary=False):
         """
@@ -49,9 +47,9 @@ class HiveBase(object):
                 hql += "CREATE FUNCTION %s as '%s'\n" % (key, val)
         self.execute(hql)
 
-    def describe_table(self,table,show=False):
+    def describe_table(self, table, show=False):
         hql = "DESCRIBE formatted %s" % table
-        out = self.execute(hql,True)
+        out = self.execute(hql, True)
         if show:
             for i in out:
                 print(i)
@@ -62,7 +60,7 @@ class HiveBase(object):
 
         for cell in out:
             if 'Location:' in cell[0]:
-                logging.info("Location of file in hdfs:  %s"%cell[1])
+                logging.info("Location of file in hdfs:  %s" % cell[1])
                 return cell[1]
 
     def esri_query(self, hsql, temporary=True):
@@ -82,12 +80,11 @@ class HiveBase(object):
 
         self.execute(hsqlexe)
 
-
     def test(self):
         hql = 'show databases'
         try:
             print('***' * 30)
-            res = self.execute(hql,True)
+            res = self.execute(hql, True)
             print("\n     Test connection (show databases;) \n       %s\n" % res)
             print('***' * 30)
             return True
@@ -96,8 +93,7 @@ class HiveBase(object):
             print('***' * 30)
             return False
 
-
-    def add_jar(self, jar_list,path=False):
+    def add_jar(self, jar_list, path=False):
         """
         Function for adding jars to the hive path.
         :param jar_list: list of jars
@@ -117,7 +113,7 @@ class HiveBase(object):
                 else:
                     hql += 'ADD JAR %s ' % jar
                 logging.info(hql)
-        hql+='\n'
+        hql += '\n'
         return hql
 
     def create_geom_table(self,
@@ -132,9 +128,9 @@ class HiveBase(object):
                           filepath=None,
                           overwrite=None,
                           ):
-        hql=''
+        hql = ''
 
-        if field_dict and field_dict is not isinstance(field_dict,dict):
+        if field_dict and field_dict is not isinstance(field_dict, dict):
             field_dict = string2dict(field_dict)
             if field_dict is None:
                 print("Attributes are not defined")
@@ -143,16 +139,15 @@ class HiveBase(object):
         logging.info('field_dict: %s' % field_dict)
         logging.info('type field_dict: %s' % type(field_dict))
 
-
         if recreate:
             self.drop_table(table)
         if field_dict:
             fields = ", ".join(
                 [k + ' ' + v for k, v in field_dict.items()])
         else:
-            fields=struct
+            fields = struct
         if outputformat:
-            outputformat=outputformat.replace("'","")
+            outputformat = outputformat.replace("'", "")
         if external:
             hql += "CREATE EXTERNAL TABLE IF NOT EXISTS {table} ({fields}) "
         else:
@@ -241,30 +236,28 @@ class HiveBase(object):
         :rtype:
         """
 
-        if field_dict and field_dict is not isinstance(field_dict,dict):
+        if field_dict and field_dict is not isinstance(field_dict, dict):
             field_dict = string2dict(field_dict)
             if field_dict is None:
                 return None
 
-        if partition and partition is not isinstance(partition,dict):
+        if partition and partition is not isinstance(partition, dict):
             partition = string2dict(partition)
             if partition is None:
                 return None
 
-
         if not delimiter:
-            delimiter=','
-
+            delimiter = ','
 
         if stored == 'textfile':
-            stored=None
+            stored = None
 
         if recreate:
-            self.execute("DROP TABLE IF EXISTS %s"%table)
+            self.execute("DROP TABLE IF EXISTS %s" % table)
 
         fields = ", ".join(
             [k + ' ' + v for k, v in field_dict.items()])
-        hql=''
+        hql = ''
         if external:
             hql += "CREATE EXTERNAL TABLE IF NOT EXISTS {table} ({fields}) "
         else:
@@ -275,7 +268,7 @@ class HiveBase(object):
             hql += "PARTITIONED BY ({pfields}) "
         hql += "ROW FORMAT DELIMITED "
         hql += "FIELDS TERMINATED BY '{delimiter}' "
-        if not stored :
+        if not stored:
             hql += "STORED AS textfile"
         else:
             hql += "STORED AS INPUTFORMAT '{stored}'"
@@ -293,7 +286,7 @@ class HiveBase(object):
         self.execute('DROP TABLE IF EXISTS %s' % name)
 
 
-class HiveCliHook(BaseHook, HiveBase):
+class HiveCliHook(BaseHook, HiveSpatial):
     """
     Simple wrapper around the hive CLI.
 
@@ -328,7 +321,6 @@ class HiveCliHook(BaseHook, HiveBase):
         >>> ("OK" in result)
         True
         """
-
 
         conn = self.conn
         schema = schema or conn.schema
@@ -632,7 +624,7 @@ class HiveMetastoreHook(BaseHook):
             return False
 
 
-class HiveServer2Hook(BaseHook, HiveBase):
+class HiveServer2Hook(BaseHook, HiveSpatial):
     '''
     Wrapper around the pyhs2 library
 
@@ -709,7 +701,6 @@ class HiveServer2Hook(BaseHook, HiveBase):
                         logging.info("Written {0} rows so far.".format(i))
                     logging.info("Done. Loaded a total of {0} rows.".format(i))
 
-
     def get_records(self, hql, schema='default'):
         """
         Get a set of records from a Hive query.
@@ -725,7 +716,7 @@ class HiveServer2Hook(BaseHook, HiveBase):
         conn = self.get_conn()
         return conn.cursor()
 
-    def execute(self, hql,fatch=False):
+    def execute(self, hql, fatch=False):
         with self.get_conn() as conn:
             with conn.cursor() as cur:
                 logging.info("Running query: " + hql)

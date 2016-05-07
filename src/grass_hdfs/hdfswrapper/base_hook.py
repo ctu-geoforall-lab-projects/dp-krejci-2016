@@ -8,9 +8,9 @@ import os
 import random
 
 from builtins import object
-from hdfswrapper.connections import Connection
 
 from hdfswrapper import settings
+from hdfswrapper.connections import Connection
 
 CONN_ENV_PREFIX = 'GRASSHIVE_CONN_'
 
@@ -23,6 +23,7 @@ class BaseHook(object):
     instances of these systems, and expose consistent methods to interact
     with them.
     """
+
     def __init__(self, source):
         pass
 
@@ -54,13 +55,3 @@ class BaseHook(object):
     def get_hook(cls, conn_id):
         connection = cls.get_connection(conn_id)
         return connection.get_hook()
-
-    def get_conn(self):
-        raise NotImplementedError
-
-    def get_records(self, sql):
-        raise NotImplementedError
-
-    def run(self, sql):
-        raise NotImplementedError
-

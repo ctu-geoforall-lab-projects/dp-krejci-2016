@@ -14,62 +14,64 @@
 #
 #############################################################################
 
-#%module
-#% description: Execute HIVEsql command
-#% keyword: database
-#% keyword: hdfs
-#% keyword: hive
-#%end
+# %module
+# % description: Execute HIVEsql command
+# % keyword: database
+# % keyword: hdfs
+# % keyword: hive
+# %end
 
-#%option
-#% key: conn_type
-#% type: string
-#% required: yes
-#% answer: hiveserver2
-#% description: Type of database driver
-#% options: hive_cli, hiveserver2
-#%end
-#%option
-#% key: hsql
-#% type: string
-#% required: yes
-#% description: hive sql command
-#%end
-#%option
-#% key: schema
-#% type: string
-#% required: no
-#% description: hive db schema
-#%end
-#%G_OPT_F_OUTPUT
-#% key: out
-#% type: string
-#% required: no
-#% description: Name for output file (if omitted output to stdout)
-#%end
+# %option
+# % key: conn_type
+# % type: string
+# % required: yes
+# % answer: hiveserver2
+# % description: Type of database driver
+# % options: hive_cli, hiveserver2
+# %end
+# %option
+# % key: hsql
+# % type: string
+# % required: yes
+# % description: hive sql command
+# %end
+# %option
+# % key: schema
+# % type: string
+# % required: no
+# % description: hive db schema
+# %end
+# %G_OPT_F_OUTPUT
+# % key: out
+# % type: string
+# % required: no
+# % description: Name for output file (if omitted output to stdout)
+# %end
+
+import grass.script as grass
 
 from hdfs_grass_lib import ConnectionManager
-import grass.script as grass
 
 
 def main():
-    conn=ConnectionManager()
+    conn = ConnectionManager()
 
     conn.get_current_connection(options["conn_type"])
     hive = conn.get_hook()
 
     if not options['schema']:
-        options['schema']='default'
+        options['schema'] = 'default'
 
     out = hive.get_results(hql=options['hsql'],
-                            schema=options['schema'])
+                           schema=options['schema'])
 
     if options['out']:
-        with open(out,'rw') as io:
+        with open(out, 'rw') as io:
             io.writelines(out)
             io.close()
     else:
         print out
+
 
 if __name__ == "__main__":
     options, flags = grass.parser()
