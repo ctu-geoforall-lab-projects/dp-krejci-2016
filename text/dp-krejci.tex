@@ -1983,12 +1983,12 @@ Second library which has been developed for Spotify project, is called Snakebite
 As for HDFS for interaction with Hive has been used two libraries. The first, called \textit{pyhs2} for interaction with hiveserver2. It includes all the required packages such as SASL and Thrift wrappers. The second used library is \textit{hive-thrift-py}. From this Thrift based library has been used module for accessing meta-store of Hive.
 
 \subsection{GHF core}
-The core provide API for the middle interface. Consists functions for interaction with HDFS and Hive database. More specifically, allows to put/get data to/from HDFS and interact with HDFS using essential file system commands. The part focused on Hive interaction, allows to create specific table for loading CSV and JSON files, fetch metadata from meta store of Hive, and execute non-optimised queries or fetch result of select query. In the core library is used part of the code from \textit{Airflow} project, which is currently in incubator of Apache\footnote{\textit{airflow.diff} of code is in attachment}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the  wrappers(hooks) and to the connection manager. 
+The core provide API for the middle interface. Consists functions for interaction with HDFS and Hive database. More specifically, allows to put/get data to/from HDFS and interact with HDFS using essential file system commands. The part focused on Hive interaction, allows to create specific table for loading CSV and JSON files, fetch metadata from meta store of Hive, and execute non-optimised queries or fetch result of select query. In the core library is used part of the code from \textit{Airflow} project, which is currently in incubator of Apache \cite{airflow_diff}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the  wrappers(hooks) and to the connection manager. 
 
 \begin{figure}[!htbp]
    \centering
    \includegraphics[width=1\textwidth]{./img/diag1_small.pdf}
-   \caption[Core diagram]{\centering Diagram of core library classes}
+   \caption[Core diagram]{\centering Design of the core library }
 \end{figure} 
 
 \paragraph{Connection} management on the  lower level is handled by  class \textit{Connection}. The class is an place holder to store information about different database instances. The class inherits the  base class for declarative class definitions of SQLAlchemy library. 
@@ -2025,8 +2025,58 @@ Python modules called \textit{*\_hook.py} consist classes which inherits from th
 Modules \textit{*\_hook.py} and their hook classes provide wrappers on the external libraries. Module \textit{hdfs\_hook.py} and \textit{webhdfs\_hook.py} provide essential functions as put data to HDFS, get data from HDFS, make directory, check if path exists etc. 
 The module \textit{ hive\_hook.py} consist three classes. The class \textit{HiveServer2Hook} allows to interact with \textit{hiveserver2} cli. The second class is a simple wrapper around the hive CLI. It allso support beeline Hive CLI, which is lighter due to independence on JDBC. Third class of this module -  \textit{HiveMetastoreHook} provide access to meta store of Hive. 
 
+\subsection{Middle interface and GHF modules}
+The middle interface consists two python modules. The Main one, called \textit{hdfs\_grass\_lib.py}, which represent classes for Connection management and GeoJSON conversion.  The second module called \textit{hdfs\_grass\_util.py} is their helper. This interface allowed to developed simple command lines modules, which mainly include parser for parameters and flags.  
 
-These hook are API for the middle interface which is introduced in the next section.
+Class \textit{JSONBuilder} and class \textit{GrassMapBuilder} are API for conversion between GRASS native vector map and GeoJSON.  \textit{JSONBuilder} convert GRASS map to GeoJSON and modify the text file to the form, which is suitable for serialisation. In contrast, the class \textit{GrassMapBuilder} convert exported map from HDFS to the format, witch is readable by \textit{v.in.ogr} module. Thus, transform the result of processed analysis back to the GRASS native format.
+
+\paragraph{GHF modules}
+Already introduced modules hdfs.* and hive.* as a user interface and endpoint for accessing GHF from GRASS GIS user environment  are developed accordingly to GRASS "standard", where the GRASS parser read input flags and parameters. GRASS parser is a function, which parse the header of python module.  Rules of syntax allows to comfortably interact with GRASS environment variables. Moreover, GRASS parser works which any coding language. In addition, \textit{g.parser} includes an auto-generated GUI interface, help page template, and command line option checking. 
+Below is an part of parsed lines from the module \textit{hive.json.table}.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+# %option
+# % key: driver
+# % type: string
+# % required: yes
+# % answer: hiveserver2
+# % description: Type of database driver
+# % options: hiveserver2
+# %end
+# %flag
+# % key: d
+# % description: Firstly drop table if exists
+# % guisection: table
+# %end
+\end{lstlisting}
+\end{footnotesize}
+the first option is a parameter for defining values of driver. This parameter is mandatory and currently has only one possible value. The second is a flag for dropping table, before creation the new on. This flag is in the guisection table, which is after generating GUI form the 'notebook' page. Below is example of initialisation and usage of \textit{g.praser}.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+import grass.script as grass
+
+def main():
+	grass.message(options['driver'])
+	grass.message(flags['-d'])
+	
+if __name__ == "__main__":
+    options, flags = grass.parser()
+    main()
+
+\end{lstlisting}
+\end{footnotesize}
+See below the executed script from GRASS environment.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+$ hive.json.table hiveserver2 -d
+out> 
+	hiveserver2
+	true
+\end{lstlisting}
+\end{footnotesize}
+
+\paragraph{GRASS Add-ons package} The GHF has been published to GRASS Add-ons repository. GRASS module \textit{g.extension} allow to fetch and deploy packages from Add-ons to the GRASS environment. Each package in Add-ons must include HTML manual site and Makefile, for proper deploy. 
+
 
 
 \section{Usage: Spatial data processing}\label{sec:usage_spatial}
@@ -2269,6 +2319,14 @@ Snakebite documentation, Snakebite readthedocs [online]. [2016-05-29].
 URL: \textless\url{http://snakebite.readthedocs.io/en/latest/index.html
 }
 
+
+
+
+\bibitem{airflow_diff}
+Airflow Apache incubator project. Diff file is included in the attachment \ref{airflow_dif}
+
+
+
 \end{thebibliography}
 
 
@@ -2279,10 +2337,11 @@ URL: \textless\url{http://snakebite.readthedocs.io/en/latest/index.html
 
 \appendix
 \chapter*{Attachment}
+
 \renewcommand\thesection{\Alph{section}}
 
 \section{Attachment:python script for SQL export}
-\section{priloha 123}
+\section{Airflow diff}\label{airflow_diff}
 
 \end{document}
 
