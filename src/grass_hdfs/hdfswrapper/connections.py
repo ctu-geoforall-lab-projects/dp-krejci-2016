@@ -15,7 +15,7 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 # from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import synonym
-import settings
+from hdfswrapper import settings
 
 Base = declarative_base()
 ID_LEN = 250

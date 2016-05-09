@@ -14,39 +14,39 @@
 #
 #############################################################################
 
-# %module
-# % description: Execute HIVEsql command
-# % keyword: database
-# % keyword: hdfs
-# % keyword: hive
-# %end
+#%module
+#% description: Execute HIVEsql command
+#% keyword: database
+#% keyword: hdfs
+#% keyword: hive
+#%end
 
-# %option
-# % key: conn_type
-# % type: string
-# % required: yes
-# % answer: hiveserver2
-# % description: Type of database driver
-# % options: hive_cli, hiveserver2
-# %end
-# %option
-# % key: hsql
-# % type: string
-# % required: yes
-# % description: hive sql command
-# %end
-# %option
-# % key: schema
-# % type: string
-# % required: no
-# % description: hive db schema
-# %end
-# %G_OPT_F_OUTPUT
-# % key: out
-# % type: string
-# % required: no
-# % description: Name for output file (if omitted output to stdout)
-# %end
+#%option
+#% key: conn_type
+#% type: string
+#% required: yes
+#% answer: hiveserver2
+#% description: Type of database driver
+#% options: hive_cli, hiveserver2
+#%end
+#%option
+#% key: hsql
+#% type: string
+#% required: yes
+#% description: hive sql command
+#%end
+#%option
+#% key: schema
+#% type: string
+#% required: no
+#% description: hive db schema
+#%end
+#%G_OPT_F_OUTPUT
+#% key: out
+#% type: string
+#% required: no
+#% description: Name for output file (if omitted output to stdout)
+#%end
 
 import grass.script as grass
 

@@ -5,7 +5,7 @@ import inspect
 import logging
 import os
 import sys
-
+import mmap
 path = os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))), os.pardir)
 if not path in sys.path:
     sys.path.append(path)
@@ -18,7 +18,9 @@ from hdfs_grass_util import read_dict, save_dict, get_tmp_folder
 from grass.pygrass.modules import Module
 from grass.script.core import PIPE
 import grass.script as grass
+from grass_map  import VectorDBInfo as VectorDBInfoBase
 
+from dagpype import stream_lines, to_stream,filt, nth
 
 class ConnectionManager:
     """
@@ -94,6 +96,7 @@ class ConnectionManager:
                        host=None, port=None,
                        login=None, password=None,
                        schema=None, authMechanism=None):
+
         if None in [conn_id, conn_type]:
             print("ERROR: no conn_id or conn_type defined")
             return None
@@ -182,6 +185,8 @@ class ConnectionManager:
         else:
             self.connection = None
 
+        return self.connection
+
     def get_hook(self):
         if self.connection:
             return self.connection.get_hook()
@@ -215,6 +220,30 @@ class ConnectionManager:
                 print('Cannot establish connection')
                 return False
 
+class HiveTableBuilder:
+    def __init__(self,map,layer):
+        self.map = map
+        self.layer = layer
+
+
+    def get_structure(self):
+        raise NotImplemented
+        dtypes=['TINYINT','SMALLINT','INT','BIGINT','BOOLEAN','FLOAT','DOUBLE',
+                'STRING','BINARY','TIMESTAMP','DECIMAL','DATE','VARCHAR','CHAR']
+        table = VectorDBInfoBase(self.map)
+        map_info = table.GetTableDesc(self.map)
+
+        for col in map_info.keys():
+            name=str(col)
+            dtype=col['type']
+            if dtype == 'integet':
+                dtype = 'INT'
+            if not dtype.capitalize() in dtype:
+                grass.fatal('Automatic generation of columns faild, datatype %s is not recognized'%dtype)
+
+    def _get_map(self):
+       raise NotImplemented
+
 
 class JSONBuilder:
     def __init__(self, grass_map=None, json_file=None):
@@ -228,7 +257,7 @@ class JSONBuilder:
             self.json = self._get_grass_json()
         else:
             filename, file_extension = os.path.splitext(self.json_file)
-            self.json = os.path.join(get_tmp_folder(), "%s_%s.json" % (filename))
+            self.json = os.path.join(get_tmp_folder(), "%s.json" %filename)
         return self.json
 
     def rm_last_lines(self, path, rm_last_line=3):
@@ -273,7 +302,8 @@ class JSONBuilder:
             outputFile.truncate()
 
     def _get_grass_json(self):
-        if self.grass_map['type'] not in ['point', 'line', 'boundary', 'centroid', 'area', 'face', 'kernel', 'auto']:
+        if self.grass_map['type'] not in ['point', 'line', 'boundary', 'centroid',
+                                          'area', 'face', 'kernel', 'auto']:
             self.grass_map['type'] = 'auto'
         out = "%s_%s.json" % (self.grass_map['map'],
                               self.grass_map['layer'])
@@ -299,14 +329,82 @@ class JSONBuilder:
 
         return out
 
-
 class GrassMapBuilder:
     def __init__(self, json_file, map):
         self.file = json_file
         self.map = map
 
-    def create_map(self):
+    def build(self):
+        geom_type = self._get_type()
+        self.replace_substring(geom_type[0],[1])
+        self.replace_substring('}}}','}}},')
+
+        fst_line= ('{"type": "FeatureCollection","crs": '
+                   '{ "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": [')
+        self._prepend_line(fst_line)
+        self._append_line(']}')
+
+        self._create_map()
+
+
+    def _get_wkid(self):
+        """
+        Parse epsg from wkid (esri json)
+        :return:
+        :rtype:
+        """
+        f = open('example.txt')
+        s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        if s.find('wkid') != -1:
+            return self._find_between(s,'wkid":','}')
+
+    def _find_between(self,s, first, last ):
+        try:
+            start = s.index( first ) + len( first )
+            end = s.index( last, start )
+            return s[start:end]
+        except ValueError:
+            return ""
+
+    def _create_map(self):
+        Module('v.in.ogr',
+              dsn=self.file,
+              output=self.map,
+              stderr_=PIPE,
+              overwrite=True)
+
+    def _json_parser(self):
         pass
+
+    def _prepend_line(self,line):
+        with open(self.file, "r+") as f:
+             old = f.read() # read everything in the file
+             f.seek(0) # rewind
+             f.write("%s\n"%line + old) # write the new line before
+
+    def _append_line(self,line):
+        with open(self.file, 'a') as file:
+            file.write(line)
+
+    def _get_type(self):
+        line = stream_lines(self.file) | nth(0)
+        if line.find('ring'):
+            return ['ring','"type":"Polygon","coordinates":']
+        if line.find('multipoint'):
+            return ['multipoint','"type":"MultiPoint","coordinates":']
+        if line.find('paths'):
+            return ['paths','"type":"MultiLineString","coordinates":']
+
+        if line.find('"x"'):
+            grass.fatal('Point is not supported')
+        if line.find('envelope'):
+            grass.fatal('Envelope is not supported')
+
+    def replace_substring(self,foo,bar):
+        stream_lines(self.file) |\
+        filt(lambda l: l.replace(foo, bar)) | \
+        to_stream(sys.stdout)
+
 
 
 class GrassHdfs():
@@ -314,19 +412,18 @@ class GrassHdfs():
         self.conn = None
         self.hook = None
         self.conn_type = conn_type
+
         self._init_connection()
         if self.hook is None:
-            sys.exit("connection is not established")  # TODO
-
-        if conn_type != 'webhdfs':
-            sys.exit('Interface for conn_type: %s  is not implemented' % conn_type)
+            sys.exit("Connection can not establish")  # TODO
 
     def _init_connection(self):
         self.conn = ConnectionManager()
         self.conn.get_current_connection(self.conn_type)
         self.hook = self.conn.get_hook()
 
-    def printInfo(self, hdfs, msg=None):
+    @staticmethod
+    def printInfo( hdfs, msg=None):
         print('***' * 30)
         if msg:
             print("     %s \n" % msg)
@@ -341,7 +438,6 @@ class GrassHdfs():
         return dest_path
 
     def upload(self, fs, hdfs, overwrite=True, parallelism=1):
-
         logging.info('Trying copy: fs: %s to  hdfs: %s   ' % (fs, hdfs))
         self.hook.upload_file(fs, hdfs, overwrite, parallelism)
         self.printInfo(hdfs, "File has been copied to:")
@@ -365,24 +461,3 @@ class GrassHdfs():
         return out
 
 
-class HDFS2HIVE(object):
-    def __init__(self):
-        raise NotImplemented
-
-    def connect(self):
-        raise NotImplemented
-
-    def add_jars(self, list):
-        raise NotImplemented
-
-    def add_functions(self):
-        raise NotImplemented
-
-    def load_data(self, table, fs=None, hdfs=None):
-        raise NotImplemented
-
-    def drop_table(self, name):
-        raise NotImplemented
-
-    def execute(self, nsql):
-        raise NotImplemented

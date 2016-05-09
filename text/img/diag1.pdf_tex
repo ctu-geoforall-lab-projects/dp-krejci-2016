@@ -1,0 +1,72 @@
+%% Creator: Inkscape inkscape 0.48.4, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'diag1.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{3416.10341552bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.19343534)%
+    \put(0,0){\includegraphics[width=\unitlength]{diag1.pdf}}%
+    \put(0.20710493,1.13838886){\makebox(0,0)[lb]{\smash{Base}}}%
+    \put(0.27396436,1.11418825){\makebox(0,0)[lb]{\smash{hdfswrapper.base_hook.BaseHook}}}%
+    \put(0.26932144,1.08581966){\makebox(0,0)[lb]{\smash{hdfswrapper.hdfs_hook.HDFSHook}}}%
+    \put(0.17001265,1.11398681){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveMetastoreHook}}}%
+    \put(0.35576158,1.11398681){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveServer2Hook}}}%
+    \put(0.26138423,1.18794589){\makebox(0,0)[lb]{\smash{hdfswrapper.webhdfs_hook.WebHDFSHook}}}%
+    \put(0.36335888,1.14106393){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveBase}}}%
+    \put(0.36049088,1.16931696){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveCliHook}}}%
+    \put(0.17754407,1.16214545){\makebox(0,0)[lb]{\smash{hdfswrapper.connections.Connection}}}%
+    \put(0.75340714,0.23083473){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveBase}}}%
+    \put(0.38032366,0.4011925){\makebox(0,0)[lb]{\smash{hdfswrapper.webhdfs_hook.WebHDFSHook}}}%
+    \put(0.72955701,0.12862007){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveServer2Hook}}}%
+    \put(0.40672911,0.02640541){\makebox(0,0)[lb]{\smash{hdfswrapper.hdfs_hook.HDFSHook}}}%
+    \put(0.03960818,0.12862007){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveMetastoreHook}}}%
+    \put(0.7448892,0.33304938){\makebox(0,0)[lb]{\smash{hdfswrapper.hive_hook.HiveCliHook}}}%
+    \put(0.14821124,0.2189097){\makebox(0,0)[lb]{\smash{Base}}}%
+    \put(0.04940374,0.32112434){\makebox(0,0)[lb]{\smash{hdfswrapper.connections.Connection}}}%
+    \put(0.40758089,0.12862007){\makebox(0,0)[lb]{\smash{hdfswrapper.base_hook.BaseHook}}}%
+  \end{picture}%
+\endgroup%

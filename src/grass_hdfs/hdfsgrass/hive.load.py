@@ -14,47 +14,47 @@
 #
 #############################################################################
 
-# %module
-# % description: Execute HIVEsql command
-# % keyword: database
-# % keyword: hdfs
-# % keyword: hive
-# %end
+#%module
+#% description: Execute HIVEsql command
+#% keyword: database
+#% keyword: hdfs
+#% keyword: hive
+#%end
 
-# %option
-# % key: driver
-# % type: string
-# % required: yes
-# % answer: hiveserver2
-# % description: Type of database driver
-# % options: hive_cli, hiveserver2
-# %end
-# %option
-# % key: table
-# % type: string
-# % required: yes
-# % description: name of table
-# %end
-# %option
-# % key: path
-# % type: string
-# % required: yes
-# % description: path of hdfs file
-# %end
-# %option
-# % key: partition
-# % type: string
-# % required: no
-# % description: arget partition as a dict of partition columns and values
-# % guisection: data
-# %end
-# %option
-# % key: partition
-# % type: string
-# % required: no
-# % description: arget partition as a dict of partition columns and values
-# % guisection: data
-# %end
+#%option
+#% key: driver
+#% type: string
+#% required: yes
+#% answer: hiveserver2
+#% description: Type of database driver
+#% options: hive_cli, hiveserver2
+#%end
+#%option
+#% key: table
+#% type: string
+#% required: yes
+#% description: name of table
+#%end
+#%option
+#% key: path
+#% type: string
+#% required: yes
+#% description: path of hdfs file
+#%end
+#%option
+#% key: partition
+#% type: string
+#% required: no
+#% description: arget partition as a dict of partition columns and values
+#% guisection: data
+#%end
+#%option
+#% key: partition
+#% type: string
+#% required: no
+#% description: arget partition as a dict of partition columns and values
+#% guisection: data
+#%end
 
 import grass.script as grass
 

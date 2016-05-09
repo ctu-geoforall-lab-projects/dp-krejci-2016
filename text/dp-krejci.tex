@@ -1426,7 +1426,7 @@ reducers when it is inconvenient or inefficient to express this logic in HiveQL.
 \paragraph{Goals}
 
 
-\section{Setup working environment}
+\section{Setup working environment}\label{setup_w_e}
 As the main resource of data storage and computing engine for practical framework has been used Google Cloud Platform.
  Thus, all configuration of Hadoop cluster, data storage, and networking is linked to cloud services. Additionally,
   development of GRASS client framework for Hadoop and consequential testing  as well.
@@ -1493,12 +1493,29 @@ mwdump.csv gs://mwdata_export/
 \end{footnotesize}
  
 \subsection{Networking}
-https://dzone.com/articles/hadoop-rest-api-webhdfs
+The essential network configuration is necessary  for accessing Hadoop cluster from outside of Google sub-network. The VM instances has internal IP and external IP. Both of them are dynamically attached during deployment of instance. Optionally is possible to reserve external static IP and attach it to the VM.  For usage Hadoop for batch processing is not necessary to configure user network but is necessary to configure firewall. 
+
+\begin{table}[!htbp]
+\centering
+\begin{scriptsize}
+\begin{tabular}{@{}|l|l|l|l|@{}}
+\toprule
+name                   & IP range     & allowed protocol & targets tag          \\ \midrule  \midrule
+default-allow-icmp     & 0.0.0.0/0    & icmp             & Apply to all targets \\ \midrule
+default-allow-internal & 10.128.0.0/9 & tcp:0-65535,icmp & Apply to all targets \\ \midrule
+default-allow-rdp      & 0.0.0.0/0    & tcp:3389         & Apply to all targets \\ \midrule
+default-allow-ssh      & 0.0.0.0/0    & tcp:22           & Apply to all targets \\ \bottomrule
+\end{tabular}
+\end{scriptsize}
+\caption{My caption}
+\label{my-label}
+\end{table}
+By default, incoming traffic from outside your network is blocked. To allow incoming traffic, set up a firewall rule. Firewall rules regulate only incoming traffic to an instance. When a connection is established with an instance, traffic is permitted in both directions over that connection. On web of Google Cloud Platform is manager for defining firewall rules. By default several profiles are predefined, how was already mentioned. In table\ref{firewall}
+%https://dzone.com/articles/hadoop-rest-api-webhdfs
 
 
 
         \subsection{Hadoop deployment}
-        
 For deployment of Hadoop cluster is used bdutil command line package builds from several bash scripts 
 and XML configuration files of Hadoop and its extensions. In the section below is described a essential 
 configuration of Hadoop on Google Dataporoc 
@@ -1511,7 +1528,7 @@ extra time mainly on network configuration.
 The configuration files for \textit{'standard'} Hadoop are stored in \textbf{\$HADOOP\_HOME\\/conf/} 
 and consist  primary xml files. Many of parameters are defined by default and they may be omitted in configuration files. In addition, the default 
 configuration folder  includes shell file which specified environment variables of Hadoop Daemon. Default configuration folder lists:
-\begin{itemize}
+\begin{itemize}\label{conf_files}
 \item \textbf{hadoop-env.sh} The file specifies environment variables that affect JDK used by daemons
 for example \textbf{\$JAVA\_HOME}.
 \item \textbf{core-site.sh}   This file informs Hadoop deamon where namenode runs in the cluster. Furthermore 
@@ -1570,7 +1587,7 @@ non-distributed mode as a single Java process. This mode  is suitable for MapRed
 \end{itemize}
 
 
-\subsubsection{Configuration}
+\subsubsection{Configuration - bdutil}
 In contrast to standard Hadoop deployment, a configuration in \textit{Dataproc} using bdutil is 
 extended by parameters and configuration files which handle automated deployment and other Google
 Cloud Services. The files in bdutil can be divided into two groups. In the first,  are shell scripts 
@@ -1688,8 +1705,13 @@ example below is shown configuration of task tracker where the value is set by g
 \end{lstlisting}
 \end{footnotesize}
 
+Limitation of Hive and GS filesystem is that Pig and Hive will tend to rely
+on multi-stage pipelines more heavily than plain Hadoop MapReduce, and thus
+be vulnerable to eventual list consistency. There is no know straight solution. As workaround can be accept initially from GS
+using explicit \textit{gs:// URIs } and likewise to write the final output to GS,
+letting any intermediate cross-stage items get stored in HDFS temporarily.
 
- 
+
 As mentioned, in Dataproc are available two version of Hadoop. For two spatial frameworks as from 
 ESRI and HadoopGIS must be used version 1.x of Hadoop due to dependency on Hive, which is in Google 
 Dataproc incompatible with versions Hadoop 2.x. The main limitation of the versions 1.x is unsupported 
@@ -1697,7 +1719,8 @@ YARN framework which is the next generation of MapReduce framework also called M
 The main difference between is the architecture where JobTracker, resource management, and job scheduling are split into separated daemons.
 
 
-Modification properties during run https://cloud.google.com/dataproc/concepts/cluster-properties
+
+
 	
 
 \paragraph{Running cluster} is done by executing bdutil bash file with flags and parameters.  
@@ -1761,25 +1784,55 @@ $ ./bdutil -P spatial-cluster --num_workers 10 \
      extensions/querytools/querytools_env.sh,spatial.sh deploy
 \end{lstlisting}
 \end{footnotesize}
-
 \end{itemize}
 
 
-%# Set the default filesystem to be 'hdfs' since Pig and Hive will tend to rely
-%# on multi-stage pipelines more heavily than plain Hadoop MapReduce, and thus
-%# be vulnerable to eventual list consistency. Okay to read initially from GCS
-%# using explicit gs:// URIs and likewise to write the final output to GCS,
-%# letting any intermediate cross-stage items get stored in HDFS temporarily.
-%DEFAULT_FS='gs'
 
 
 
 
-            \subsubsection{Scaling cluster}
-            \subsubsection{Logging}
- 
- 
- 
+
+
+\subsubsection{Configuration gcloud dataproc}
+Second option for cluster deployment is command line tools \textit{gcloud dataproc}. This tool is based on flags and parameters which define specification of deployed cluster. In contrast to bdutil tools, gcloud dataproc is based on different system images which are releasing under versions. Currently the latest version 1.0 is built with Hadoop 2.x and Hive 1.2 which is big advantageous to compare with bdutil. Tool bdutil has been tested and the GS file system doesn’t work properly with latest versions of Hive and Hadoop. 
+\begin{table}[!htbp]
+\centering
+\begin{scriptsize}
+\begin{tabular}{@{}|l|l|@{}}
+\toprule 
+file\_prefix & File            \\ \midrule \midrule
+core         & core-site.xml   \\ \midrule
+hdfs         & hdfs-site.xml   \\ \midrule
+mapred       & mapred-site.xml \\ \midrule
+yarn         & yarn-site.xml   \\ \midrule
+hive         & hive-site.xml   \\ \bottomrule
+\end{tabular}
+\end{scriptsize}
+\caption{Prefix for available configure files.}
+\label{config_table}
+\end{table}
+\paragraph{Properties} of configuration files mentioned above \ref{conf_files} and in table\ref{config_table} are set before deployment by parameter \textit{--properties} and its syntax. Below is shown example of deployed cluster with two nodes. The last parameter configuring the file \textit{hive-site.xml},  specifically defining the path for default source of *.jar libraries, which are automatically load to the Hive environment. \cite{gcloud_dataproc}
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+gcloud dataproc clusters create cluster-2 
+ --bucket mw_data --zone europe-west1-c
+ --master-machine-type n1-standard-4 
+ --master-boot-disk-size 500 
+ --num-workers 2
+ --worker-machine-type n1-standard-2 
+ --worker-boot-disk-size 300 
+ --image-version 1.0 
+ --scopes 'https://www.googleapis.com/auth/cloud-platform' 
+ --project spatial-hadoop
+ --properties 'hive:'hive.aux.jars.path=file:///usr/local/spatial/jar'
+\end{lstlisting}
+\end{footnotesize}
+
+There are several notes and limitations  to the configuration, such as: 1) Google for cover the functionality of Dataproc reserve  same parameters. 2) The changes must be defined before daemons of Hadoop or its extensions start.  For specifying more parameters is possible to define several properties at once, by using a comma.
+
+
+
+
         
 \section{GRASS Hadoop framework}
 \paragraph{Background}
@@ -2079,11 +2132,68 @@ out>
 
 
 
-\section{Usage: Spatial data processing}\label{sec:usage_spatial}
-	\subsection{Input data}
+\section{Usage: processing workflow}\label{sec:usage_spatial}
+This section consist example of usage of developed GRASS Hadoop Framework within the theses. In addition the description is partly focused on configuration of network and Hive essentials, such as serialisation/deserialisation of GeoJSON and its limitation with different libraries. The workflow has several steps starting with installing dependency packages than installation the GHF package from GRASS, configuring cluster and local network and finally the usage of GHF.
 
-	
-	Note that the 2.3.2 sandbox does not have a directory in HDFS for the root user and this can cause Hive queries to fail. To remedy this you need to issue the following commands as root:
+
+\subsection{Installation}
+Below are listed external dependency on packages. In addition, in second paragraph is described deployment of GHF in GRASS GIS. 
+\paragraph{Python dependency}
+Project is written and tested in python 2.7, with emphasis to 3.x compatibility. The GHF package use several external python libraries which must be deploy. For installation of python libraries has been used Python Package Index (pip) which is command line tool, and provide installation from the \textit{pip} repository.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+pip install pyhs2 hdfs thrift urlparse jaydebeapi cryptography
+pip install snakebite protobuf pydoop dagpype future
+\end{lstlisting}
+\end{footnotesize}
+
+
+\paragraph{GRASS GIS installation}
+Installation of GRASS GIS is well described on official website. The developed modules within theses are committed to the GRASS GIS Add-ons public repository. GRASS allows using module g.extension fetch and install modules to the system. On server \textit{geo102.fsv.cvut.cz} are each night compile packages for installation on Windows system. For Unix system are available all the time the current version of repository due to compilation locally. In case of python modules, there is no compilation on Unix based systems. 
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+grass$ g.extension hdfs.client
+...
+Fetching <hdfs.client> from GRASS GIS Addons repository (be patient)...
+Compiling...
+Installing...
+Updating addons metadata file...
+Installation of <hdfs.client successfully finished
+\end{lstlisting}
+\end{footnotesize}
+Above installation command and standard out of GRASS console with successful installation of package. 
+
+
+
+\subsection{Network configuration}
+This step is not mandatory and can be different over user environments for  Hadoop, such as local computer or different cloud service.  
+\begin{itemize}
+\item Firewall profiles
+\item Hosts
+\end{itemize}
+
+
+\paragraph{Firewall} For using machine capacity and services on Google Cloud,  the installation process is described in section \textit{Setup working environment}\ref{setup_w_e}. The proper network configuration for connection to Hadoop cluster is  necessary. There are several steps for basic configuration Google network and local computer for batch processing. Firstly in Google Cloud must be added configure profile to firewall. Hadoop and Hive has several ports for their services. Java daemons has by default opened ports for accessing it. Important ports for controlling Hadoop and Hive are 50700 for accessing NameNode and for Hive 100000. In firewall must be created profile which allows access of these ports outside of Google sub network. To restrict access to the opens port, in firewall profile must be set IP address limitation. There are several option how to limit IP. The most common way is to define allowed IP address range. This configuration is suitable for single user usage. Second way is to define sub networks of Google Cloud. In addition is possible to allow tags of VM of Google Cloud. The last option is  0.0.0.0/0, thus any source have access.
+
+\paragraph{Hosts} For accessing HDFS from GRASS Hadoop Framework the driver must know all external IP address of master and workers of cluster. Each server has external IP address and host name. The host name is automatically generated during cluster deployment. In Hadoop configuration files are registered host names of workers. After the client access HDFS daemon(port 507000) then get message with host and port of workers instead of IP address. If the client is running from different machine than master, these IP addresses and host names must be defined. In Linux systems the configuration of hosts  are declared in file \textit{/etc/hosts}. 
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+10.132.0.2 cluster-2-m.c.hadoop-jakub.internal cluster-2-m  # Added by Google
+\end{lstlisting}
+\end{footnotesize}
+Master and workers, each of them has configuration similar to example of master machine in Google Cloud. Important is the  last line. This line must be in local machine \textit{etc/hosts} file.
+
+\subsection{Hadoop and Hive additional configuration}
+
+
+
+\subsection{Input data}
+Note that the 2.3.2 sandbox does not have a directory in HDFS for the root user and this can cause Hive queries to fail. To remedy this you need to issue the following commands as root:
 su hdfs
 hdfs dfs -mkdir /user/root
 hdfs dfs -chown root:hdfs /user/root
@@ -2137,8 +2247,14 @@ Eg:
 	external table
 	load from local
 
-
+	 JSON is slow 
+	https://www.quora.com/Apache-Hive-Does-storing-data-in-json-make-queries-substantially-slower
+	
 	\paragraph{HIVE}
+		serde
+	columns in tablme must be name geometry
+	
+	
 	https://cwiki.apache.org/confluence/display/Hive/DeveloperGuide
 	STORED AS TEXTFILE	
 STORED AS INPUTFORMAT
@@ -2307,23 +2423,25 @@ URL: \textless\url{https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn
 
 
 \bibitem{esri_gtfp}
-Geoprocessing Tools for Hadoop, GitHub. [online]. [2016-05-18]. 
+Geoprocessing Tools for Hadoop, GitHub. [online]. [2016-04-18]. 
 URL: \textless\url{https://github.com/Esri/geoprocessing-tools-for-hadoopl}
 
 \bibitem{protobuf}
-Protocol Buffers, Google Developers [online]. [2016-05-29]. 
+Protocol Buffers, Google Developers [online]. [2016-0-29]. 
 URL: \textless\url{https://developers.google.com/protocol-buffers/}
 
 \bibitem{snakebite}
-Snakebite documentation, Snakebite readthedocs [online]. [2016-05-29]. 
-URL: \textless\url{http://snakebite.readthedocs.io/en/latest/index.html
-}
+Snakebite documentation, Snakebite readthedocs [online]. [2016-04-29]. 
+URL: \textless\url{http://snakebite.readthedocs.io/en/latest/index.html}
 
-
+\bibitem{gcloud_dataproc}
+Cluster properties, Google Cloud Platform [online]. [2016-04-29]. 
+URL: \textless\url{https://cloud.google.com/dataproc/concepts/cluster-properties}
 
 
 \bibitem{airflow_diff}
 Airflow Apache incubator project. Diff file is included in the attachment \ref{airflow_dif}
+
 
 
 
