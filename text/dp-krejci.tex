@@ -1723,7 +1723,7 @@ The main difference between is the architecture where JobTracker, resource manag
 
 	
 
-\paragraph{Running cluster} is done by executing bdutil bash file with flags and parameters.  
+\paragraph{Running cluster}\label{runcluster}is done by executing bdutil bash file with flags and parameters.  
 Flag \textit{--env\_var\_files} run selected bash files from the predefined group \ref{bdutil:configsh}. 
 Besides predefined bash files is possible to add a custom script which be executed as well. The  order 
 of files execution is according to the sort in the list. The main script \textit{bduitl\_env.sh} 
@@ -1756,10 +1756,8 @@ fi
 \end{lstlisting}
 \end{footnotesize}
  
-\$ gcloud dataproc clusters create my-dataproc-cluster \
-    --initialization-actions gs://my-bucket/download-job-jar.sh
- 
- 
+
+
  
 \begin{itemize}
 \item \textbf{Case 1 - development configuration}  This configuration of cluster suits well to debugging 
@@ -2103,7 +2101,7 @@ Below is an part of parsed lines from the module \textit{hive.json.table}.
 # %end
 \end{lstlisting}
 \end{footnotesize}
-the first option is a parameter for defining values of driver. This parameter is mandatory and currently has only one possible value. The second is a flag for dropping table, before creation the new on. This flag is in the guisection table, which is after generating GUI form the 'notebook' page. Below is example of initialisation and usage of \textit{g.praser}.
+the first option is a parameter for defining values of driver. This parameter is mandatory and currently has only one possible value. The second is a flag for dropping table, before creation the new on. This flag is in the \textit{guisection} table, which is after generating GUI form the 'notebook' page. Below is example of initialisation and usage of \textit{g.praser}.
 \begin{footnotesize}
 \begin{lstlisting}[style=python]
 import grass.script as grass
@@ -2164,6 +2162,49 @@ Installation of <hdfs.client successfully finished
 Above installation command and standard out of GRASS console with successful installation of package. 
 
 
+\subsubsection{Additional settings of cluster}
+If the cluster is deployed using bdutil\ref{runcluster}  with parameter \textit{--env\_var\_files spatial.sh} this script on master server install spatial packages, dependency and Java packages for serialisation JSON. If the cluster is run with another way, the libraries must be compile manually.
+
+\paragraph{Compilation} Below are some important notes for compilation of used libraries. Especially for compilation of libraries with maven profiles and for package with strange behaviour. 
+
+Usage Esri Spatial Framework for Hadoop is dependent on package Geometry API Java. After clone GIT repository with Esri Spatial Framework for Hadoop the maven test after packaging can failed. According to issue tracker of the repository is suggested to skip tests.
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+sudo mvn clean package -DskipTests 
+\end{lstlisting}
+\end{footnotesize}
+
+For packaging JsonSerde \footnotetext{Json SerDe for Hive \textless\url{https://github.com/rcongiu/Hive-JSON-Serde}}
+must be choose package profile. According documentation is clear that the profiles are set to Hadoop distribution project such a \textit{Cloudera} and \textit{Hortonwork}. Thus its not completely clear which profile should be used for different Hadoop versions. 
+
+For using Hadoop 1.x on Google Cloud works profile for Cloudera 4 (CDH4)
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+mvn -Pcdh4 clean package
+\end{lstlisting}
+\end{footnotesize}
+For building package for Hadoop 2.x was tested profile for Hortonworks Data Platform 2.3
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+mvn -Phdp23 clean package
+\end{lstlisting}
+\end{footnotesize}
+
+In attachment of this work is bash script for automated deployment of packages. Above mentioned \textit{maven} profile settings must be change according the used Hadoop version.
+
+\paragraph{Hive jar source} For using external libraries from Hive console is necessary to add Java packages to Hadoop environment path or to Hive. There several ways:
+\begin{itemize}
+\item Add jar from console 
+\begin{footnotesize}
+\begin{lstlisting}[style=python]
+$hive add jar ${env:HIVE_HOME}/lib/esri-geometry-api.jar;
+\end{lstlisting}
+\end{footnotesize}
+\item Add destination \textless path\textgreater to Hadoop path;
+\item Add to \textit{hive-site.xml} parameter \textit{hive.aux.jars.path} with value \textless path\textgreater;
+\item As workaround is to export path-  export HIVE\_AUX\_JARS\_PATH= \textless path\textgreater; 
+\end{itemize}
+The third option is the most correct and for using GHF must be used.
 
 \subsection{Network configuration}
 This step is not mandatory and can be different over user environments for  Hadoop, such as local computer or different cloud service.  
@@ -2188,7 +2229,6 @@ ff02::2         ip6-allrouters
 \end{footnotesize}
 Master and workers, each of them has configuration similar to example of master machine in Google Cloud. Important is the  last line. This line must be in local machine \textit{etc/hosts} file.
 
-\subsection{Hadoop and Hive additional configuration}
 
 
 
