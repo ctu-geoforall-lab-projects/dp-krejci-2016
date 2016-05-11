@@ -50,22 +50,23 @@
 #%end
 
 import os
+import sys
 
 import grass.script as grass
 
-from hdfs_grass_lib import GrassMapBuilder, GrassHdfs, ConnectionManager
+from hdfs_grass_lib import GrassMapBuilderEsriToEsri, GrassHdfs, ConnectionManager
 from hdfs_grass_util import get_tmp_folder
 
 
 # https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
 
 def main():
-    tmp_file = os.path.join(get_tmp_folder(), options['out'])
+    tmp_dir = os.path.join(get_tmp_folder(), options['out'])
+    if not os.path.exists(tmp_dir):
+        os.mkdir(tmp_dir)
 
 
-
-    transf = GrassHdfs(options['driver'])
-    path = options['hdfs']
+    table_path = options['hdfs']
 
     if options['table']:
         conn = ConnectionManager()
@@ -76,17 +77,23 @@ def main():
                         "Use param hdfs without param table")
 
         hive = conn.get_hook()
-        path = hive.find_table_location(options['table'])
+        table_path = hive.find_table_location(options['table'])
+        tmp_path = os.path.join(tmp_dir,options['table']+'.json')
+    else:
+        tmp_path = os.path.join(tmp_dir,'000000_0.json')
 
-    if not transf.download(hdfs=path,
-                           fs=tmp_file,
-                           overwrite=flags['r']):
+    table_path = os.path.join(table_path,'000000_0')
+
+
+    transf = GrassHdfs(options['driver'])
+    if not transf.download(hdfs=table_path,
+                           fs=tmp_path):
         return
 
-    tab = os.path.join(tmp_file,'000000_0')
 
 
-    map_build = GrassMapBuilder(tmp_file, options['out'])
+
+    map_build = GrassMapBuilderEsriToEsri(tmp_path, options['out'])
     map_build.build()
 
 

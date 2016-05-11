@@ -1,5 +1,7 @@
 import logging
 from utils import string2dict, find_ST_fnc
+import sys
+import os
 
 class HiveBaseTable(object):
     def __init__(self,
@@ -252,13 +254,17 @@ class HiveSpatial(object):
         return out
 
     def find_table_location(self, table):
-        print table
+
         out = self.describe_table(table)
-        print out
+        #print out
         for cell in out:
             if 'Location:' in cell[0]:
                 logging.info("Location of file in hdfs:  %s" % cell[1])
-                return cell[1]
+                path = cell[1].split('/')
+                #print path
+                path = '/'+'/'.join(path[3:]) #todo windows
+
+                return path
 
     def esri_query(self, hsql, temporary=True):
         STfce = ''

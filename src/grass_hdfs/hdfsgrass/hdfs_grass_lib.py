@@ -329,22 +329,13 @@ class JSONBuilder:
 
         return out
 
-class GrassMapBuilder:
+class GrassMapBuilder(object):
     def __init__(self, json_file, map):
         self.file = json_file
         self.map = map
 
     def build(self):
-        geom_type = self._get_type()
-        self.replace_substring(geom_type[0],[1])
-        self.replace_substring('}}}','}}},')
-
-        fst_line= ('{"type": "FeatureCollection","crs": '
-                   '{ "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": [')
-        self._prepend_line(fst_line)
-        self._append_line(']}')
-
-        self._create_map()
+        raise NotImplemented
 
 
     def _get_wkid(self):
@@ -353,10 +344,10 @@ class GrassMapBuilder:
         :return:
         :rtype:
         """
-        f = open('example.txt')
-        s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
-        if s.find('wkid') != -1:
-            return self._find_between(s,'wkid":','}')
+        with open(self.file, 'r') as f:
+            first_line = f.readline()
+            if first_line.find('wkid') != -1:
+                return self._find_between(first_line,'wkid":','}')
 
     def _find_between(self,s, first, last ):
         try:
@@ -367,10 +358,11 @@ class GrassMapBuilder:
             return ""
 
     def _create_map(self):
-        Module('v.in.ogr',
-              dsn=self.file,
+        Module('v.import',
+              input=self.file,
+              layer='OGRGeoJSON',
               output=self.map,
-              stderr_=PIPE,
+              verbose=True,
               overwrite=True)
 
     def _json_parser(self):
@@ -401,11 +393,66 @@ class GrassMapBuilder:
             grass.fatal('Envelope is not supported')
 
     def replace_substring(self,foo,bar):
+        path='%s1'%self.file
+        io=open(path,'w')
         stream_lines(self.file) |\
-        filt(lambda l: l.replace(foo, bar)) | \
-        to_stream(sys.stdout)
+        filt(lambda l: l.replace(foo, bar)) |\
+        to_stream(io)
+        self.file=path
 
+class GrassMapBuilderEsriToStandard(GrassMapBuilder):
+    def __init__(self,json_file, map):
+        super(GrassMapBuilderEsriToStandard,self).__init__(json_file, map)
 
+    def build(self):
+        geom_type = self._get_type()
+        self.replace_substring(geom_type[0],[1])
+        self.replace_substring('}}}','}}},')
+
+        fst_line= ('{"type": "FeatureCollection","crs": '
+                   '{ "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": [')
+        self._prepend_line(fst_line)
+        self._append_line(']}')
+
+        self._create_map()
+
+class GrassMapBuilderEsriToEsri(GrassMapBuilder):
+    def __init__(self,json_file, map):
+        super(GrassMapBuilderEsriToEsri,self).__init__(json_file, map)
+
+    def build(self):
+        geom_type = self._get_type()
+        wkid = self._get_wkid()
+        self.replace_substring('}}}','}}},')
+
+        header=self._generate_header(geom_type[1],wkid)
+        self._prepend_line(header)
+        self._append_line(']}')
+
+        self._create_map()
+
+    def _generate_header(self,geom_type,wkid):
+        header =('{"objectIdFieldName":"objectid",'
+                 '"globalIdFieldName":"",'
+                 '"geometryType":"%s",'
+                 '"spatialReference":{"wkid":%s},'
+                 '"fields":[],'
+                 '"features": ['%(geom_type,wkid))
+
+        return header
+
+    def _get_type(self):
+        line = stream_lines(self.file) | nth(0)
+        if line.find('ring'):
+            return ['ring','esriGeometryPolygon']
+        if line.find('multipoint'):
+            return ['multipoint','esriGeometryMultipoint']
+        if line.find('paths'):
+            return ['paths','esriGeometryPolyline']
+        if line.find('"x"'):
+            return ['point','esriGeometryPoint']
+        if line.find('envelope'):
+            return ['envelope','esriGeometryEnvelope']
 
 class GrassHdfs():
     def __init__(self, conn_type):
@@ -453,9 +500,15 @@ class GrassHdfs():
 
     def download(self, fs, hdfs, overwrite=True, parallelism=1):
         logging.info('Trying download : hdfs: %s to fs: %s   ' % (hdfs, fs))
-        out = self.hook.download_file(fs, hdfs, overwrite, parallelism)
+
+        if os.path.exists(fs):
+            os.remove(fs)
+        out = self.hook.download_file( hdfs_path = hdfs,
+                                       local_path = fs,
+                                       overwrite = overwrite,
+                                       parallelism = parallelism)
         if out:
-            self.printInfo(fs, "File has been copied to:")
+            self.printInfo(fs, "File has been copied to: \n      %s"%out)
         else:
             print('Copy error!')
         return out

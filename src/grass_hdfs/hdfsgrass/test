@@ -2,26 +2,34 @@
 
 
 ##################################################################################################################
+#hdfsweb google 
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=cluster-2-m port=50070
+
+#hive_server2 google
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-2-m port=10000 login=matt schema=default
 
 
-#hdfs google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hdfs conn_id=hdfsc host=cluster-1-m port=50070
+
+
+
 
 
 #hdfsweb google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=cluster-1-m.c.spatial-hadoop.internal port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=cluster-2-m.c.spatial-hadoop.internal port=50070
 
 #hive_server2 google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-1-m.c.spatial-hadoop.internal port=10000 login=matt schema=default
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-2-m.c.spatial-hadoop.internal port=10000 login=matt schema=default
 
 #hive_cli
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/db.hdfs.connect.py driver=hive_cli conn_id=hive_cli host=cluster-1-m port=10000
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hive_cli conn_id=hive_cli host=cluster-2-m port=10000
 
 
 ##################################################################################################################
-#v.out.hdfs.py
+#hdfs.in.vector
 /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.in.vector.py driver=webhdfs  hdfs=/user/test map=cfm layer=1
 
+#hdfs.out.vector
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.out.vector.py driver=webhdfs table=cansus_enc out=hdfsout
 
 #v.hive.table
 /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.json.table.py driver=hiveserver2 table=cfm attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=/cfm_1_ENCLOSED.json -e
@@ -38,8 +46,13 @@
 /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.info.py  driver=hiveserver2 -p
 
 #hdfs.info
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.info.py  driver=hiveserver2 path=/user
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.info.py  driver=webhdfs path=/user
 
+#hdfs.execute
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.execute.py  driver=webhdfs 
+
+
+#hdfs.out
 
 ##################################################################################################################
 

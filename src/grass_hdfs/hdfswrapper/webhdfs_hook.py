@@ -107,7 +107,7 @@ class WebHDFSHook(BaseHook):
                       **kwargs):
 
         c = self.get_conn()
-        c.download(hdfs_path=hdfs_path,
+        out=c.download(hdfs_path=hdfs_path,
                    local_path=local_path,
                    overwrite=overwrite,
                    n_threads=parallelism,
@@ -115,9 +115,8 @@ class WebHDFSHook(BaseHook):
 
         logging.debug("Download file {} to {}".format(hdfs_path, local_path))
 
-        if os.path.exists(local_path):
-            return None
-        return local_path
+
+        return out
 
     def mkdir(self, path, **kwargs):
         c = self.get_conn()

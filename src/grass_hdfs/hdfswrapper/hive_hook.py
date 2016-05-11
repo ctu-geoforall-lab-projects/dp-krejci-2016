@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import sys
 import csv
 import logging
 import re
@@ -13,7 +14,6 @@ from thrift.transport import TSocket, TTransport
 
 import security_utils as utils
 from base_hook import BaseHook
-
 
 
 from hdfswrapper.hive_table import HiveSpatial
@@ -49,7 +49,7 @@ class HiveCliHook(BaseHook, HiveSpatial):
         Run an hql statement using the hive cli
 
         >>> hh = HiveCliHook()
-        >>> result = hh.run_cli("USE default;")
+        >>> result = hh.execute("USE default;")
         >>> ("OK" in result)
         True
         """
@@ -63,79 +63,83 @@ class HiveCliHook(BaseHook, HiveSpatial):
         tmp_dir = tempfile.gettempdir()
         if not os.path.isdir(tmp_dir):
             os.mkdir(tmp_dir)
-        # print(tmp_dir)
-        tmp_dir = '/tmp/'
-        f = open(os.path.join(tmp_dir, 'tmpfile'), 'a')
-        f.write(hql)
-        f.flush()
-        fname = f.name
-        hive_bin = 'hive'
-        cmd_extra = []
 
-        if self.use_beeline:
-            hive_bin = 'beeline'
-            jdbc_url = "jdbc:hive2://{conn.host}:{conn.port}/{conn.schema}"
-            securityConfig = None
-            if securityConfig == 'kerberos':  # TODO make confugration file for thiw
-                template = conn.extra_dejson.get('principal', "hive/_HOST@EXAMPLE.COM")
-                if "_HOST" in template:
-                    template = utils.replace_hostname_pattern(utils.get_components(template))
+        tmp_file = os.path.join(tmp_dir, 'tmpfile.hql')
+        if os.path.exists(tmp_file):
+            os.remove(tmp_file)
 
-                proxy_user = ""
-                if conn.extra_dejson.get('proxy_user') == "login" and conn.login:
-                    proxy_user = "hive.server2.proxy.user={0}".format(conn.login)
-                elif conn.extra_dejson.get('proxy_user') == "owner" and self.run_as:
-                    proxy_user = "hive.server2.proxy.user={0}".format(self.run_as)
+        with open (tmp_file,'a') as f:
+            f.write(hql)
+            f.flush()
+            fname = f.name
+            hive_bin = 'hive'
+            cmd_extra = []
 
-                jdbc_url += ";principal={template};{proxy_user}"
-            elif self.auth:
-                jdbc_url += ";auth=" + self.auth
+            if self.use_beeline:
+                hive_bin = 'beeline'
+                jdbc_url = "jdbc:hive2://{conn.host}:{conn.port}/{conn.schema}"
+                securityConfig = None
+                if securityConfig == 'kerberos':  # TODO make confugration file for thiw
+                    template = conn.extra_dejson.get('principal', "hive/_HOST@EXAMPLE.COM")
+                    if "_HOST" in template:
+                        template = utils.replace_hostname_pattern(utils.get_components(template))
 
-            jdbc_url = jdbc_url.format(**locals())
+                    proxy_user = ""
+                    if conn.extra_dejson.get('proxy_user') == "login" and conn.login:
+                        proxy_user = "hive.server2.proxy.user={0}".format(conn.login)
+                    elif conn.extra_dejson.get('proxy_user') == "owner" and self.run_as:
+                        proxy_user = "hive.server2.proxy.user={0}".format(self.run_as)
 
-            cmd_extra += ['-u', jdbc_url]
-            if conn.login:
-                cmd_extra += ['-n', conn.login]
-            if conn.password:
-                cmd_extra += ['-p', conn.password]
+                    jdbc_url += ";principal={template};{proxy_user}"
+                elif self.auth:
+                    jdbc_url += ";auth=" + self.auth
 
-        hive_cmd = [hive_bin, '-f', fname] + cmd_extra
+                jdbc_url = jdbc_url.format(**locals())
 
-        if self.hive_cli_params:
-            hive_params_list = self.hive_cli_params.split()
-            hive_cmd.extend(hive_params_list)
-        if verbose:
-            logging.info(" ".join(hive_cmd))
+                cmd_extra += ['-u', jdbc_url]
+                if conn.login:
+                    cmd_extra += ['-n', conn.login]
+                if conn.password:
+                    cmd_extra += ['-p', conn.password]
 
-        logging.info('hive_cmd= %s\ntmp_dir= %s' % (hive_cmd, tmp_dir))
+            hive_cmd = [hive_bin, '-f', fname] + cmd_extra
+            hive_cmd = [hive_bin, '-e', hql] + cmd_extra
 
-        sp = subprocess.Popen(
-            hive_cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            cwd=tmp_dir)
-        self.sp = sp
-        stdout = ''
-        for line in iter(sp.stdout.readline, ''):
-            stdout += line
+            if self.hive_cli_params:
+                hive_params_list = self.hive_cli_params.split()
+                hive_cmd.extend(hive_params_list)
             if verbose:
-                logging.info(line.strip())
-        sp.wait()
+                logging.info(" ".join(hive_cmd))
 
-        if sp.returncode:
-            raise Exception(stdout)
+            logging.info('hive_cmd= %s\ntmp_dir= %s' % (hive_cmd, tmp_dir))
 
-        return stdout
+            sp = subprocess.Popen(
+                hive_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                cwd=tmp_dir)
+            self.sp = sp
+            stdout = ''
+            for line in iter(sp.stdout.readline, ''):
+                stdout += line
+                if verbose:
+                    logging.info(line.strip())
+            sp.wait()
+
+            if sp.returncode:
+                raise Exception(stdout)
+
+            return stdout
 
     def show_tables(self):
-        out = self.execute('show tables')
+        return self.execute('show tables')
 
     def test(self):
-
+        out = self.show_tables()
         try:
             print("\n     Test connection (show databases;)\n        %s\n" % out)
             print('***' * 30)
-            out = self.execute('show databases')
+
             return True
         except Exception, e:
             print("      EROOR: connection can not be established:\n      %s\n" % e)

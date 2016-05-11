@@ -24,7 +24,7 @@
 #% type: string
 #% required: no
 #% description: Type of database driver
-#% options: hiveserver2, hdfs, webhdfs
+#% options: hiveserver2, hdfs, webhdfs, hive_cli
 #% guisection: Connection
 #%end
 #%option
