@@ -632,34 +632,31 @@ objects which includes spatial elements, such as intersections, nearness, enclos
 
 To speed up spatial join query different ways based on filtering are commonly used.
 Typical trivial solutions are covered by usage of Minimal Bounding Box (MBB) as a first 
-filter for defining the subset of candidate object satisfying a spatial predicate. For defining of MBBs for 
+filter for defining the subset of candidate object satisfying a spatial predicate. For defining MBBs for 
 sets of points Convex Hull algorithm can be used. 
-To speed up computation the construction of Convex Hull based on heuristic \cite{covex_hull} is more efficient. 
-In Spatial Join technique \cite{spatial_join} 
-many different methods of filtering spatial objects and their suitability for specific 
-requirements are used. For large dataset stored in GIS, the filtering is essential. The object such a polygon 
+To speed up construction computation  of Convex Hull based on heuristic \cite{covex_hull} is more efficient. 
+In Spatial Join technique \cite{spatial_join}  different methods of  spatial objects filtering according the specific requirements are used. For large dataset stored in GIS, the filtering is essential. Objects such a polygon 
 or point cloud can reach millions or more features. Boolean vectors operation on detecting relation without filter stage 
 can be extremely expensive in a meaning of I/O performance. Usually, in the first stage is filtering data; spatial objects 
 are read from hard drive which is sufficient for computation of MBRs, then created MBRs are 
 stored in memory and the spatial join test is performed faster.
 
 
-		\subsubsection{Spatial Data Partitioning}
+		\subsubsection{Spatial Partitioning}
 		\label{Spatial_Data_Partitioning}
 Data partitioning is a powerful mechanism for improving an efficiency of data management systems, 
-and it is a standard feature in modern database systems. Partitioning data into smaller units allows 
-for query processing in parallel and further improved performance. In addition,
+and it is a standard attribute in modern database systems. Partitioning data into smaller units provide room for query processing in parallel and further improved performance. In addition,
 with proper partition scheme, I/O operations may be substantially
 reduced by scanning only a few sections that contain relevant information to answer a question.
-By architecture of Hadoop design, the important step and the first one is defining a suitable format for 
-storing data which influences  speed of their access and at least query process. In general, the 
-partitioning produces sub-datasets based in smaller regions-tiles is the common approach.
+By architecture of Hadoop, the important step and the first one is defining a suitable format for 
+storing data which influences  speed of their access and at least query process. In general,
+partitioning produces sub-datasets based in smaller regions-tile.
 There are two main reasons for the partitioning of spatial data. 
 The first one is to avoid tiles with high density. This is mainly due to the potential high 
 skew\cite{spatial_skew} of data which could imbalance workers in a cluster environment. Another aspect is to  
 properly handle boundary of intersecting objects. As MapReduce provides custom
 scheduling  for balancing tasks the problem of load imbalance can be partially 
-mitigated to a task of scheduling planning. In work (Effective Spatial Data Partitioning for Scalable Query 
+mitigated to a task of schedule planning. In work (Effective Spatial Data Partitioning for Scalable Query 
 Processing \cite{partitioning}) has been introduced and compared six methods of spatial data partitioning for parallel processing. 
 
 \begin{figure}[h!]
@@ -671,8 +668,8 @@ partitioning, SLC: Strip partitioning, BOS: Boundary optimized strip partitionin
 partitioning, HC: Hilbert curve partitioning. Source of fig: \cite{partitioning}}
  \end{figure} 
 
-\paragraph{Spatial Data skew} is common in a spatial application. Example \cite{hadoopGIS} assumes dataset of 
-$1000\cdot1000$ tiles. The maximum count of the object is 10 000 objects, but the average count is $1020$. This 
+\paragraph{Spatial data skew} is common challenging problem in a spatial application. As example \cite{hadoopGIS} assume dataset of 
+$1000\cdot1000$ tiles. The maximum count of the object is $10 000$ objects, but the average count is $1020$. This 
 fact growing from the real situation where a high density of objects are e.g. in cities and less dense in farmlands. 
 In parallel spatial processing where a distribution of processes is based on tiles, the data skew can significantly 
 increase the response time.
@@ -680,54 +677,58 @@ increase the response time.
 \paragraph{Boundary object}
 Spatial partitioning generates boundary objects that cross multiple partitions. Thus, it influences the independent relation 
 of each partition. In a usual case, a spatial object has complex boundary and extent. Even more, 
-from real experience is evident that in spatial datasets spatial object can cross multiple partitions. The problem is solved with 
+from real experience is evident that in spatial datasets  object can cross multiple partitions. The problem is solved with 
 different methods; replicating spatial object to multiple partitions and filtering duplicates during query process 
-or another approach, creation sector with putting weight on minimizing boundary objects. 
+or another approach, creation sectors with putting weight on minimizing boundary objects. 
 
-\paragraph*{} \textbf{HadoopGIS} in partitioning stage is focused on breaking high-density tiles into smaller ones, with using 
+
+\paragraph{} Developed spatial libraries comes with different approaches for solving, partitioning, boundary overlay and data skew:
+\begin{itemize}
+\item \textbf{HadoopGIS} in partitioning stage is focused on breaking high-density tiles into smaller ones, with using 
 recursive partitioning. Firstly, they provide two-dimensional data partitioning and generates a set of tiles.
 These preprocessed tiles are a source for query tasks. The preprocessing is done with the using of distributed computing.
- Week point of tile-based approach is non-adaptable algorithm on non-uniformly distributed data. Because that, 
- in practice with spatial partitioning the critical problem of \textit{data skew} is known. HadoopGIS ensures 
- this problem by cutting high-density tiles into small ones thus recursive partitioning approach. For controlling 
- number of objects per tile  maximal and a minimal number of objects per tile is defined. Splitting recursion 
- finds optimal direction(x or y) for creating half-sized tiles which fulfil the thresholds by a number of objects 
- in each half. In HDFS storage, the final tiles are not stored in small files taking into account default HDFS blocks size (128MB). 
+Week point of tile-based approach is non-adaptable algorithm on non-uniformly distributed data. Because that, 
+ critical problem of \textit{data skew} with these spatial partitioning is known. \textit{HadoopGIS} ensures 
+this problem by cutting high-density tiles into small ones, thus it use recursive partitioning approach. The maximal and a minimal number of objects per tile is defined for controlling 
+number of objects per tile . Splitting recursion 
+finds optimal direction(x or y) for creating half-sized tiles which fulfill the thresholds by a number of objects 
+in each half.  Taking into account default HDFS blocks size (128MB), the final tiles are not stored in small files.
 
-\paragraph*{} \textbf{SpatialHadoop} implemented the solution  based on the same tiles based idea as HadoopGIS, but few features 
+\item  \textbf{SpatialHadoop} implemented the solution  based on the same tiles idea as HadoopGIS, but few features 
 are significantly different.
-The main difference is storing partitions (tiles) in HDFS blocks instead in a big batch file. Algorithm for creating tiles differently 
-is  based on that. Three main characteristics arise from that fact. SpatialHadoop is counting 
-with a size of HDFS block and the size of tiles should fit  that size. It avoids data skew of spatial datasets. 
+The main difference is storing partitions (tiles) in HDFS blocks  instead of using big batch file. Three main characteristics arise from that fact. SpatialHadoop counts 
+a size of HDFS block and the size of tiles should fit that size. It avoids data skew of spatial datasets. 
 Secondly, a design of partitioning method ensures spatial locality; a spatially close object is assigned to the same 
 partition. The last feature tempts to balancing the size of a partition. In an ideal case, all partition are the 
-same size. The number of partitions \emph{n} is computed as $n=\left[ \frac{S(1+ \alpha)}{B}\right]$,
- where \emph{S} is the size of input file, \emph{B} is the HDFS block size and $\alpha$ is an overhead ratio(0.2 by default). 
- Next step is the definition of boundaries by of partitions. Boundaries are represented by rectangles. Thus, a skew of data is not considered. 
- The output of this step is set of rectangles representing  boundaries of partition. Together it represents cover 
- of whole space domain. The result is input for initialization of physical partitioning procedure. The method solving 
- the problem of an object with spatial extents (e.g. polygon) which overlaps more than one partitions. Determination 
- of solution is based on selected index methods; when some of them assign object to all overlapping partitions and 
- the others find the best matching partition. Replicated records are managed later by  query processor. Finally, 
- for each record from partition the map function write the pair $<$partition,record$>$ which are grouped by 
- partitions and sent to reduce function for the next task- indexing phase.
+same size. The number of partitions \emph{n} is computed as $n=S(1+ \alpha)/B$,
+where \emph{S} is the size of input file, \emph{B} is the HDFS block size and $\alpha$ is an overhead ratio(0.2 by default). 
+Next step is the definition of boundaries by of partitions. Boundaries are represented by rectangles. Thus, a skew of data is not considered. 
+The output of this step is set of rectangles representing  boundaries of partition. Together it represents cover 
+of whole space domain. The result is input for initialization of physical partitioning procedure. The method solving 
+the problem of an object with spatial extents (e.g. polygon) which overlaps more than one partitions. Determination 
+of solution is based on selected indexing method. If some of them assign object to all overlapping partitions and 
+the others find the best matching partition. Replicated records are managed later by  query processor. Finally, 
+for each record from partition the map function write the pair $<$partition,record$>$ which are grouped by 
+partitions and sent to reduce function for the next task- indexing phase.
+\end{itemize}
+
 
 
 		\subsubsection{Spatial Indexing}
 		\label{Spatial_Indexing}
 One essential requirement for spatial queries is a fast response. 
 In general, the filtering and partitioning  of spatial objects are widely related to indexing. 
-Spatial indexing helps to avoid to sequential browsing in other words to avoid full table scanning.
+Spatial indexing helps to avoid of sequential browsing. In other words to avoid full table scanning.
 Generally, in RDBMS for creation index over specified column or multiple columns is available multiple 
 indexing methods like btree, hash, gist, and gin. On spatial indexing problem in RDBMS have 
 been done many scientific works and different algorithms have been shown. Suitability of 
 different indexing methods is linked to the characteristics and distribution of data. 
-Adaptation of serial indexing method to parallel processing quite challenges. 
+Adaptation of serial indexing method to parallel processing points non-trivial challenge. 
 RDBMS has the ability to use information from multiple indexes to determine how best
 to search for the records that satisfy all query criteria. A
-NoSQL key-value store, in contrast, has only a single index
-that is built atop the constraint that all records are ordered
-lexicographically . Traditional 
+NoSQL key-value store, in contrast, has only a single index.
+That is built atop the constraint that all records are ordered
+lexicographically. Traditional 
 Spatial Indexes from the field of RDBMS e.g. Grid file or R-tree are not suitable for parallel 
 processing. By design of traditional indexing method, they are not designed for effective 
 usage on Hadoop, where developers implement indexing in a procedural way and the execution 
@@ -735,11 +736,12 @@ runs on multiple threads. Since Hadoop is based on MapReduce layer to implement
 sequential construction instead of incremental one  is necessary.  
 MapReduce is a scan based data processing framework which does not utilize any form of a disk-based 
 index and the performance is limited as the input has to be scanned. The design of spatial indexing methods 
-is according to filtering approach and choose a partitioning pattern. 
+must be hand to hand with filtering approach and selected partitioning pattern. 
 
 
-
-\paragraph*{} \textbf{SpatialHadoop} indexing model is composed from three phases. The first phase, partitioning is already
+\paragraph{} Developed spatial libraries comes with different approaches that solve  spatial indexing challenge:
+\begin{itemize}
+\item \textbf{SpatialHadoop} indexing model is composed from three phases. The first phase, partitioning is already
 described\ref{Spatial_Data_Partitioning}.
 
 The purpose of the second phase is to build \textit{local index}  for each physical partition of data. 
@@ -749,23 +751,23 @@ across machine. Additionally, it allows  a spatial operation to access local ind
 index is processed in one map task. 
 
 Last phase, building the \textit{global index} provide index structure of all partitions. As next step, 
- all local indexes to one file which represent the final index of spatial data are concatenated. This process 
+all local indexes to one file which represent the final index of spatial data are concatenated. This process 
 provides using MapReduce parallel framework.  After this part is done the NameNode creates a global index
 and store it in memory. The index is based on dictionary; key and value.
 
 \begin{footnotesize}
-\begin{lstlisting}[style=mybash]
--179.3248215,-54.934357,6.9290401,71.2885321,part-00000_data_00001
--171.773529,-54.81145,6.9261512,65.1480999,part-00000_data_00001_1
-6.9225032,-46.44586,179.3801209,78.0657531,part-00000_data_00002_2
-\end{lstlisting}\end{footnotesize}
+	\begin{lstlisting}[style=mybash]
+	-179.3248215,-54.934357,6.9290401,71.2885321,part-00000_data_00001
+	-171.773529,-54.81145,6.9261512,65.1480999,part-00000_data_00001_1
+	6.9225032,-46.44586,179.3801209,78.0657531,part-00000_data_00002_2
+	\end{lstlisting}\end{footnotesize}
 
 
- Key is represented by HDFS block and  rectangular boundaries as value. This index keeps all the 
- time in the main memory. That ensure faster access. In critic situation when fail of master or 
- restart of a cluster is possible to rebuild index from rectangular boundaries of the file blocks. 
- For accessing the master index is not necessary to parse it yourself. Implantation offers API 
- which retrieves the global index as an object.
+Key is represented by HDFS block and  rectangular boundaries as value. This index keeps all the 
+time in the main memory. That ensure faster access. In critic situation when fail of master or 
+restart of a cluster is possible to rebuild index from rectangular boundaries of the file blocks. 
+For accessing the master index is not necessary to parse it yourself. Implantation offers API 
+which retrieves the global index as an object.
 SpatialHadoop offers tree methods for building indexes. 
 
 The simple one, \textbf{Grid Index} is a flat and partitions of
@@ -776,19 +778,22 @@ screw is critical by the principle of MapReduce.
 Besides grid index, SpatialHadoop framework offer building index based on method \textbf{R-tree} and 
 \textbf{ R+-tree}. Fig \ref{fig:partitioning} (b) shows results of R-tree algorithm. 
 
-  \begin{figure}[h!]
+\begin{figure}[h!]
 	\centering
-    \includegraphics[width=1\textwidth]{./img/spatial_hadoop_parti.png}
-    \caption[Spatial MapReduce]{\centering (a) Grid Partitioning (b) R-tree Partitioning.\footnotemark}
-    \label{fig:partitioning}
-  \end{figure}  
+	\includegraphics[width=1\textwidth]{./img/spatial_hadoop_parti.png}
+	\caption[Spatial MapReduce]{\centering (a) Grid Partitioning (b) R-tree Partitioning.\footnotemark}
+	\label{fig:partitioning}
+\end{figure}  
 \footnotetext{Source: SpatialHadoop: A MapReduce Framework for Spatial Data; Eldawy A., Mokbel,F.M \cite{spatialhadoop} }
-    
-\paragraph*{} \textbf{HadoopGIS} indexing is based on hierarchical space partitioning and MBB based 
+
+\item \textbf{HadoopGIS} indexing is based on hierarchical space partitioning and MBB based 
 region filtering. Similarly, to Grid Index of SpatialHadoop design is built from  combination of local 
 indexes and global index. Recursively each tile can be further partitioned into even smaller regions. 
 But, HadoopGIS does not pre-generate indexes into files. Finally, HadoopGIS supports uniform grid 
 index, which is efficiently applicable only in the rare case of uniform data distribution. 
+\end{itemize}
+
+    
 
 		\subsection{Spatial Operation}
 
