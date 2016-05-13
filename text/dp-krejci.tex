@@ -316,50 +316,47 @@ All the modules in Hadoop are designed with a expectation that hardware failures
 must be automatically managed by the architecture of  software.
 
 The Hadoop framework is written in Java with some native code in C and command line utilities written 
-as shell-scripts. But for development \textit{Map} and \textit{Reduce} parts of the user's program  
-with "Hadoop Streaming" any programming language can be used. 
+as shell-scripts. Moreover, for development \textit{Map} and \textit{Reduce} parts  
+with using "Hadoop Streaming" any programming language can be apply. 
 Beside main modules, there are many Hadoop extensions for cluster management, 
 data access and helpers for storing data in HDFS. As suitable example of this theses is Apache Hive, 
 which expose higher level user interfaces and provide like SQL query syntax. 
 
 There are two primary components at the core of Apache Hadoop 1.x: the Hadoop Distributed File System 
 (HDFS) and the MapReduce parallel processing framework. For Hadoop 2.x have been developed new MapReduce 
-framework named YARN, which handling better the week point of MapReduce v.1.
+framework named YARN, which handle better the week point of MapReduce v.1.
 
 
 		\subsection{HDFS: Hadoop Distributed File System}\label{subsec:hdfs}
-As the main source for describing HDFS have been used the official documentation (\textit{hadoop.apache.org} 
-\cite{hadoop_web}) and book (\textit{Hadoop: The Definitive Guide}\cite{hadoop_definitive})
+As the main source for describing HDFS is used the official documentation (\textit{hadoop.apache.org} 
+\cite{hadoop_web}) and  \textit{Hadoop: The Definitive Guide}\cite{hadoop_definitive}
 
 \paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files on several 
 machines, it is called Hadoop Distributed filesystem (HDFS). Is designed for handling very large files with streaming
-data access.\cite{hadoop_hdfs_web} In HDFS, large files are broken down into smaller blocks (128MB, by default) which are 
+data access. As example suits well CSV, JSON or any data structure which can be serialize. \cite{hadoop_hdfs_web} In HDFS, large files are broken down into smaller blocks (128MB, by default) which are 
 stored as independent units. The architecture of HDFS is a highly fault-tolerant and provides wide permeability
 for access.   
   A short overview of main characteristics of HDFS design is described in (Hadoop: The Definitive 
-  Guide\cite{hadoop_definitive}) as five features: (1)\textbf{Very large files} - With relevant hardware data of amounts petabytes 
-can be accessed on Hadoop clusters effectively. (2) \textbf{Streaming data access} - Efficient data processing is based on
- read once and copied many times pattern. (3)\textbf{Commodity hardware} is suitable for running Hadoop. At the end,
+  Guide\cite{hadoop_definitive}) as five features: \textbf{Very large files} - With relevant hardware data of amounts petabytes 
+can be accessed on Hadoop clusters effectively. \textbf{Streaming data access} - Efficient data processing is based on
+ read once and copied many times pattern. \textbf{Commodity hardware} is suitable for running Hadoop. At the end,
  this fact helped with the decision to invest value of money to the development of Hadoop instead 
- of operating on expensive and highly reliable hardware. (4) \textbf{Low-latency data access} - HDFS is not suitable for performing
+ of operating on expensive and highly reliable hardware. \textbf{Low-latency data access} - HDFS is not suitable for performing
  low-latency access to data. Primary, HDFS is optimized for delivering
-a high throughput of data. (5)\textbf{Lots of small files} allows to read and operate over more files
- at the same time. Limitation of number of stored directories,  files and block in filesystem is limited by \emph{Namenode} memory.
+a high throughput of data. \textbf{Lots of small files} allows to read and operate over more files
+ at the same time. Limitation of number of stored directories,  files and block in filesystem is limited by \emph{NameNode} memory.
 
 HDFS is based on traditional hierarchical file model. As in other filesystems, HDFS allows basic file operations: 
-read, write, rename, move etc. However it doesn’t support hard and soft links. Below is the example of copying file between HDFS folders. 
-\vskip-2ex
-\begin{footnotesize}
-\begin{lstlisting}[style=mybash]
-$ hadoop fs -cp /user/hadoop/file1 /user/hadoop/file2 
-\end{lstlisting}\end{footnotesize} 
+read, write, rename, move etc. However it doesn’t support hard and soft links. 
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=1\textwidth]{./img/hdfsarchitecture.png}
-    \caption[HDFS architecture1]{\centering HDFS architecture \footnotemark}
-\end{figure} 
- \footnotetext{Figure source: \url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}}
+\begin{footnotesize}
+	\begin{lstlisting}[style=mybash]
+#copy file in distributed file system
+$ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv 
+	\end{lstlisting}
+\end{footnotesize} 
+The example above shown copying file between HDFS folders. 
+
 
 		\subsubsection{Organization of data}
 Similarly to  a common filesystem, HDFS is based on the disk blocks as well. The traditional
@@ -371,31 +368,33 @@ size of stored files is the same as the size of the block. With increasing the b
 size time cost for computing increases as well. On the other hand, a large number
 of blocks is expensive for the preparation of files. The important task is to find the optimized 
 ratio between the data preparation and the computational time by set suitable blocks size.
-The idea of block abstraction helps to bring several benefits. First advantages of
-abstraction design which allows storing bigger file than physical disk unit, 
+The idea of block abstraction helps to bring several benefits.
+
+ First advantages of
+abstraction design is that allows to store larger file than the physical disk unit, 
 even the fact that for Hadoop it is unusual.
 
-The second benefit of fixed size is simplifying of storage management. Obviously, it is easy task
+The second benefit of fixed size is simplifying storage management. Even file size not fully fill the filesystem block, the block is not use for other files.  Obviously, it makes easy 
 to hold calculating of size discernibility and eliminating metadata concerns (not necessary 
-to store metadata of tree in data blocks, even in the same system.)
+to store metadata of tree in data blocks, even in the same system)
 Furthermore, the blocks are suitable for replication and for providing fault tolerance. Protection
 against corrupted blocks, disks or machines is based on replication of block over a cluster. 
-Moreover, this approach ensures the integrity of HDFS checksums when reading as well as reading data.
+Moreover, this approach ensures the integrity of HDFS checksums when writing as well as reading data.
 
 \textbf{Replication selection process} is suited to minimize bandwidth consumption over a cluster. 
 To minimize read latency, HDFS is primary try to read the closest replica to the reader. Priority is the 
-same rack as node reader. \cite{hadoop_hdfs_web}
+same for rack as for node reader. \cite{hadoop_hdfs_web}
 
-\textbf{Rack Awareness} on Hadoop serves for getting the maximum potential of production, 
+\textbf{Rack Awareness} on Hadoop serves the maximum potential of production, 
 it means that it knows the network topology. The purpose of rack-aware replication is ensured by policy 
-component. It controls data reliability, availability, and network bandwidth. For a multi-rack cluster, is suitable to need to map 
+component. It controls data reliability, availability, and network bandwidth. For a multi-rack cluster, is suitable to map and link
 nodes to a rack\cite{hadoop_rack_web}. This can be ensured manually or using program for mapping hierarchy of IP 
-addresses. The priority of transfers is a size of bandwidth availability.  Within transfers 
+addresses. The priority of transfers is a size of bandwidth availability. Within transfers 
 where there is more bandwidth available as compared to off-rack transfers for MapReduce jobs on a node. 
 By theory, the better network bandwidth is between machines in the same rack, due to hardware specifics.
-		
+
 		\subsection{Hadoop server components}
-Hadoop architecture can be categorised into Client Machines, Master Servers and Slave Servers. These are basically daemons or programs that run on different physical servers. Hadoop consists five main components: 
+Machines for Hadoop deployment count several server components such as Master Servers and Slave Servers and for the access Client Machines.  Hadoop consists five main components: 
 \begin{itemize}[noitemsep]
 \item NameNode
 \item DataNode
@@ -403,13 +402,15 @@ Hadoop architecture can be categorised into Client Machines, Master Servers and 
 \item JobTracker
 \item TaskTracker
 \end{itemize}
+These are basically daemons or programs that run on different physical servers.
+The figure \ref{hdfs_arch} describes the main components and connections between.
 
 \paragraph{Client}
 computers have installed Hadoop with  all the configuration but they are not hosted on Master or Slave 
 server. The Clients task is to  load data into the cluster, submit jobs and get the result or looking for jobs when finished.
 		
 		\subsubsection{NameNode, DataNode and SecondaryNameNode}
-Hadoop comes with cluster architecture based on master(\textit{Namenode}) and\\ slave(\textit{DataNode}) design pattern. 
+Hadoop comes with cluster architecture based on master(\textit{NameNode}) and\\ slave(\textit{DataNode}) design pattern. 
 The \textit{NameNode} handles metadata of abstract filesystem(namespace), which include
 information about the structure of files and directories in the tree.  It does not hold any cluster data itself. 
 The  \textit{NameNode} only knows blocks which make up a file and where those blocks are located in the cluster.
@@ -418,19 +419,25 @@ The \textit{NameNode} know all locations of  \textit{DataNodes} blocks where dat
 are stored. It also provides the primary user interface to access HDFS. 
 By design \textit{NameNode}  is a single point of failure and should be never overloaded and must 
 be the most reliable node of the cluster.  Without \textit{NameNode}, HDFS is totally unserviceable. 
-
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./img/hdfsarchitecture.png}
+	\caption[HDFS architecture1]{\centering HDFS architecture \footnotemark}
+	\label{hdfs_arch}
+\end{figure} 
+\footnotetext{Figure source: \url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}}
 In recent Hadoop releases, there is also a backup node - \textit{SecondaryNameNode}, always up to date 
 with latest(per 1 hour by default) \textit{NameNode} status. It receives all the operations done by \textit{NameNode} and 
 stores them in local memory. This permits to have the latest, up to date namespace status, when \textit{NameNode} fails. 
         
 As has been mentioned, the blocks of a file are independently stored in nodes, which are called
-\textit{DataNodes}. Every \textit{DataNode} in the cluster makes registration process to the \textit{NameNode} during start. 
+\textit{DataNodes}. Each \textit{DataNode} in the cluster makes registration process to the \textit{NameNode} during start. 
 Besides that, each \textit{DataNode} informs \textit{NameNode} about blocks availability by sending a block report. 
 Block reports are sent periodically or when a change event happens. Moreover, every \textit{DataNode} sends 
 \emph{relevant} messages to the \textit{NameNode} to confirm that
 it remains operational and that the data is safe and available. If a \textit{DataNode} stops operating, the error 
 mechanisms designed to defend the failure and data loss maintain the availability of the block.
-\emph{Relevant} messages also hold information, which allows the \textit{NameNode} to run the cluster efficiently e.g. 
+\emph{Relevant} messages also hold information, which allows \textit{NameNode} to run the cluster efficiently e.g. 
 load balancing. One important concept of design  is that \textit{NameNode} never directly calls data.
 		
 
@@ -440,50 +447,44 @@ JobTracker,  which ensures client applications to submit MapReduce jobs. The Job
 out to available TaskTracker nodes in the cluster, 
 aiming to keep the jobs close to a data block.  Thus, JobTracker and TaskTracker are two types of 
 nodes for managing the execution process of  task.
-Client submits MapReduce job  to the JobTracker to process a particular file. JobTracke chose the 
-DataNodes which store block with the desired file by asking the NameNode which store metadata of filesystem. 
+Client submits MapReduce job  to the JobTracker to process a particular file. JobTracker chose the 
+DataNodes which store block with the desired file by asking the NameNode where  metadata of filesystem are stored. 
 JobTracker appends tasks to TaskTracker according to the  information obtained from NameNode and monitors the status of each task.
 
 
-\subsection{HDFS access} %TODO check grammar
-Several ways how to use HDFS interactively are available. In analogy to filesystem,  is  the main task to move data from local data to HDFS, access it and remove. As in standard filesystem, in HDFS is provided permission model as well. In paragraphs below are described access methods to HDFS and permissions models.
+\subsection{HDFS access} 
+	Several ways how to use HDFS interactively are available. In analogy to filesystem, the main task is manipulation with data, access rules and additional to load data to distributed filesystem. As in standard filesystem, in HDFS is provided permission model as well. In paragraphs below are described access methods to HDFS and permissions models.
 
 \paragraph{Permission model}
-The permission model of HDFS has several levels. The level of files and directory similar to POSIX model. Each file and directory is associated with an owner and a group. Each item in HDFS, such a file and directory has separate permission. Thus, individual permissions for the user, that is a user, for other users that are member of group and the rest of users. Permission are: r for reading, w for writing and x not for execution, but for permission to access a child of the directory.\cite{permission}
+The permission model of HDFS has several levels. The level of files and directory is similar to POSIX model. Each file and directory are associated with an owner and a group. Each item in HDFS, such a file and directory has separate permission. Thus, individual permissions for the user, for other users that are member of group and the rest of users. Permission is: \textit{r} for reading, \textit{w} for writing and \textit{x} not for execution, but for permission to access a child of the directory.\cite{permission}
 
 There are two different models for checking the user's identity.
 \begin{itemize}
-\item \textbf{simple}  In this model is the identity of user derived from host operating system.
-\item \textbf{Kerberos} In Kreberos model, is managed the identification process by Kerberos credentials system which is based on 'tickets' to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner.\cite{kerberos}
+\item \textbf{Simple}  In this model is an identity of user derived from host operating system.
+\item \textbf{Kerberos} In Kreberos model, the identification process is managed by 'tickets' based  Kerberos credentials system which allow nodes communication over a non-secure network to prove their identity to one another in a secure manner.\cite{kerberos}
 \end{itemize}
 
 The identity mechanisms are  extrinsic to HDFS itself. Thus, within HDFS is not handler for creating user identities, establishing groups, or processing user credentials.
 
-\paragraph{Access tools}
-The basic mechanism to contraction with HDFS is \textit{hadoop fs}  command line tool. 
-\begin{footnotesize}
-\begin{lstlisting}[style=mybash]
-bin/hadoop fs <args>
-\end{lstlisting}
-\end{footnotesize}
+\paragraph{Access mechanisms}
+The basic mechanism for interaction with HDFS is \textit{hadoop fs}  command line tool \textit{bin/hadoop fs $<$args$>$}. 
 All fs shell commands take path URIs as arguments. Most of the commands in FS shell are derived from Unix commands. 
 
 The other mechanism for accessing HDFS is through application programming interfaces such a APIs: Native Java API, which has a base class \textit{org.apache.hadoop.fs\\.FileSystem}; C API that works through the \textit{libHDFS} library, and there's a header file, \textit{hdfs.h} which has information on the API calls.
 
-In addition there is REST API which widely used with connection to World Wide Web. REST is an architectural style consisting set of rules and constraints applied to components within distributed system. The WebHDFS REST API components fully cover the standard fs tool. The API consists four main groups of HTTP requests, such as: HTTP GET for fetching information, HTTP PUT for manipulation request, HTTP POST for append or concat file and HTTP DELETE for deleting files and directories.\cite{rest_api}
-The Unix tool \textit{curl}  allows to access API from the Unix terminal. The example below demonstrate submit  HTTP POST request using the URL in the Location header with the file data to be appended.
+In addition, interaction according standard REST API is available. REST API is an architectural style consisting set of rules and constraints applied to components within distributed systems. The WebHDFS REST API components fully cover the standard fs tool. The API consists four main groups of HTTP requests, such as: HTTP GET for fetching information, HTTP PUT for manipulation request, HTTP POST for append or concat file and HTTP DELETE for deleting files and directories.\cite{rest_api}
+The Unix tool \textit{curl}  allows accessing API from the Unix terminal. 
 \begin{footnotesize}
 \begin{lstlisting}[style=mybash]
 $ curl -i -X POST -T <LOCAL_FILE> "http://<DATANODE>:<PORT>/webhdfs/v1/<P..."
-\end{lstlisting}
-\end{footnotesize}
-The client receives a response with zero content length:
-\begin{footnotesize}
-\begin{lstlisting}[style=mybash]
+....
+
 HTTP/1.1 200 OK
 Content-Length: 0
 \end{lstlisting}
 \end{footnotesize}
+The example above demonstrates submit  HTTP POST request using the URL in the Location header with the file data to be appended. The client receives a response with zero content length.
+
 
 	\subsection{Parallel computing - MapReduce}		
 The \emph{MapReduce} is a programming model for processing and generating large data
@@ -491,7 +492,6 @@ sets. The \emph{MapReduce} abstraction is inspired by the Map and Reduce functio
 found in functional programming languages, such as LISP \cite{lisp}. Users can easily express their
 computation as a series of Map and Reduce functions. The Map function processes a series of
 \textit{$<$ key, value $>$} pairs to generate a set of intermediate \textit{$<$ key, value $>$} pairs.
-
 \begin{center}
 Map(keyA, valueA) → list (keyB, valueB)
 \end{center}
@@ -503,10 +503,10 @@ Reduce(keyB, list(valueB)) → list (key C, valueC)
 Thus the \emph{MapReduce} framework transforms a list of (key, value) pairs into a list of values. 
 
 
-\paragraph{As MapReduce demonstration} in this work the use of data from cellular microwaves links(MWL)  is suitable . 
+\paragraph{As MapReduce demonstration} of  data from cellular microwaves links(MWL) are used.
 Assuming that data are already serialized and stored in text files and each file representing 24 hours 
-of captured data, the size amount of weakly data is relatively small(~100Mb) which is adequate.
-We are interesting in computational of then  mean differences between transmitted and received signal for 
+of captured data. The size amount of weakly data is relatively small(~100Mb) which suits well to the default block size.
+The aim is to compute  mean of differences between transmitted and received signal for 
 each link in the period between 2014-07-07 and 2015-07-07.
 
 Below is the sample of data stored as CSV.
@@ -518,8 +518,8 @@ linkid;data;rx;tx
 ...
 324;"2015-07-07 17:10:56.578";-50.1;7;
 256;"2015-07-07 17:10:56.484";-85.3;10;
-\end{lstlisting}\end{footnotesize}
- 
+\end{lstlisting}
+\end{footnotesize}
 The text lines above are presented to map functions as key-values pairs.
 The map function extracts data from date 2014-07-07 and creates pairs {link:(rx-tx)}
 \begin{footnotesize}
@@ -529,9 +529,8 @@ The map function extracts data from date 2014-07-07 and creates pairs {link:(rx-
 ...
 {324:-57.1}
 {256:-95.3}
-\end{lstlisting}\end{footnotesize}
-
-
+\end{lstlisting}
+\end{footnotesize}
 The output is processed by MapReduce framework before is being sent to reduce function.
 Mentioned process sorts pairs by key as shown bellow.
 \begin{footnotesize}
@@ -539,8 +538,6 @@ Mentioned process sorts pairs by key as shown bellow.
 {324:[-58.9,-57.1]}
 {256:[-106.9,-95.3]}
 \end{lstlisting}\end{footnotesize}
-
-
 Finally reduce program iterates over the list of values for each link and compute mean.
  The final results are stored in Hadoop filesystem.
  
@@ -550,27 +547,27 @@ Finally reduce program iterates over the list of values for each link and comput
 	\subsubsection{Introduction to Spatial MapReduce Query}
 Figure \ref{fig:mapred_spatial} shows a simple example of distributed spatial query processing. The main idea 
 grows up from the basis of MapReduce. On the figure, the dataset is partitioned into four tiles. After 
-query job is started each tile is analyzed separately using Map(M1-M4) function. For demonstration, 
-query analyzes intersection of two datasets(red, blue) on each tile and relation between 
+query job is started, each tile is analyzed separately using Map(M1-M4) function. For demonstration, 
+query analyzes intersection of two datasets(red, blue) on each tile. Thus, relation between 
 objects from the different dataset is detected. The result is done by Reduce(R) function, where results from each
 map phase are processed.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{./img/mapred_spatial.pdf}
-    \caption[Spatial Map Reduce]{\centering Detection of spatial relations using Map(\textit{M1-M4}) and Reduce(\textit{R}) functions}
+    \includegraphics[width=0.6\textwidth]{./img/mapred_spatial.pdf}
+    \caption[Spatial MapReduce]{\centering Detection of spatial relations using Map(\textit{M1-M4}) and Reduce(\textit{R}) functions}
         \label{fig:mapred_spatial}
  \end{figure}
 \paragraph{}
 
 The motivation for spatial processing in parallel is queering data in reasonable time. 
 Firstly, it is essential to introduce characteristics of queries for solving different 
-tasks. In HadoopGIS (F. Aji, F. Wang, et al.\cite{hadoopGIS}) there is defined five major 
-query cases of spatial data: (1) \textit{Feature Aggregation queries}  which doesn’t 
+tasks. In HadoopGIS (F. Aji, F. Wang, et al.\cite{hadoopGIS})  five major 
+query cases of spatial data is defined: (1) \textit{Feature Aggregation queries}  which doesn’t 
 fall into spatial queries, however, they are evenly important for spatial frameworks 
 as others. As a common example of Feature Aggregation query, a function for finding mean 
 values of attributes. 
-\textit{Fundamental Spatial Queries} covers groups of tasks like: including point based 
+(2) \textit{Fundamental Spatial Queries} covers groups of tasks like: including point based 
 queries, containment queries, and spatial joins. (3) Next groups 
 \textit{ Complex Spatial Queries} includes more challenging task. A query which solves 
 advanced Spatial Join: spatial mismatching or overlay; or neighbor query. (4) Integrated 
@@ -580,10 +577,10 @@ Spatial Pattern Queries}, for example, queries on finding high-density regions, 
 queries to find directional patterns of spatial objects.
 
 Anyway, classification of a query to five groups is based on characteristics of a task. 
-But, as in RDBMS as well in distributed databases, the most challenging is to solve  cost-intensive query. 
+But, as in RDBMS and also in distributed databases, the most challenging is to solve  cost-intensive query. 
 Join Queries and Nearest Neighbour queries can be classified as 
-cost-intensive to compare to the rest and because of that, it becomes as interesting and
-most challenging task for a scientist, developers. Logically that fact affects the direction of the most of academic works and developments.
+cost-intensive to compare to the rest. That fact points these query as the interesting and
+most challenging task for a scientist and developers. Naturally it affects the direction of the most of academic works and developments.
 
 Speeding up a process of solving \textit{Spatial Join} which is classified as classic GIS 
 problem is a motivation for the parallel processing of spatial data. Spatial Join 
@@ -594,22 +591,20 @@ based on parallel and distributed models. In the past, many distributed
 solutions as OpenMP\cite{omp} have been presented, for instance, Intel TBB and Bulk Synchronous Parallel\cite{multi_cpu}.
 Because of their complexity, they have been used insignificantly to compare with Hadoop framework.
 Already introduced MapReduce parallel model opens doors for developing efficient
-spatial query engine with less developing investments. In the last years,  
-few projects came up on the scene  focused on Spatial MapReduce.
+spatial query engine with less developing investments. In the last years, several Spatial MapReduce projects came up on the scene.
 \textit{SpatialHadoop}\cite{spatialhadoop}, \textit{HadoopGIS}\cite{hadoopGIS} and \textit{ESRI Spatial Framework for Hadoop}\cite{esri_framework}
-are three open source systems that are designed to process large scale spatial data on Hadoop.
+are three open source libraries that are designed to process large scale spatial data within the integration of Hadoop.
 All three systems come with significantly different design of implementation but they all are based
-on Map Reduce framework from Hadoop environment and basically all project have the same goal.
+on MapReduce framework from Hadoop environment and basically all project have the same goal.
 To realize such systems, it is essential to identify time-consuming spatial query components,
 break them down into small tasks, and process these tasks in parallel. 
 Design of first two systems, \textit{SpatialHadoop} and \textit{HadoopGIS}
 extensions are well described in publications. Background of Esri library is not described in an available
-publication, on the other hand, the user documentation seems to be complex and described in detail. 
+literature, on the other hand, the user documentation seems to be complex and described in detail. 
 Esri laboratory published article\cite{esri_indexing} about QuadTree indexing, which is used for building 
 indexes in their \textit{ESRI Spatial Framework for Hadoop}.
-In the section below there are described fundamentals of spatial processing in parallel and the in discussion 
-the comparison of solutions of developed and published frameworks is provided. The main source for description 
-of frameworks is mentioned literature (\textit{SpatialHadoop}\cite{spatialhadoop}, \textit{HadoopGIS}\cite{hadoopGIS} 
+In the section below are described fundamentals of spatial processing in parallel and  discussed 
+the comparison of solutions of developed and published frameworks is provided. The main source for  analyses features of spatial frameworks design is already mentioned literature (\textit{SpatialHadoop}\cite{spatialhadoop}, \textit{HadoopGIS}\cite{hadoopGIS} 
 and \textit{ESRI Spatial Framework for Hadoop}\cite{esri_framework})
 
 		
@@ -630,7 +625,7 @@ analogically  \emph{r} from \emph{R} are rectangles. Intersection operation betw
 and \emph{r} will report set \emph{R} of intersected \emph{r} rectangles.
 
 Solution of described \textit{spatial join} is trivial. General spatial join problem has been extended by 
-complex spatial join, known as \textit{spatial overlay join}\cite{spatial_join}: (a)The set of objects
+complex spatial join, known as \textit{spatial overlay join}\cite{spatial_join}: (a) The set of objects
 can be another character than a rectangle, such as point, segments or polygon. (b) The dimension of a set 
 can be more than three. (c) The relationship between pairs of objects may be any relationship between 
 objects which includes spatial elements, such as intersections, nearness, enclosure, or a directional relation. 
@@ -784,7 +779,7 @@ Besides grid index, SpatialHadoop framework offer building index based on method
   \begin{figure}[h!]
 	\centering
     \includegraphics[width=1\textwidth]{./img/spatial_hadoop_parti.png}
-    \caption[Spatial Map Reduce]{\centering (a) Grid Partitioning (b) R-tree Partitioning.\footnotemark}
+    \caption[Spatial MapReduce]{\centering (a) Grid Partitioning (b) R-tree Partitioning.\footnotemark}
     \label{fig:partitioning}
   \end{figure}  
 \footnotetext{Source: SpatialHadoop: A MapReduce Framework for Spatial Data; Eldawy A., Mokbel,F.M \cite{spatialhadoop} }
@@ -949,16 +944,13 @@ Package includes \textit{gcloud tool} for Google Compute Engine resources and \t
 to compare with Compute Engine API. It uses concept of configurations for managing different accounts on Google Cloud. 
 Interface of \textit{gcloud} is suited for handling services of Google cloud platform using command line. For example, 
 deploying VM, handling containers, configuring network and the other.
-%\vskip-2ex
-%\begin{figure}[!htbp]
-%\lstset{extendedchars=false,escapeinside=''}
-%\begin{footnotesize}
+
 
 \begin{lstlisting}[style=mybash]
 %$ gcloud config configurations create my-config
 %\end{lstlisting} 
 
-%\vskip-3ex
+
 Configuration allows to set default general variables: account, project, default region 
 and zone, proxy etc. To set up configuration profile: default zone, region is appropriate. 
 The variables can be set by \textit{gcloud} or with using 
@@ -1006,7 +998,7 @@ center resources; latency availability, durability are available and the with us
 %\begin{figure}[h!]
 %\centering
 %	\includegraphics[width=0.7\textwidth]{./img/zones_diagram.pdf}
-%    \caption[Spatial Map Reduce]{\centering Zones diagram describing zones available in each region\footnotemark}
+%    \caption[Spatial MapReduce]{\centering Zones diagram describing zones available in each region\footnotemark}
 %    \label{fig:partitioning}
 %  \end{figure}  
 %\footnotetext{Source:\url{https://cloud.google.com/compute/docs/zones}}
@@ -1540,7 +1532,7 @@ configuration folder  includes shell file which specified environment variables 
 \begin{itemize}\label{conf_files}
 \item \textbf{hadoop-env.sh} The file specifies environment variables that affect JDK used by daemons
 for example \textbf{\$JAVA\_HOME}.
-\item \textbf{core-site.sh}   This file informs Hadoop deamon where namenode runs in the cluster. Furthermore 
+\item \textbf{core-site.sh}   This file informs Hadoop deamon where NameNode runs in the cluster. Furthermore 
 information about port number used for Hadoop instance, memory limit for data size,  memory allocated for HDFS, and size of read and write buffers.
 \item \textbf{hdfs-site.sh}  This file contains the configuration settings for HDFS daemons, the Name 
 Node, the Secondary Name Node, and the data nodes. Usually is configured block replication and permission checking on HDFS. 
@@ -1550,7 +1542,7 @@ such the JobTracker and the TaskTracker.
 
 in addition default configuration directory includes two flat files: \textit{masters} and \textit{slaves}. 
 Both includes hostname of slaves or master where each line represents one address. 
-Master file informs about the Secondary Namenode location to Hadoop daemon. The \textit{masters} 
+Master file informs about the Secondary NameNode location to Hadoop daemon. The \textit{masters} 
 file at Master server contains an IP address of Secondary Name Node servers.
 The second one, \textit{slaves} on Slave server contains the IP address of the slave node. Notice 
 that the \textit{slaves} file at Slave node contains only its own IP address and not of any other Data Nodes in the cluster.
@@ -1984,7 +1976,7 @@ In addition, hdfs.* package also include module \textit{hdfs.in.fs} which allows
 To bring results back from HDFS is ensured by module \textit{hdfs.out.vector}. The module download deserialised GeoJSON file from HDFS and in second step modify file to standard GeoJSON format. The second step is important to make file consistent according to GeoJSON standard. In that time, format is readable by \textit{v.in.ogr} which is based on GDAL/OGR library and can be transformed to the native vector map format.
 
 \subsubsection{GRASS Hive interface}
-Two spatial frameworks, from ESRI and HadoopGIS use Hive as a top layer for usage map reduce based library in more expressive way. The GRASS Hadoop Framework consist several modules starts with prefix hive.* analogically to mentioned hdfs.* modules. Module for connection to Hive is covered by module \textit{hdfs.db.connect} which is an exception in naming nomenclature. The "hive" modules provide functions for creating tables and loading data into. Furthermore is available module for select queries and execute commands. Main two modules \textit{hive.csv.table} and \textit{hive.json.table} support user friendly creation of tables and loading data into. The process of creation table and loading data can be split. The hive.*.table modules support creation table without loading data. This step can be provided by module hive.table.load or simply by Hive command using hive.execute.
+Two spatial frameworks, from ESRI and HadoopGIS use Hive as a top layer for usage MapReduce based library in more expressive way. The GRASS Hadoop Framework consist several modules starts with prefix hive.* analogically to mentioned hdfs.* modules. Module for connection to Hive is covered by module \textit{hdfs.db.connect} which is an exception in naming nomenclature. The "hive" modules provide functions for creating tables and loading data into. Furthermore is available module for select queries and execute commands. Main two modules \textit{hive.csv.table} and \textit{hive.json.table} support user friendly creation of tables and loading data into. The process of creation table and loading data can be split. The hive.*.table modules support creation table without loading data. This step can be provided by module hive.table.load or simply by Hive command using hive.execute.
 
 
 \paragraph{Creation of table} Spatial framework from Esri supports reading  from several file format.  The Framework allows to create geometric data type from  WKB, JSON and GeoJSON. Table can be crated from \textit{hiveserver2} command line or with using developed module  \textit{hive.json.table} within GHF.D Defining feature of table is provided using parameters and flags of module. It module to user make table with GeoJSON table without advanced knowledges of Hive syntax. In table \ref{hive.json} are described main features of each parameter. The examples of usage are shown in the next section\ref{sec:usage_spatial}. Second, slightly modified module supports creation of table suited for loading CSV data. In hive.* package is also module for loading data to table. This module is not necessary used, because is build-in for hdfs.*.table modules. 
