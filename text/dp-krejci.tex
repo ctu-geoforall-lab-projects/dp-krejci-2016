@@ -12,6 +12,7 @@
 \usepackage[final]{pdfpages}
 \usepackage[final,pdftex, colorlinks=false]{hyperref}
 \usepackage{fancyhdr}
+
 %mensi mezera z figure
 %\setlength{\belowcaptionskip}{-10pt}
 \newcommand{\squeezeup}{\vspace{-2.5mm}}
@@ -250,12 +251,12 @@ One of the significant generators of the total data amount are sources of spatia
 Several spatial frameworks for Hadoop has been published in last years and brings the new 	
 scope of  processing big data in valuable time. Compare to  desktop GIS tools which are suited for users with different scale of experience, Hadoop environment, its configuration, deployment and usage of MapReduce is still challenging task. More favourable conditions are ensured by developed spatial frameworks, where the  main functionality is wrapped to the extension such Hive or Pig.  Thus more expressive way of interaction is supported and like-SQL approach on the top of Hadoop is provided. 
 
-The workflow of processing spatial data using  Hadoop and its spatial libraries consists several steps, such as configuration cluster, configuration Hadoop, network and security configuration, exporting spatial data to serialization format, transferring data to the cluster and distributed file syste, knowledge of Hive data warehouse, querying data using spatial framework, and  finally exporting and visualisation of the result in GIS. This process cost time, and without defectively designed workflow is ineffective. Moreover, it required advanced knowledges of touched problematic. 
+The workflow of processing spatial data using  Hadoop and its spatial libraries consists several steps, such as configuration cluster, configuration Hadoop, network and security configuration, exporting spatial data to serialization format, transferring data to the cluster and distributed filesystem, knowledge of Hive data warehouse, querying data using spatial framework, and  finally exporting and visualisation of the result in GIS. This process cost time, and without defectively designed workflow is ineffective. Moreover, it required advanced knowledges of touched problematic. 
 
 \subsection*{The aim and contribution}
-The main motivation of the thesis is to develop framework which simplify the process workflow. Generally, to get familiar with the background of technology, select appropriate components and develop tools which simplify each step as is possible. Thus, the aim is to design effective workflow and developed its components for elective processing big data in valuable time.
+The main motivation of the thesis is to develop framework which simplify the process workflow. Generally, to get familiar with the background of technology, select appropriate components and develop tools which simplify each step as is possible. Thus, the aim is to design effective work flow and developed its components for elective processing big data in valuable time.
 
-The first task is to deploy cluster.  Under the hood of this task is understanding of Hadoop ecosystem and its configuration. In addition, for reaping the benefits of Hadoop is suitable to deploy cluster using cloud services which ensure fair computation power.  Second task of the project, thus  meet requirements of simplifying the process, consist implementation of the bridge between Hadoop/Hive systems and environment of GIS. More specifically, according to the theses assignment to implement framework for GRASS GIS which is free open source geo-spatial framework.
+The essential task is to deploy cluster.  Under the hood of that is understanding of Hadoop ecosystem and its configuration. In addition, for reaping the benefits of Hadoop is suitable to deploy cluster using cloud services which ensure fair computation power.  Second task of the project, thus  meet requirements of simplifying the process, consist implementation of the bridge between Hadoop/Hive systems and environment of GIS. More specifically, according to the theses assignment to implement framework for GRASS GIS which is free open source geo-spatial framework.
 
 
 
@@ -265,8 +266,8 @@ The first task is to deploy cluster.  Under the hood of this task is understandi
 
 \newpage
 \chapter*{Background of related work}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Background of related work}
-The chapter Background of related work is focused on familiarization with theoretical aspects of used technologies in practical framework. Firstly, is introduce the Hadoop system, which supports distributed file system for manipulation with data and computational framework MapReduce(or YARN) for parallel processing. 
-The next study is focused on review and comparison of spatial frameworks for Hadoop which support geoprocessing of big data. For fulfilling the capacity of Hadoop and its library is essential to dispose cluster of computer machines. Thus, the part of work is aimed on cloud services and its controlling.
+The chapter \textit{Background of related work} is focused on familiarization with theoretical aspects which are essential for fulfilling the aim of the work. Firstly, introduce the Hadoop system, which supports distributed filesystem for manipulation with data and computational framework MapReduce(or YARN) for parallel processing. 
+The next section is focused on review and comparison of spatial frameworks for Hadoop which support geoprocessing tools of big data. For fulfilling the capacity of Hadoop and its library is essential to dispose cluster of computer machines. Thus, the last  part of theoretical introduction is aimed on cloud services and its challenges.
 \section{Hadoop framework}
 \label{sec:hadoop}
 		\subsection*{Hadoop}
@@ -284,19 +285,13 @@ The next study is focused on review and comparison of spatial frameworks for Had
     \caption[Hadoop architecture2]{\centering Hadoop Logo.}
  \end{figure}
 		
-		\paragraph*{History}goes back to 2002 when the 
-open-source project Apache Hadoop software for reliable, scalable,
-distributed computing was launched. The project was originally
-developed within Yahoo! company. That was the first company
-which used framework Hadoop in production environments.
+		\paragraph*{History} of Hadoop stared in 2003. The roots of original Hadoop comes from Google File System paper from 2003. 
 
- 
-At the beginning of October 2003, Hadoop project was launched to improve performance
-of the Apache Nutch\cite{nutch_web} web search engine and in the short time (in January 2006) was moved to the new Hadoop sub project.
-At the same time  distributed file system called Google
-file system\cite{google_fs}, with the specific, permitting, efficient and reliable access
-the huge amount of data, has been created. This abstract file system, widely called "user level"
-file system runs as a service that is accessible via APIs and libraries. 
+At the beginning of October 2003, Apache Nutch\cite{nutch_web} has been lunched. Apache Nutch is a  web search engine and in the short time (in January 2006) was moved to the new Hadoop sub project.
+At the same time  distributed filesystem called Google
+filesystem\cite{google_fs}, with the specific, permitting, efficient and reliable access
+the huge amount of data, has been created. This abstract filesystem, widely called "user level"
+filesystem runs as a service that is accessible via APIs and libraries. 
 In 2008, Hadoop was mad own top-level project at Apache.\cite{hadoop_web_news} By this time, Hadoop was being used by many
 other companies besides Yahoo!, such as Last.fm, Facebook, and the New York Times. 
 
@@ -311,7 +306,7 @@ other companies besides Yahoo!, such as Last.fm, Facebook, and the New York Time
 \paragraph*{The base Apache Hadoop}framework written in Java is composed of the following modules(Hadoop Apache \cite{hadoop_web}):
 \begin{itemize}
 \item \textbf{Hadoop Common} - The common utilities that support the other Hadoop modules;
-\item \textbf{Hadoop Distributed File System (HDFS)} – A distributed file system that provides
+\item \textbf{Hadoop Distributed File System (HDFS)} – A distributed filesystem that provides
  high-throughput access to application data;
 \item \textbf{Hadoop YARN} - A framework for job scheduling and cluster resource management;
 \item \textbf{Hadoop MapReduce} - an implementation of the MapReduce programming model 
@@ -322,7 +317,7 @@ must be automatically managed by the architecture of  software.
 
 The Hadoop framework is written in Java with some native code in C and command line utilities written 
 as shell-scripts. But for development \textit{Map} and \textit{Reduce} parts of the user's program  
-with "Hadoop Streaming" any programming language. 
+with "Hadoop Streaming" any programming language can be used. 
 Beside main modules, there are many Hadoop extensions for cluster management, 
 data access and helpers for storing data in HDFS. As suitable example of this theses is Apache Hive, 
 which expose higher level user interfaces and provide like SQL query syntax. 
@@ -337,7 +332,7 @@ As the main source for describing HDFS have been used the official documentation
 \cite{hadoop_web}) and book (\textit{Hadoop: The Definitive Guide}\cite{hadoop_definitive})
 
 \paragraph*{Hadoop} comes with a filesystem and since it manages the storage of files on several 
-machines, it is called Hadoop Distributed FileSystem (HDFS). Is designed for handling very large files with streaming
+machines, it is called Hadoop Distributed filesystem (HDFS). Is designed for handling very large files with streaming
 data access.\cite{hadoop_hdfs_web} In HDFS, large files are broken down into smaller blocks (128MB, by default) which are 
 stored as independent units. The architecture of HDFS is a highly fault-tolerant and provides wide permeability
 for access.   
@@ -368,7 +363,7 @@ $ hadoop fs -cp /user/hadoop/file1 /user/hadoop/file2
 
 		\subsubsection{Organization of data}
 Similarly to  a common filesystem, HDFS is based on the disk blocks as well. The traditional
-file system is based on blocks which define the minimal size of the amount of data to read and write.
+filesystem is based on blocks which define the minimal size of the amount of data to read and write.
 HDFS blocks have the similar concept based on blocks, but the minimal unit is
 larger. The size of the block is 128 MB by default. Blocks are broken and distributed
 over disks on the cluster like blocks over a single disk in the filesystem. The ideal 
@@ -415,7 +410,7 @@ server. The Clients task is to  load data into the cluster, submit jobs and get 
 		
 		\subsubsection{NameNode, DataNode and SecondaryNameNode}
 Hadoop comes with cluster architecture based on master(\textit{Namenode}) and\\ slave(\textit{DataNode}) design pattern. 
-The \textit{NameNode} handles metadata of abstract file system(namespace), which include
+The \textit{NameNode} handles metadata of abstract filesystem(namespace), which include
 information about the structure of files and directories in the tree.  It does not hold any cluster data itself. 
 The  \textit{NameNode} only knows blocks which make up a file and where those blocks are located in the cluster.
 Information about filesystem is stored on local disk in two files: the namespace image and edit log file. 
@@ -440,7 +435,7 @@ load balancing. One important concept of design  is that \textit{NameNode} never
 		
 
 \subsubsection{JobTracker and TaskTrackers}
-Above the file systems is  the MapReduce layer, in other words, MapReduce engine, which consists of 
+Above the filesystems is  the MapReduce layer, in other words, MapReduce engine, which consists of 
 JobTracker,  which ensures client applications to submit MapReduce jobs. The JobTracker handle work 
 out to available TaskTracker nodes in the cluster, 
 aiming to keep the jobs close to a data block.  Thus, JobTracker and TaskTracker are two types of 
@@ -451,7 +446,7 @@ JobTracker appends tasks to TaskTracker according to the  information obtained f
 
 
 \subsection{HDFS access} %TODO check grammar
-Several ways how to use HDFS interactively are available. In analogy to file system,  is  the main task to move data from local data to HDFS, access it and remove. As in standard file system, in HDFS is provided permission model as well. In paragraphs below are described access methods to HDFS and permissions models.
+Several ways how to use HDFS interactively are available. In analogy to filesystem,  is  the main task to move data from local data to HDFS, access it and remove. As in standard filesystem, in HDFS is provided permission model as well. In paragraphs below are described access methods to HDFS and permissions models.
 
 \paragraph{Permission model}
 The permission model of HDFS has several levels. The level of files and directory similar to POSIX model. Each file and directory is associated with an owner and a group. Each item in HDFS, such a file and directory has separate permission. Thus, individual permissions for the user, that is a user, for other users that are member of group and the rest of users. Permission are: r for reading, w for writing and x not for execution, but for permission to access a child of the directory.\cite{permission}
@@ -547,7 +542,7 @@ Mentioned process sorts pairs by key as shown bellow.
 
 
 Finally reduce program iterates over the list of values for each link and compute mean.
- The final results are stored in Hadoop file system.
+ The final results are stored in Hadoop filesystem.
  
 
 
@@ -982,7 +977,7 @@ $ gcloud compute ssh my-instance --zone asia-east1
  
 
 \textit{gcloud dataproc}\ref{subsub:dataproc} tools support deployment of clusters with limited configuration. For deploying 
-clusters with distributed file system, like Hadoop and spark, is suitable to use \textit{bdutil}\ref{sub:bdutil} tools. 
+clusters with distributed filesystem, like Hadoop and spark, is suitable to use \textit{bdutil}\ref{sub:bdutil} tools. 
 This example demonstrate, that command line tools doesn’t fully cover full portfolio of Google Cloud Platform. 
    
 \paragraph{Google Cloud Client Libraries} give programmatic access to Google Cloude Platform services. For development of applications 
@@ -1316,10 +1311,10 @@ configuration after start. Thus, all configuration must be set
 properly before starts of daemons on cluster. For apply changes must be cluster redeployed. 
 
 \paragraph{File system}
-Google Cloud Dataproc offers two different storages based on distributed file systems. In 
+Google Cloud Dataproc offers two different storages based on distributed filesystems. In 
 chapter Hadoop\ref{subsec:hdfs} is described Hadoop Distributed File system(HDFS) which is 
-default file system for Apache Hadoop framework and is as optional in Google Services. As 
-default file system for Hadoop and Spark deployment provided by Google Cloud is \textit{Google Cloud storage}. 
+default filesystem for Apache Hadoop framework and is as optional in Google Services. As 
+default filesystem for Hadoop and Spark deployment provided by Google Cloud is \textit{Google Cloud storage}. 
 
 Google Claude Storage offers direct data access in available storage for the rest of Google 
 services. In addition the interoperability provide access between Spark and Hadoop on Google. 
@@ -1327,7 +1322,7 @@ Next advantage is high data availability provided by Cloud
  Storages, with high availability and global replication without less performance. The key 
  feature is data access after cluster is shouted down. The 
 pricing of cluster instance is based on time. Thus, to save costs, cluster should run only when 
-is used. With using HDFS as distributed file system, after 
+is used. With using HDFS as distributed filesystem, after 
 shutting down cluster instance, data are removed and lost as well. In contrast, data stored on 
 Claude Storage are available after cluster is stopped and 
 can be linked again in further cluster deployment.
@@ -1561,7 +1556,7 @@ The second one, \textit{slaves} on Slave server contains the IP address of the s
 that the \textit{slaves} file at Slave node contains only its own IP address and not of any other Data Nodes in the cluster.
 
 
-\paragraph{Hadoop modes} characterize cluster features of Hadoop and its distributed file system. 
+\paragraph{Hadoop modes} characterize cluster features of Hadoop and its distributed filesystem. 
 There are main three approaches of cluster mode which are described below:
 \begin{itemize}
 \item \textbf{Standalone mode} If Hadoop is installed on a machine, by default is preconfigured to a 
@@ -1669,8 +1664,8 @@ and free environmental variables for setting environment, hardware and deploymen
 
 \begin{itemize}
 \item \textbf{Environment variables} provide the setting which refers to the id of the project and to 
-the default bucket in GCS. The defined bucket holds SSH keys and configuration of the file system. In 
-the case of usage GCS as a file system for Hadoop, the defined GCS is linked  during cluster deployment 
+the default bucket in GCS. The defined bucket holds SSH keys and configuration of the filesystem. In 
+the case of usage GCS as a filesystem for Hadoop, the defined GCS is linked  during cluster deployment 
 and all files are natively accessible by standard Hadoop commands e.g copy file \textit{hadoop fs -cp  /data/* /tmp/}.
 
 \item \textbf{Hardware configuration}
@@ -1683,7 +1678,7 @@ extra persistent disks(PDs) can be listed. Available virtual machines of service
 further cluster. For that case, the GCS connector must by allowed.
 
 \item \textbf{Deployment} section consist parameters for customizing Hadoop installation on VMs workers 
-and master. The configuration of GCS connector allows to use as a distributed file system \textit{GS} and 
+and master. The configuration of GCS connector allows to use as a distributed filesystem \textit{GS} and 
 \textit{BIGQUERRY} connector allows read/write access to Google BigQuery. File system of a cluster is set 
 by default to gs(google storage), the second 
 option is standard HDFS. This group consists several path configuration for defining the destination of 
@@ -1806,7 +1801,7 @@ $ ./bdutil -P spatial-cluster --num_workers 10 \
 
 
 \subsubsection{Configuration gcloud dataproc}
-Second option for cluster deployment is command line tools \textit{gcloud dataproc}. This tool is based on flags and parameters which define specification of deployed cluster. In contrast to bdutil tools, gcloud dataproc is based on different system images which are releasing under versions. Currently the latest version 1.0 is built with Hadoop 2.x and Hive 1.2 which is big advantageous to compare with bdutil. Tool bdutil has been tested and the GS file system doesn’t work properly with latest versions of Hive and Hadoop. 
+Second option for cluster deployment is command line tools \textit{gcloud dataproc}. This tool is based on flags and parameters which define specification of deployed cluster. In contrast to bdutil tools, gcloud dataproc is based on different system images which are releasing under versions. Currently the latest version 1.0 is built with Hadoop 2.x and Hive 1.2 which is big advantageous to compare with bdutil. Tool bdutil has been tested and the GS filesystem doesn’t work properly with latest versions of Hive and Hadoop. 
 \begin{table}[!htbp]
 \centering
 \begin{scriptsize}
@@ -1873,7 +1868,7 @@ As the most suitable framework for the this project became Esri framework, which
 
 				
 \subsection{Functionality}
-The GRASS Hadoop Framework(GHF) can be described as Add-ons package of modules for GRASS GIS which supports interaction between GIS desktop environment and Hadoop/Hive. Although GHF can be used for transferring data between file system and HDFS. The main purpose is to bring possibility of usage of spatial frameworks developed for Hadoop to the GIS desktop application. 
+The GRASS Hadoop Framework(GHF) can be described as Add-ons package of modules for GRASS GIS which supports interaction between GIS desktop environment and Hadoop/Hive. Although GHF can be used for transferring data between filesystem and HDFS. The main purpose is to bring possibility of usage of spatial frameworks developed for Hadoop to the GIS desktop application. 
 
 Hadoop based spatial library for data processing can be used externally from the command line console e.g. \textit{hiveserver2} console or \textit{hadoop fs} tool. This approach can be more powerful for experienced users whit administration access to the cluster and knowledges of scripting, best in bash. If we assume that average user prefer friendly interface, than GHF is suitable choice. 
 
@@ -1934,7 +1929,7 @@ rmi           & Remove connection by id                                         
     \caption[Components interaction]{\centering Components interaction}
  \end{figure} 
 \subsubsection{GRASS HDFS interface}
-The modules start with \textit{hdfs.*}(exclude \textit{hdfs.db.connection}) provide tools for transferring data between GRASS maps or filsystem and Hadoop distributed file system. In addition the module \textit{hdfs.info} provide basic metadata of files stored in HDFS.
+The modules start with \textit{hdfs.*}(exclude \textit{hdfs.db.connection}) provide tools for transferring data between GRASS maps or filsystem and Hadoop distributed filesystem. In addition the module \textit{hdfs.info} provide basic metadata of files stored in HDFS.
 
 \paragraph{HDFS metadata} Module \textit{hdfs.info} currently support several basic operation for checking if path exist, recursive listing of directories and creating HDFS directory.
 
@@ -2048,7 +2043,7 @@ Second library which has been developed for Spotify project, is called Snakebite
 As for HDFS for interaction with Hive has been used two libraries. The first, called \textit{pyhs2} for interaction with hiveserver2. It includes all the required packages such as SASL and Thrift wrappers. The second used library is \textit{hive-thrift-py}. From this Thrift based library has been used module for accessing meta-store of Hive.
 
 \subsection{GHF core}
-The core provide API for the middle interface. Consists functions for interaction with HDFS and Hive database. More specifically, allows to put/get data to/from HDFS and interact with HDFS using essential file system commands. The part focused on Hive interaction, allows to create specific table for loading CSV and JSON files, fetch metadata from meta store of Hive, and execute non-optimised queries or fetch result of select query. In the core library is used part of the code from \textit{Airflow} project, which is currently in incubator of Apache \cite{airflow_diff}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the  wrappers(hooks) and to the connection manager. 
+The core provide API for the middle interface. Consists functions for interaction with HDFS and Hive database. More specifically, allows to put/get data to/from HDFS and interact with HDFS using essential filesystem commands. The part focused on Hive interaction, allows to create specific table for loading CSV and JSON files, fetch metadata from meta store of Hive, and execute non-optimised queries or fetch result of select query. In the core library is used part of the code from \textit{Airflow} project, which is currently in incubator of Apache \cite{airflow_diff}. The core library are mainly wrappers on the mentioned external libraries. The classes of core library can be parted to the  wrappers(hooks) and to the connection manager. 
 
 \begin{figure}[!htbp]
    \centering
@@ -2323,7 +2318,7 @@ Row object --> Serializer --> <key, value> --> OutputFileFormat --> HDFS files
 
 The first part of work introduce essentials features of Hadoop design and its components. The following discussion is aim on problematic of spatial library for Hadoop. The second chapter expands the theoretical principles by the usage in practise and describe functionality, implementation and usage of  developed GRASS Hadoop framework in detail.
 
-First chapter briefly introduced Hadoop ecosystem and its main components. Thus, distributed file system, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the functionality and implementation characters of spatial libraries for Hadoop is done. Fallowed by discussion daling with the chalenges connected to spatial processing using MapReduce/HDFS and walk through particulars solutions of each library. The rest of first part aim Hadoop deployment on cluster using Google Cloud Platform.
+First chapter briefly introduced Hadoop ecosystem and its main components. Thus, distributed filesystem, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the functionality and implementation characters of spatial libraries for Hadoop is done. Fallowed by discussion daling with the chalenges connected to spatial processing using MapReduce/HDFS and walk through particulars solutions of each library. The rest of first part aim Hadoop deployment on cluster using Google Cloud Platform.
 
 Experiment framework consist processing workflow included description of implemented tools in detail. As first step in the workflow is familiarization with specific problems nascent within the setup working environment and Hadoop configuration. Next section discusse implementation design aspects and functionality of the implemented package for GRASS which allows natively interact with Hadoop.  
 
@@ -2331,7 +2326,7 @@ Experiment framework consist processing workflow included description of impleme
 \subsection*{Contribution}
 The target of the work was to bring Hadoop support for storing and analysing vector data within GRASS GIS and test the functionality on the cluster of computer nodes. 
 
-In the experiment part of work has been developed GRASS Hadoop framework(GHF). The package includes several GRASS command line modules. The full pack of modules simplify the workflow process, therefore: convert data to proper format for serialisation, ensure transaction of data to distributed file system, load data to Hive like-sql database which support two spatial frameworks for Hadoop. After high performance spatial analysis the GHF provide transfer of results and conversion to the nativ GRASS vector maps. 
+In the experiment part of work has been developed GRASS Hadoop framework(GHF). The package includes several GRASS command line modules. The full pack of modules simplify the workflow process, therefore: convert data to proper format for serialisation, ensure transaction of data to distributed filesystem, load data to Hive like-sql database which support two spatial frameworks for Hadoop. After high performance spatial analysis the GHF provide transfer of results and conversion to the nativ GRASS vector maps. 
 
 Within work is shown test case of....
 
