@@ -12,7 +12,6 @@
 \usepackage[final]{pdfpages}
 \usepackage[final,pdftex, colorlinks=false]{hyperref}
 \usepackage{fancyhdr}
-\usepackage[ruled,vlined]{algorithm2e}
 %mensi mezera z figure
 %\setlength{\belowcaptionskip}{-10pt}
 \newcommand{\squeezeup}{\vspace{-2.5mm}}
@@ -240,10 +239,25 @@ morecomment=[l]{\#},
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \subsection*{Context}
-%Over the years the capabilities of hard drives have increased massively and access speed too. According to study by International %Data Corp, since 2007 we produce more data than we can store. This amount of data is widely named big data.
-\subsection*{Motivation and contribution}
+Over the years, the capability of hard drives have increased massively and access speed too. According to the study by International Data Corp, since 2007, we produce more data than we can store. Furthermore, the generators of data  increasing fast which is proofed by the fact that 90\% of data volume has been generated since 2010. Current  annual global data production is  7.9 zettabytes and the trend points 35 zettabytes in 2020 due to 30 times faster generation of data.  
+The term \textit{big data} became an as widely used expression for the volume of data which beyond the ability of commonly used software to store and process  them.   Over years of innovation in SQL relational databases reached limits thank it's architecture design and closely connected with the limitation of hardware components.  Software engineering has been naturally pushed to  investigate new form for handling big amount of data efficiently.  As  the new phenomenon   of storing and managing big data in data centres over the word became approach based on distributed file system and parallel computing. At the beginning of this stage, big companies developed prototypes of software which was strongly dependent on maintenance by top experts from the field.  The turning point of the blocker has changed by releasing  Hadoop framework, especially after it became a part of Apache project. Since that, many side projects based on Hadoop are introduced and together became a synonym of  distributed ecosystem.
 
-\subsection*{Aim of the thesis}
+
+One of the significant generators of the total data amount are sources of spatial data.   Geoscience in last decades points strong dependency on geographical information systems(GIS). This concept firstly proposed in 1960 gone through  the long process of development, and with increasing computational hardware capacity became as the standard  effective tool for users workstations. With technological improvements in the field of measuring, nowadays data are captured with higher spatial and temporal resolution. To satisfy requirements of efficient data manipulation, analysis and store come out several methods based expensive high-performance hardware accompanied with technology for parallel processing. Several libraries for parallel processing such an MPI or OpenMP and Hadoop came with master and node  architecture which allows scaling up a cluster on demand of the user. In contrast to other, Hadoop due to amiable interface for developers reflect massive boom of its usage. In last years, for Hadoop and its whole ecosystem of extensions has been developed several libraries for raster and vector data manipulation and analysis. Due to the spece in clusters scalability, the new room for high-performance computing of spatial data became as reality.
+
+
+\subsection*{Motivation}
+Several spatial frameworks for Hadoop has been published in last years and brings the new 	
+scope of  processing big data in valuable time. Compare to  desktop GIS tools which are suited for users with different scale of experience, Hadoop environment, its configuration, deployment and usage of MapReduce is still challenging task. More favourable conditions are ensured by developed spatial frameworks, where the  main functionality is wrapped to the extension such Hive or Pig.  Thus more expressive way of interaction is supported and like-SQL approach on the top of Hadoop is provided. 
+
+The workflow of processing spatial data using  Hadoop and its spatial libraries consists several steps, such as configuration cluster, configuration Hadoop, network and security configuration, exporting spatial data to serialization format, transferring data to the cluster and distributed file syste, knowledge of Hive data warehouse, querying data using spatial framework, and  finally exporting and visualisation of the result in GIS. This process cost time, and without defectively designed workflow is ineffective. Moreover, it required advanced knowledges of touched problematic. 
+
+\subsection*{The aim and contribution}
+The main motivation of the thesis is to develop framework which simplify the process workflow. Generally, to get familiar with the background of technology, select appropriate components and develop tools which simplify each step as is possible. Thus, the aim is to design effective workflow and developed its components for elective processing big data in valuable time.
+
+The first task is to deploy cluster.  Under the hood of this task is understanding of Hadoop ecosystem and its configuration. In addition, for reaping the benefits of Hadoop is suitable to deploy cluster using cloud services which ensure fair computation power.  Second task of the project, thus  meet requirements of simplifying the process, consist implementation of the bridge between Hadoop/Hive systems and environment of GIS. More specifically, according to the theses assignment to implement framework for GRASS GIS which is free open source geo-spatial framework.
+
+
 
  
 
@@ -251,8 +265,8 @@ morecomment=[l]{\#},
 
 \newpage
 \chapter*{Background of related work}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Background of related work}
-\paragraph*{Starter}
-
+The chapter Background of related work is focused on familiarization with theoretical aspects of used technologies in practical framework. Firstly, is introduce the Hadoop system, which supports distributed file system for manipulation with data and computational framework MapReduce(or YARN) for parallel processing. 
+The next study is focused on review and comparison of spatial frameworks for Hadoop which support geoprocessing of big data. For fulfilling the capacity of Hadoop and its library is essential to dispose cluster of computer machines. Thus, the part of work is aimed on cloud services and its controlling.
 \section{Hadoop framework}
 \label{sec:hadoop}
 		\subsection*{Hadoop}
@@ -1990,7 +2004,7 @@ Two spatial frameworks, from ESRI and HadoopGIS use Hive as a top layer for usag
 parameter  & description                                                                                                                & flag & description                  \\ \midrule  \midrule
 driver     & \begin{tabular}[c]{@{}l@{}}Type of database driver\\ options:\\ hive\_cli,hiveserver2,\end{tabular}                        & -e   & create external table        \\ \midrule
 table      & name of table                                                                                                              & -o   & overwrite data in table      \\ \midrule
-attributes & \begin{tabular}[c]{@{}l@{}}python dictionary\\ \{attribute:datatype\}\end{tabular}                                         & -d   & Firstly drop table if exists \\ \midrule
+attributes & \begin{tabular}[c]{@{}l@{}}python dictionary\\ \{attribute:datatype\}\end{tabular}                                         & -d   & firstly drop table if exists \\ \midrule
 struct     & structure of json                                                                                                          &      &                              \\ \midrule
 stored     & output format                                                                                                              &      &                              \\ \midrule
 serde      & \begin{tabular}[c]{@{}l@{}}java class for serialization of json\\ default: org.openx.data.jsonserde.JsonSerDe\end{tabular} &      &                              \\ \midrule
@@ -2200,11 +2214,13 @@ In attachment of this work is bash script for automated deployment of packages. 
 $hive add jar ${env:HIVE_HOME}/lib/esri-geometry-api.jar;
 \end{lstlisting}
 \end{footnotesize}
-\item Add destination \textless path\textgreater to Hadoop path;
-\item Add to \textit{hive-site.xml} parameter \textit{hive.aux.jars.path} with value \textless path\textgreater;
-\item As workaround is to export path-  export HIVE\_AUX\_JARS\_PATH= \textless path\textgreater; 
+\item Add destination \textless path\textgreater to Hadoop path; (works remotely)
+\item Add to \textit{hive-site.xml} parameter \textit{hive.aux.jars.path} with value \textless path.jar\textgreater; (works remotely)
+\item Create in \$HIVE\_HOME directory auxlib and copy jar's there.
+\item As workaround is to export path-  export HIVE\_AUX\_JARS\_PATH= \textless path\textgreater; (works locally)
 \end{itemize}
-The third option is the most correct and for using GHF must be used.
+The third option is the most correct and for using GHF must be used. After changing configuration, Hive and Hadoop daemons must be restarted. 
+%http://stackoverflow.com/questions/31802908/adding-hive-jars-permanently
 
 \subsection{Network configuration}
 This step is not mandatory and can be different over user environments for  Hadoop, such as local computer or different cloud service.  
@@ -2242,25 +2258,6 @@ exit
 
 
 
-http://stackoverflow.com/questions/31802908/adding-hive-jars-permanently
-In the hiveserver2 host, create a location something like /var/lib/hive and add all the necessary jars inside that folder. Edit the hive-site.xml and mention all these jars in the property hive.aux.jars.path
-
-Eg: ADD JAR /home/amal/hive/amaludf.jar ADD JAR /home/amal/hive/amaludf2.jar
-
-Instead of using the above commands in each session, you can define it for all sessions.
-
-Create a location for storing these jars in the hiveserver host.
-
-mkdir /var/lib/hive
-Add all these jars to that directory
-
-Set the property in hive-site.xml
-
-<property>
-  <name>hive.aux.jars.path</name>
-  <value>/var/lib/hive</value>
-</property>
-Restart the hiveserver2 after doing this modification.
 
 Instead of creating a directory and putting all the jars, you can specify paths of individual jars also. The only condition is that all these jars should be present in the hiveserver host.
 
@@ -2322,9 +2319,21 @@ Row object --> Serializer --> <key, value> --> OutputFileFormat --> HDFS files
 			
 		
 	
-\section{}
+\section{Conclusion}
+
+The first part of work introduce essentials features of Hadoop design and its components. The following discussion is aim on problematic of spatial library for Hadoop. The second chapter expands the theoretical principles by the usage in practise and describe functionality, implementation and usage of  developed GRASS Hadoop framework in detail.
+
+First chapter briefly introduced Hadoop ecosystem and its main components. Thus, distributed file system, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the functionality and implementation characters of spatial libraries for Hadoop is done. Fallowed by discussion daling with the chalenges connected to spatial processing using MapReduce/HDFS and walk through particulars solutions of each library. The rest of first part aim Hadoop deployment on cluster using Google Cloud Platform.
+
+Experiment framework consist processing workflow included description of implemented tools in detail. As first step in the workflow is familiarization with specific problems nascent within the setup working environment and Hadoop configuration. Next section discusse implementation design aspects and functionality of the implemented package for GRASS which allows natively interact with Hadoop.  
 
 
+\subsection*{Contribution}
+The target of the work was to bring Hadoop support for storing and analysing vector data within GRASS GIS and test the functionality on the cluster of computer nodes. 
+
+In the experiment part of work has been developed GRASS Hadoop framework(GHF). The package includes several GRASS command line modules. The full pack of modules simplify the workflow process, therefore: convert data to proper format for serialisation, ensure transaction of data to distributed file system, load data to Hive like-sql database which support two spatial frameworks for Hadoop. After high performance spatial analysis the GHF provide transfer of results and conversion to the nativ GRASS vector maps. 
+
+Within work is shown test case of....
 
 \chapter*{}\stepcounter{chapter}\addcontentsline{toc}{chapter}{}
 
