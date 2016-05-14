@@ -745,15 +745,15 @@ must be hand to hand with filtering approach and selected partitioning pattern.
 described\ref{Spatial_Data_Partitioning}.
 
 The purpose of the second phase is to build \textit{local index}  for each physical partition of data. 
-In contrast to global index, the local index is built for each partition sparely. In addition, each local 
-index is stored in on one HDFS block. It ensures that Hadoop uses load balancer for relocating blocks 
+In contrast to global index, the local index is built for each partition separately. In addition, each local 
+index is stored in one HDFS block. It ensures that Hadoop uses load balancer for relocating blocks 
 across machine. Additionally, it allows  a spatial operation to access local indexes where each local 
 index is processed in one map task. 
 
 Last phase, building the \textit{global index} provide index structure of all partitions. As next step, 
 all local indexes to one file which represent the final index of spatial data are concatenated. This process 
-provides using MapReduce parallel framework.  After this part is done the NameNode creates a global index
-and store it in memory. The index is based on dictionary; key and value.
+provides using MapReduce  layer. After this part is done, NameNode creates a global index
+and store it in memory. The index is based on dictionary- key and value.
 
 \begin{footnotesize}
 	\begin{lstlisting}[style=mybash]
@@ -789,38 +789,29 @@ Besides grid index, SpatialHadoop framework offer building index based on method
 \item \textbf{HadoopGIS} indexing is based on hierarchical space partitioning and MBB based 
 region filtering. Similarly, to Grid Index of SpatialHadoop design is built from  combination of local 
 indexes and global index. Recursively each tile can be further partitioned into even smaller regions. 
-But, HadoopGIS does not pre-generate indexes into files. Finally, HadoopGIS supports uniform grid 
+In contrast to SpatialHadoop, HadoopGIS does not pre-generate indexes into files. Finally, HadoopGIS supports uniform grid 
 index, which is efficiently applicable only in the rare case of uniform data distribution. 
 \end{itemize}
 
     
 
-		\subsection{Spatial Operation}
+\subsubsection{Spatial Operations}
 
 
-TODO in progress!
-\paragraph{Interface}Three mentioned spatial processing frameworks (section \textit{Spatial Join}\ref{sub:spatial_join}) 
+
+Three mentioned spatial processing frameworks (section \textit{Spatial Join}\ref{sub:spatial_join}) 
 for Hadoop show different design for storing and accessing data. Similarly, the interface for 
 configuration, data management and query data varies.
 
-Operation on \textit{HadoopGIS} and \textit{Spatial frameworkGIS from Esri are based} are based on likeSQL layer. 
-Concretely on the top of spatial MapReduce library Hadoop extension is implemented, likeSQL data warehouse- Hive.  
+Operation on \textit{HadoopGIS} and \textit{Spatial frameworkGIS from Esri are based} are based on like-SQL layer. 
+Concretely on the top of spatial MapReduce library, is implemented  data warehouse Hive based on  like SQL commands.
 \textit{SpatialHadoop} supports spatial extension Pigeon a high level SQL-like language which  provides OGC-compliant 
 spatial data types and operations making it easier to adopt by users. It makes the program simpler and more expressive 
-as it uses spatial data types (e.g. POINT and RECTANGLE) and spatial functions (e.g. Overlaps). 
-The spatial functionality is implemented as user defined functions (UDFs) which are seamless to integrate with existing 
-non-spatial operations in Pig.
-		
-		
-		TODO
-		  ogc spatial operators
-
-		  popsat customizaci SpatialHadoop
-	      https://github.com/aseldawy/spatialhadoop2/wiki/Implementing-custom-spatial-operations-in-SpatialHadoop
- 		  https://github.com/Esri/spatial-framework-for-hadoop/wiki/UDF-Documentation
-		  https://cwiki.apache.org/confluence/display/Hive/Spatial+queries
+as it uses spatial data types (e.g. POINT and RECTANGLE) and spatial functions (e.g. ST\_Overlaps, ST\_Contain). 
+The implementation of spatial operators are designed to be used as defined functions (UDFs) which are seamless to integrate with existing  non-spatial operations in Hive or Pig for SpatialHadoop. The spatial operators of all three libraries fulfill implementation rules according to OGC standard.
 
 
+%can be more here
 
 
 
@@ -834,7 +825,7 @@ framework    & HadoopGIS   & SpatialHadoop    & \begin{tabular}[c]{@{}c@{}}Spati
                                                                      \\ \midrule \midrule
 \begin{tabular}[c]{@{}c@{}}integration \\ with extension\end{tabular} & HiveSP                                                                           & \begin{tabular}[c]{@{}c@{}}Pigeon(spatial \\ extension for\\  Apache Pig)\end{tabular} & Hive                                                                                                                                                                   \\ \midrule
 \begin{tabular}[c]{@{}c@{}}build-in\\ data types\end{tabular}         & \begin{tabular}[c]{@{}c@{}}Point, Polygon, \\ Box and \\ LineString\end{tabular} & \begin{tabular}[c]{@{}c@{}}Point, Rectangle\\ and Polygon\end{tabular}                 & \begin{tabular}[c]{@{}c@{}}inherit from\\ Esri Java Geometry \\ Library: Point, MultiPoint, \\ Polyline, Polygon, Envelope.\\ Also includes OGC Wrappers.\end{tabular} \\ \midrule
-input data                                                            & CSV                                                                              & \begin{tabular}[c]{@{}c@{}}CSV,\\ custom \\ data types\end{tabular}                    & Json                                                                                                                                                                   \\ \midrule
+input data                                                            & CSV                                                                              & \begin{tabular}[c]{@{}c@{}}CSV,\\ custom \\ data types\end{tabular}                    & JSON, GeoJSON, text,  WKB                                                                                                                                                                   \\ \midrule
 \begin{tabular}[c]{@{}c@{}}User-defined\\ data types\end{tabular}     & -                                                                                & \begin{tabular}[c]{@{}c@{}}- for Pigeon\\ + SpatialHadoop\end{tabular}                 & -                                                                                                                                                                      \\ \midrule
 visualisation                                                         & -                                                                                & +*HadoopViz                                                                            & \begin{tabular}[c]{@{}c@{}}*Geoprocessing \\ Tools for Hadoop\\ (ArcMap)\end{tabular}                                                                                  \\ \midrule
 index                                                                 & \begin{tabular}[c]{@{}c@{}}uniform grid\\  index\end{tabular}                    & R-tree,R+-tree,Grid index & QuadTree                                                                                                                                                               \\ \midrule
@@ -856,7 +847,7 @@ the overall design is suited to Map and Reduce function principals. Spatial cros
 All three spatial frameworks come with indexing, where SpatialHadoop is the most customizable. 
 The design of  SpatialHadoop implementation is open to extending available indexes. Esri and 
 SpatialHadoop offer more advanced indexing methods, such as 
-QuadTree(Esri) and E-tree(SpatialHadoop). One of the main weakness of HadoopGIS is an indexing 
+QuadTree(Esri) and E-tree(SpatialHadoop). One of the main weakness of HadoopGIS is an limited indexing 
 support. It disposables only by grid index method which can be 
 effectively used only for uniformly distributed data.
 
@@ -873,66 +864,29 @@ When decision which framework is suitable for a specific application must be mad
 key factor can be access of data  or programming language choice. While SpatialHadoop 
 uses binary format for representation data in memory and disk, HadoopGIS 
 uses Hadoop streams. Thus, HadoopGIS representing all side results as text and access 
-
 of data is only sequential. In contrast, SpatialHadoop binary approach allows 
 accessing data randomly.
 These facts make SpatialHadoop more efficient since parsing text are an expensive task. 
-On the other hand, HadoopGIS allows writing MapReduce function in different languages than Java which can be crucial. 
+On the other hand, HadoopGIS allows writing MapReduce function in different languages than Java which can be crucial factor. 
 
 
 Generally, all frameworks allow customization on the level of developing MapReduce functions. As Esri 
-framework allows interaction with core libraries, is more focused  for GIS users than developers. 
+framework allows interaction with core libraries, the library is more focused or GIS users than developers. 
 Esri covers the wide portfolio of built-in spatial operators to compare SpatialHadoop framework, 
 and at least significantly more than HadoopGIS. On the other hand, the leader for customization and 
 development of additional functionality is SpatialHadoop.
 
 
-\begin{table}[!htbp]
-\begin{scriptsize}
-\centering
-\begin{tabular}{@{}|l||l|l|@{}}
-\toprule
-Group                       & Framework                                                        & Description                                                                                                                                                  \\ \midrule \midrule
-\multirow{5}{*}{Compute}    & Compute engine                                                   & large-scale workloads on virtual machines                                                                                                                \\ \cmidrule(l){2-3} 
-                            & Preemptible VMs                                                  & short-lived instances for batch and fault-tolerant jobs                                                                                                  \\ \cmidrule(l){2-3} 
-                            & Custom Machine Types                                             & customized deployment of virtual machine                                                                                                                 \\ \cmidrule(l){2-3} 
-                            & App Engine                                                       & engine for building scalable web app and mobile backends                                                                                                 \\ \cmidrule(l){2-3} 
-                            & Container engine                                                 & powerful cluster manager for running Docker containers                                                                                                   \\ \midrule
-\multirow{5}{*}{Storage}    & Cloud storage*                                                   & simple, cost effective data storage                                                                                                                       \\ \cmidrule(l){2-3} 
-                            & \begin{tabular}[c]{@{}l@{}}Cloud storage\\ Nearline\end{tabular} & highly-durable storage for data archiving and online backup                                                                                              \\ \cmidrule(l){2-3} 
-                            & Cloud SQL                                                        & storing data using relational MySQL database                                                                                                             \\ \cmidrule(l){2-3} 
-                            & Datastore   \ref{subsub:datastore}                               & scalable, NoSQL database for non-relational data                                                                                                         \\ \cmidrule(l){2-3} 
-                            & Bigtable                                                         & fast, scalable NoSQL database service                                                                                                                    \\ \midrule
-Networking                  & Cloud networking                                                 & load balancing, VPN, DNS,                                                                                                                                \\ \midrule
-\multirow{5}{*}{Big Data}   & BigQuery                                                         & real time analysis(100,000 rows)of data per second                                                                                                       \\ \cmidrule(l){2-3} 
-                            & DataFlow                                                         & real-time data processing for batch and stream data processing                                                                                           \\ \cmidrule(l){2-3} 
-                            & Dataproc\ref{subsub:dataproc}                                                        & management for Spark and Hadoop services. Quick deployment                                                                                               \\ \cmidrule(l){2-3} 
-                            & DataLab                                                          & analysis and visualisation of large-scaled data                                                                                                          \\ \cmidrule(l){2-3} 
-                            & Pub/Sub                                                          & \begin{tabular}[c]{@{}l@{}}real-time messaging service for sending up to\\ 1 milion messages per second\end{tabular}                                     \\ \midrule
-\multirow{2}{*}{Services}   & Cloud Endpoinds                                                  & API for access to backend servers for mobile platforms                                                                                                   \\ \cmidrule(l){2-3} 
-                            & Translate API                                                    & allows to develop apps for translating languages programatically                                                                                         \\ \midrule
-\multirow{4}{*}{Management} & Cloud monitoring                                                 & monitoring performance and availability of cloud apps                                                                                                    \\ \cmidrule(l){2-3} 
-                            & Cloud deployment manager                                         & manager for repeatable deployment using templates                                                                                                        \\ \cmidrule(l){2-3} 
-                            & Container registry                                               & private Docker image storage                                                                                                                             \\ \cmidrule(l){2-3} 
-                            & Cloud logging                                                    & \begin{tabular}[c]{@{}l@{}}Mannager for log data and engine for debug system issue.\\ Supports Google App Engine and Google Compute Engine.\end{tabular} \\ \bottomrule
-\end{tabular}
-\end{scriptsize}
-\caption{Overview of Google Cloud platform}
-\label{tab:google_all}
-\end{table}
-
 
 		
 	\section{Google Cloud Platform}
-\textbf{Cloud} in IT field generally means deploying an application and running it on a platform which is 
-provided by someone else. Services allow to developers  work efficiently  with 
+\textbf{Cloud} in computer technology means service which provide capability of storage and computation engine within datacenter. Services allow to developers  work efficiently  with 
 requisite resources which are necessary for an application to work.
 
-\textbf{Google cloud platform}, supports building, testing and deploying an application on highly-scalable 
-infrastructure.
-The platform is based on building blocks. Advantages of design the platform design is a quick development of 
-desired product by combining separate services together. Portfolio of services is sorted into six main categories 
-which are described for better overview in 
+\textbf{Google Cloud Platform} supports building, testing and deploying an application on highly-scalable infrastructure.
+The platform is based on building blocks of particular functionality. Advantages of  the platform design is a quick development of 
+desired product by combining separate services together. Portfolio of services is parted into six main categories 
+which are overview  in
 table\ref{tab:google_all} \cite{gc_product_services}.
 
 The user interface offers three different ways for managing services of Google Cloud. Web-based interface, command-line 
@@ -945,16 +899,44 @@ Package includes \textit{gcloud tool} for Google Compute Engine resources and \t
 
 
 
+\begin{table}[!htbp]
+	\begin{scriptsize}
+		\centering
+		\begin{tabular}{@{}|l||l|l|@{}}
+			\toprule
+			Group                       & Framework                                                        & Description                                                                                                                                                  \\ \midrule \midrule
+			\multirow{5}{*}{Compute}    & Compute engine                                                   & large-scale workloads on virtual machines                                                                                                                \\ \cmidrule(l){2-3} 
+			& Preemptible VMs                                                  & short-lived instances for batch and fault-tolerant jobs                                                                                                  \\ \cmidrule(l){2-3} 
+			& Custom Machine Types                                             & customized deployment of virtual machine                                                                                                                 \\ \cmidrule(l){2-3} 
+			& App Engine                                                       & engine for building scalable web app and mobile backends                                                                                                 \\ \cmidrule(l){2-3} 
+			& Container engine                                                 & powerful cluster manager for running Docker containers                                                                                                   \\ \midrule
+			\multirow{5}{*}{Storage}    & Cloud storage*                                                   & simple, cost effective data storage                                                                                                                       \\ \cmidrule(l){2-3} 
+			& \begin{tabular}[c]{@{}l@{}}Cloud storage\\ Nearline\end{tabular} & highly-durable storage for data archiving and online backup                                                                                              \\ \cmidrule(l){2-3} 
+			& Cloud SQL                                                        & storing data using relational MySQL database                                                                                                             \\ \cmidrule(l){2-3} 
+			& Datastore   \ref{subsub:datastore}                               & scalable, NoSQL database for non-relational data                                                                                                         \\ \cmidrule(l){2-3} 
+			& Bigtable                                                         & fast, scalable NoSQL database service                                                                                                                    \\ \midrule
+			Networking                  & Cloud networking                                                 & load balancing, VPN, DNS,                                                                                                                                \\ \midrule
+			\multirow{5}{*}{Big Data}   & BigQuery                                                         & real time analysis(100,000 rows)of data per second                                                                                                       \\ \cmidrule(l){2-3} 
+			& DataFlow                                                         & real-time data processing for batch and stream data processing                                                                                           \\ \cmidrule(l){2-3} 
+			& Dataproc\ref{subsub:dataproc}                                                        & management for Spark and Hadoop services. Quick deployment                                                                                               \\ \cmidrule(l){2-3} 
+			& DataLab                                                          & analysis and visualisation of large-scaled data                                                                                                          \\ \cmidrule(l){2-3} 
+			& Pub/Sub                                                          & \begin{tabular}[c]{@{}l@{}}real-time messaging service for sending up to\\ 1 milion messages per second\end{tabular}                                     \\ \midrule
+			\multirow{2}{*}{Services}   & Cloud Endpoinds                                                  & API for access to backend servers for mobile platforms                                                                                                   \\ \cmidrule(l){2-3} 
+			& Translate API                                                    & allows to develop apps for translating languages programatically                                                                                         \\ \midrule
+			\multirow{4}{*}{Management} & Cloud monitoring                                                 & monitoring performance and availability of cloud apps                                                                                                    \\ \cmidrule(l){2-3} 
+			& Cloud deployment manager                                         & manager for repeatable deployment using templates                                                                                                        \\ \cmidrule(l){2-3} 
+			& Container registry                                               & private Docker image storage                                                                                                                             \\ \cmidrule(l){2-3} 
+			& Cloud logging                                                    & \begin{tabular}[c]{@{}l@{}}Mannager for log data and engine for debug system issue.\\ Supports Google App Engine and Google Compute Engine.\end{tabular} \\ \bottomrule
+		\end{tabular}
+	\end{scriptsize}
+	\caption{Overview of Google Cloud platform}
+	\label{tab:google_all}
+\end{table}
+
 \paragraph{Command-line interface} called \textit{gcloud} enables to manage Google Compute Engines resources in faster way 
 to compare with Compute Engine API. It uses concept of configurations for managing different accounts on Google Cloud. 
 Interface of \textit{gcloud} is suited for handling services of Google cloud platform using command line. For example, 
 deploying VM, handling containers, configuring network and the other.
-
-
-\begin{lstlisting}[style=mybash]
-%$ gcloud config configurations create my-config
-%\end{lstlisting} 
-
 
 Configuration allows to set default general variables: account, project, default region 
 and zone, proxy etc. To set up configuration profile: default zone, region is appropriate. 
@@ -1227,14 +1209,7 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 \end{footnotesize}
  
 
-
-\subsubsection{Data control}
-?
-
-\paragraph{Accessing endpoints}
-?
-
-		\subsection{Networking}
+	%\subsection{Networking}
 		%https://cloud.google.com/compute/docs/networking#networks
 %https://cloud.google.com/compute/docs/vm-ip-addresses
 %%https://cloud.google.com/compute/docs/configure-instance-ip-addresses#internalstaticip
@@ -1242,8 +1217,8 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 %Rhttps://cloud.google.com/dataproc/cluster-web-interfaces
 
 
-hive
-https://cwiki.apache.org/confluence/display/Hive/Setting+Up+HiveServer2
+%hive
+%https://cwiki.apache.org/confluence/display/Hive/Setting+Up+HiveServer2
 
 		\subsection{Dataproc: Cluster services}
 		\label{subsub:dataproc}
@@ -2449,6 +2424,11 @@ URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}
 \bibitem{hadoop_rack_web}
 Hadoop Rack Awareness. Apache Hadoop [online]. [2016-03-18]. 
 URL: \textless\url{https://hadoop.apache.org/docs/r1.2.1/cluster_setup.html#Hadoop+Rack+Awareness}
+
+\bibitem{gc_product_services}
+Google Cloud, Home Page [online]. [2016-04-18]. 
+URL: \textless\url{https://cloud.google.com}
+
 
 \bibitem{gc_hadoop}
 Google Cloud, Hadoop Configuration [online]. [2016-04-18]. 
