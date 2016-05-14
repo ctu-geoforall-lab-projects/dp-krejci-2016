@@ -1757,20 +1757,16 @@ gsutil acl get gs://mwdata
 	
 	
 	\paragraph{Access control list}\label{acl} is configurable by command line tools
-	\textit{gsutil acl} 
-	or by API based on JSON or XML structures. The management of ACL is based on
-	concentric 
-	permissions which provide faster configuration. When user grant 
-	write permission, automatically get also read permission. In case of grant of
-	owner 
+	\textit{gsutil acl} or by API based on JSON or XML structures. The management of ACL is based on concentric permissions which provide faster configuration. If user grant 
+	write permission, automatically get also read permission. In case of grant of owner 
 	permission, read and write is also reachable.\begin{footnotesize}
 		\begin{lstlisting}[style=mybash]
 #usage of a predefined ACL to an object during object upload
 gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 		\end{lstlisting}
 	\end{footnotesize}
-	In addition, is available list of predefined ACL for quick settings of access
-	restrictions such as project-private, 
+	In addition, for quick settings of access
+	restrictions such as project-private, list of predefined ACL is available:
 	private, public-read, public-read-write, authenticated-read, 
 	bucket-owner-read and bucket-owner-full-control.
 	
@@ -1794,11 +1790,11 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 	and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
 	The process of a deploying cluster is fully automatized using the default 
 	configuration. Hadoop and Spark deployment are compatible with official
-	releases. By default, the configuration of automatic deployment is simple. 
+	releases. With default configuration, the configuration of automatic deployment is simple. 
 	On the other hand in the most cases, it is 
-	necessary to configure cluster manually to fulfil custom requirements. 
-	Next to standard command-line tool \textit{gcloud} for handling deployment is 
-	helper software \emph{bdutil} for deploying cluster allows complex 
+	necessary to configure cluster manually to fulfill custom requirements. 
+	Next to the standard command-line tool \textit{gcloud} is 
+	helper software \emph{bdutil}.  The tool  allows complex 
 	configuration includes 
 	defining hardware configuration, combining services from wide Google cloud 
 	portfolio and custom additional tasks for installation and configuration
@@ -1813,27 +1809,21 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 	per minutes(min 10 minutes). This choice is suitable for batch jobs and 
 	fault-tolerant workloads. The time for starting cluster is up to 
 	90 seconds in average. To compare e.g with Amazon cloud
-	services(EMR)\cite{amazon_emr}, 
-	starting Google cluster is 3 times faster.
+	services(EMR)\cite{amazon_emr}, starting Google cluster is 3 times faster.
 	
 	\paragraph{Create and manage cluster} Deploying process can be handled by three
-	main 
-	ways. First, using \textit{gcloud} command-line tool. Second, by running
-	\textit{bdutil}\ref{subsub:bdutil} 
-	script and the last option, with using 
+	main ways. First, using \textit{gcloud} command-line tool. Second, by running
+	\textit{bdutil}\ref{subsub:bdutil} script and the last option, with using 
 	\textit{Cloud Dataproc API} - \textit{cluster.create}. Google Cloud web
-	interface offers framework for cluster deployment as well, but the configuration and 
-	management is considerably limited. 
-	Command-line tool \textit{gcloud} consist parameters: \textit{cluster} for
-	managing and describing cluster, \textit{jobs} for submitting 
-	and managing jobs on cluster, finally parameter \textit{operation} for handling
-	operation, like cancel or delete active
-	operation by \emph{operation\_id}. For more advanced cluster deployment is
+	interface offers framework for cluster deployment as well. On the other hand,
+	the configuration and management is considerably limited. Command-line tool
+	\textit{gcloud} consist parameters: \textit{cluster} for managing and describing
+	cluster, \textit{jobs} for submitting 	and managing jobs on cluster, finally parameter
+	\textit{operation} for handling operation, like cancel or delete active 
+	operation by \emph{operation\_id}. For more advanced cluster deployment is	
 	suited script tool \textit{bdutil} which is 
 	package for custom configuration of cluster. The advantages is easy
-	redeployment and 
-	reproducibility custom
-	configuration of cluster. 
+	redeployment and	reproducibility custom	configuration of cluster. 
 	
 	
 	
@@ -1845,102 +1835,73 @@ $ gcloud dataproc clusters create <cluster-name>
 	\end{footnotesize}
 	
 	
-	\paragraph{Cluster Properties} are by default configured to deploy cluster with
-	desired 
-	number of nodes. The configuration behind is not trivial but Google
-	\textit{Dataproc} provide 
-	automatic deployment without big investments. The 
-	configuration of open source software as Spark, Hadoop  and extensions as Hive
-	are based 
-	on several XML and plain text configuration files. For cluster deployment 
-	using \textit{Dataproc}, the configuration is based on the same configuration
-	files.Some 
+	\paragraph{Cluster Properties} The configuration behind is not trivial but Google
+	\textit{Dataproc} provide 	semi-automatic deployment without big configuration investments.
+	The configuration of open source software as Spark, Hadoop  and extensions as Hive	are based 
+	on several XML files and plain text configuration files. For cluster deployment 
+	using \textit{Dataproc}, the configuration is based on the same configuration	files. Some 
 	properties are reserved by Google and cannot be overridden 
 	to protect functionality of Cloud Dataproc. The crucial feature of cluster is
 	immutable 	configuration after start. Thus, all configuration must be set 
-	properly before starts of daemons on cluster. For apply changes must be cluster
-	redeployed. 
+	properly before daemons on cluster are started. For apply changes must be cluster
+	restarted. 
 	
 	\paragraph{File system}
 	Google Cloud Dataproc offers two different storages based on distributed
-	filesystems. In 
-	chapter Hadoop\ref{subsec:hdfs} is described Hadoop Distributed File
-	system(HDFS) which is 
-	default filesystem for Apache Hadoop framework and is as optional in Google
-	Services. As 
-	default filesystem for Hadoop and Spark deployment provided by Google Cloud is
-	\textit{Google Cloud storage}. 
+	filesystems. In chapter Hadoop\ref{subsec:hdfs} is described Hadoop Distributed File
+	system(HDFS) which is default filesystem for Apache Hadoop framework and is as an optional in Google
+	Services. As default filesystem for Hadoop and Spark deployment provided by Google Cloud is
+	 \textit{Google Cloud storage}. 
 	
 	Google Claude Storage offers direct data access in available storage for the
-	rest of Google 
-	services. In addition the interoperability provide access between Spark and
-	Hadoop on Google. 
-	Next advantage is high data availability provided by Cloud
+	rest of Google 	services. In addition the interoperability provide access between Spark and
+	Hadoop on Google. 	Next advantage is high data availability provided by Cloud
 	Storages, with high availability and global replication without less
-	performance. The key 
-	feature is data access after cluster is shouted down. The 
+	performance. The key feature is data access after cluster is shouted down. The 
 	pricing of cluster instance is based on time. Thus, to save costs, cluster
-	should run only when 
-	is used. With using HDFS as distributed filesystem, after 
-	shutting down cluster instance, data are removed and lost as well. In contrast,
-	data stored on 
-	Claude Storage are available after cluster is stopped and 
+	should run only when is in use. With using HDFS as distributed filesystem, after 
+	shutting down clusters VM instances, data are removed and lost as well. In contrast,
+	data stored on 	Claude Storage are available after cluster is stopped and 
 	can be linked again in further cluster deployment.
 	
 	Interaction between Hadoop Distributed System and Dataproc cloud is limited to
-	compare default 
-	Google Storage. HDFS is scalable across VM’s, but doesn’t scale per instance as
-	well as Claude Storage due to VM disk bandwidth limits. 
+	compare to default Google Storage. HDFS is scalable across VM’s, but doesn’t scale per instance as
+	 well as Claude Storage due to VM disk bandwidth limits. 
 	
 	\paragraph{Machine type} Google Cloud Datagram clusters are built on Google
-	Compute Engine instances.
-	\textit{Machine types} configuration define the virtualized hardware resources
-	available to an 
-	virtual machine instance. Two ways how to define configuration are available:
-	\textit{predefined instance} and \textit{custom machine types}.  
+	Compute Engine instances. \textit{Machine types} configuration define the virtualized hardware
+	 resources	available to an  virtual machine instance. Two ways how to define configuration are 
+	 available:\textit{predefined instance} and \textit{custom machine types}.  
 	
 	\begin{footnotesize}
 		\begin{lstlisting}[style=mybash]
-	# print list of predefined instances
-	$ gcloud compute machine-types list
-	NAME           ZONE           CPUS MEMORY_GB DEPRECATED
-	f1-micro       asia-east1-c   1     0.60
-	g1-small       asia-east1-c   1     1.70
-	n1-highcpu-16  asia-east1-c   16   14.40
-	...
+# print list of predefined instances
+$ gcloud compute machine-types list
+NAME           ZONE           CPUS MEMORY_GB DEPRECATED
+f1-micro       asia-east1-c   1     0.60
+g1-small       asia-east1-c   1     1.70
+n1-highcpu-16  asia-east1-c   16   14.40
+...
 		\end{lstlisting}
 	\end{footnotesize}
 	
-	
 	Customization of machines availability is suitable for project with workloads
-	where the computing 
-	engine require high performance machine resources or just where predefined
-	machines are not a good 
-	fit to workloads. Once a custom machine template is 
+	where the computing	engine require high performance machine resources or just where predefined
+	machines are not fit great to workloads. Once a custom machine template is 
 	defined, the configuration is available for all connected services over Google
 	Claude portfolio.
 	
 	\subsubsection{bdutil: Spark and Hadoop on Google Cloud}\label{subsub:bdutil}
 	As has been already mentioned, \textit{bdutil} is a command line script designed
-	for
-	managing Hadoop instance on Google Compute Engine. It provide deployment,
-	configuration
-	and shut-down Hadoop instances in quickly and reproducible way, even for complex
-	configuration. 
-	Script is based on Bash v3 or later which is available on VM of Google Compute
-	Engine or most of 
-	Linux distributions. In addition to shell command-line
-	tools \textit{gcloud dataproc}, \textit{bdutil} includes configurable scripts
-	for deployment 
-	Spark and Hadoop. The default configuration is Hadoop 1 with Cloud Storage as
-	the storage system. 
-	Furthermore, \textit{bdutil} is designed to allow writing custom environment
-	variable configuration 
-	files. For example: \emph{CONFIGBUCKET} - path to Google Storage, \emph{PROJECT}
-	- ID of Google Platform 
-	project or \emph{GCE\_MACHINE\_TYPE} - machine type of the Google Compute
-	Engine.
-	
+	for	managing Hadoop instance on Google Compute Engine. It provide deployment,
+	configuration	and shut-down Hadoop instances in quickly and reproducible way, even for complex
+	configuration. 	Script is based on Bash v3 or later which is available on VM of Google Compute
+	Engine  and the most of Linux distributions. In addition, to shell command-line tool
+	\textit{gcloud dataproc}, \textit{bdutil} includes configurable scripts
+	for deployment 	Spark and Hadoop. The default configuration is Hadoop 1.x with Cloud Storage as
+	the storage system. Furthermore, \textit{bdutil} is designed to allow writing custom environment
+	variable configuration 	files. For example: \emph{CONFIGBUCKET} - path to Google Storage, \emph{PROJECT}	
+	- ID of Google Platform project or \emph{GCE\_MACHINE\_TYPE} - machine type of the Google Compute Engine.
 	
 	
 	\section{Related Technologies Behind}
@@ -1948,11 +1909,9 @@ $ gcloud dataproc clusters create <cluster-name>
 	
 	\textit{"\textbf{Geographic Resources Analysis Support System}, 
 		commonly referred to as GRASS GIS, is a Geographic Information System (GIS) used
-		for
-		data management, image processing, graphics production, 
+		for data management, image processing, graphics production, 
 		spatial modelling, and visualization of many types of data. It is Free (Libre)
-		Software/Open
-		Source released under GNU General Public License 
+		Software/Open Source released under GNU General Public License 
 		(GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial
 		Foundation."\footnote{Cited from:
 			\url{https://grass.osgeo.org/documentation/general-overview/}}}
@@ -1963,32 +1922,22 @@ $ gcloud dataproc clusters create <cluster-name>
 		\caption[Logo GRASS]{\centering Logo of GRASS GIS.}
 	\end{figure}   
 	GRASS GIS vector map is a data layer which consists number set of a feature in
-	geographic space. 
-	These objects are represented by points, lines, polygons, and volumes. Usually,
-	each feature in the 
-	map is somehow connected with the set of attribute \textit{layers} stored in a
-	database. 
+	geographic space. These objects are represented by points, lines, polygons, and volumes. Usually,
+	each feature in the map is  connected with the set of attribute and its values.
 	
-	In GRASS GIS is a available driver which allows using several database backends
-	for manipulation 
-	with vector data. The main module for import and export of vectors datasets is
-	v.in.ogr and v.out.ogr 
-	which is based on widely used GDAL library. 
+	For manipulation with vector data in GRASS GIS database are available several drivers for interaction with different database backends. The main module for import and export of vectors datasets is
+	v.in.ogr and v.out.ogr which is based on widely used GDAL library. In addition, new module for v.import is available. Its advantage is projection conversion on the fly during importing.
 	In the current stable version of GRASS GIS is implemented a driver for PostGIS
-	support. PostGIS is 
-	an extension of object-rational PosgreSQL database which brings the support for
-	geographic objects. 
-	In addition PostGIS extension consist package of 
-	location-based function for building a spatial query. Such an ESRI Spatial
-	Framework for Hadoop 
-	brings the support of spatial analysis for HIVE analogically PostGIS 
-	already have been developed as a spatial extension for PostgreSQL.  
+	support. PostGIS is an extension of object-rational PosgreSQL database which brings the support for
+	geographic objects. In addition PostGIS extension consist package of 
+	location-based function for building a spatial query.  
+	As PostGIS is a spatial extension for PostgreSQL, analogically ESRI Spatial
+	Framework for Hadoop brings the support of spatial analysis for Hadoop and  Hive.
 	
-	The key feature for this project is the fact that GDAL OGR supports GeoJSON data
-	format, which is suitable 
-	for storing and analysing data using MapReduce framework. The description of
-	GeoJSON and its serialization is 
-	mandatory due to the design of MapReduce 
+	The key feature for this project is the fact that GDAL OGR supports reading and writing GeoJSON data
+	format, which is suitable  or storing and analysing data using MapReduce framework. On the other hand, is not supported reading and writing to the unenclosed GeoJSON, and some edits of file format must be additionally done. 
+	Esri spatial frameworks for Hadoop allows exporting only to ESRI GeoJSON. The description of
+	GeoJSON and its serialization is mandatory due to the design of MapReduce 
 	for parallel computing. GeoJSON and its features are described in the second
 	part of the work\ref{json}.
 	
@@ -2017,17 +1966,17 @@ $ gcloud dataproc clusters create <cluster-name>
 	%map or input is used for OGR data source and layer for a table.
 	
 	
-	\subsection{Apache Hive }
-	\textit{\footnote{Cited from: \url{https://hive.apache.org/}}"The Apache Hive ™
-		data warehouse software 
-		facilitates querying and managing large datasets residing in distributed
-		storage. Hive provides a mechanism 
-		to project structure onto this data and query the data using an SQL-like
-		language called HiveQL. At the same
-		time, this language also allows traditional map/reduce programmers to plug in
-		their custom mappers and 
-		reducers when it is inconvenient or inefficient to express this logic in
-		HiveQL."}
+%	\subsection{Apache Hive }
+%	\textit{\footnote{Cited from: \url{https://hive.apache.org/}}"The Apache Hive ™
+%		data warehouse software 
+%		facilitates querying and managing large datasets residing in distributed
+%		storage. Hive provides a mechanism 
+%%		to project structure onto this data and query the data using an SQL-like
+%		language called HiveQL. At the same
+%		time, this language also allows traditional map/reduce programmers to plug in
+%		their custom mappers and 
+%		reducers when it is inconvenient or inefficient to express this logic in
+%		HiveQL."}
 	
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
