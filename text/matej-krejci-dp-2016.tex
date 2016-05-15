@@ -2006,15 +2006,15 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	\chapter*{Experiment
 		framework}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Practical
 		framework}
-	In first part of the text has been introduced background of technologies which are 
+	In first part of the thesis has been introduced background of technologies which are 
 	linked to further text, thus to the outputs  of this work. Text below points the 
-	configuration of cluster, development of GRASS Hadoop Framework(GHF) and its usage.
+	configuration of cluster, development of GRASS Hadoop Framework (GHF) and its usage.
 	The configuration of network, cloud services and Hadoop together with case study of 
 	GHF usage explain full workflow of processing spatial data using Hadoop within desktop GIS.
 	
 	In addition, within this work, side project focus on transformation of big data from SQL
-	Postgres to BigQuery is done. Microwave data captured by cellular operator T-Mobile 
-	stored in Postgres server	consists 3 billions of rows which 
+	PostgreSQL to BigQuery is done. Microwave data captured by cellular operator T-Mobile 
+	stored in PostgreSQL server	consists 3 billions of rows which 
 	broke valuable interaction with database.
 	
 	
@@ -2051,7 +2051,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	downloading and uploading.
 	
 	For downloading object using HTTP request gsutil perform slicing object on
-	Google Storage  and preallocate pace in the destination folder. 
+	Google Storage  and preallocate space in the destination folder. 
 	The final file is renamed after all slices are	processed. For downloading 
 	is not required additional space on local disk. The performing of slices is configurable by parameter
 	\textit{sliced\_object\_download\_threshold} which 	define a maximum number of slices. It can be 
@@ -2083,6 +2083,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 				\\ \bottomrule
 			\end{tabular}
 		\end{scriptsize}
+%%% ML: Fix the caption
 		\caption{My caption}
 		\label{my-label}
 	\end{table}
@@ -2091,7 +2092,8 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	traffic to an instance. When a connection is established with an instance,
 	traffic is permitted in both directions over that connection. On web of Google
 	Cloud Platform is manager for defining firewall rules. By default several
-	profiles are predefined, how was already mentioned. In table\ref{firewall}
+%%% ML: fix ref
+	profiles are predefined, how was already mentioned in table \ref{firewall}.
 	%https://dzone.com/articles/hadoop-rest-api-webhdfs
 	
 	
@@ -2101,7 +2103,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	several bash scripts and XML configuration files of Hadoop and its extensions. 
 	In the section below is described a essential configuration of Hadoop on Google Dataporoc 
 	service. Mainly is shown the important part which touch requirements for using
-	Esri Spatial Frameworks for Hadoop. The source of bdutil configuration  is in digital attachment of the work\ref{References}.
+	Esri Spatial Frameworks for Hadoop. The source of bdutil configuration  is in digital attachment of the work \ref{References}.
 	
 	Google Claude Dataproc brings to the cloud field automated deployment of Hadoop
 	cluster. To compare with manual configuration of Hadoop cluster, it allows fast and efficient
@@ -2125,7 +2127,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		MapReduce daemons such the JobTracker and the TaskTracker.
 	\end{itemize}
 	
-	in addition default configuration directory includes two text files:
+	In addition default configuration directory includes two text files:
 	\textit{masters} and \textit{slaves}. Both includes hostname of slaves or master 
 	where each line represents one host name address. 
 	Master file informs about the Secondary NameNode location to Hadoop daemon. The
@@ -2135,7 +2137,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	own IP address and not of any other Data Nodes in the cluster.
 	
 	
-	\paragraph{Hadoop modes} Hadoop can be deployed in several moods for different aim of usage. 
+	\paragraph{Hadoop modes} Hadoop can be deployed in several modes for different aim of usage. 
 		\begin{itemize}
 	    \item \textbf{Non-distributed mode} Hadoop running  as a single Java process. This mode  is suitable for MapReduce development and debugging.
 	 	
@@ -2143,7 +2145,8 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		single-node and behave
 		like multi-node. It's provided by running Hadoop daemons in separate Java
 		processes. To configure pseudo-distributed Hadoop must be modify
-		\textit{core-site.xml} and \textit{hdfs-site.xml} file\cite{hadoop_modes}.  
+%%% ML: broken citation
+		\textit{core-site.xml} and \textit{hdfs-site.xml} file \cite{hadoop_modes}.  
 		
 		
 		\begin{footnotesize}
@@ -2185,7 +2188,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 
 	Tool bdutil comes with several bash scripts which set  configuration
 	of the cluster, such: type of framework- Hadoop or Spark, version of Hadoop, Hadoop
-	extension(Hive, Pig) and connectors to other services of Google.
+	extension (Hive, Pig) and connectors to other services of Google.
 	
 
 	\begin{table}[!htbp]
@@ -2234,7 +2237,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		for a number of workers and size of the disk are also crucial.
 		
 		Hardware configuration allows setting different disk size and  type to
-		master and workers. Furthermore, extra persistent disks(PDs) can be linked.
+		master and workers. Furthermore, extra persistent disks (PDs) can be linked.
 		Available virtual machines of service	account can be attached to a further 
 		cluster. For that case, the GCS connector must by allowed.
 		
@@ -2251,7 +2254,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		a decimal number which controls the number of maps and reduces slots on each node. 
 		The number is computed as a ratio of the number of virtual cores on the node. 
 		For example if the machine of specification \textit{ n1-standard-2} 
-		is used(2 cores) and the parameter is set to 1 would have $\dfrac{2}{1} = 2$
+		is used (2 cores) and the parameter is set to 1 would have $\dfrac{2}{1} = 2$
 		map/reduce slots.
 	\end{itemize}
 	
@@ -2327,8 +2330,8 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	Hadoop version 1.x VM and 
 	\textit{conf/hadoop2} for 2.x version both are placed within \textit{bdutil}
 	base directory. In compassion to standard Hadoop configuration files, 
-	these are extended by files for configuration Bigtable(Hadoop1.x), 
-	BigQuery(Hadoop2.x) and GCS. Particular values of parameters are linked over
+	these are extended by files for configuration Bigtable (Hadoop1.x), 
+	BigQuery (Hadoop2.x) and GCS. Particular values of parameters are linked over
 	environment variables to   the main script \textit{bdutil\_env.sh} and other
 	bash files stored in directory \textit{libexec}.  The 
 	example below show configuration of task tracker where the value is set by global variable 
@@ -2451,7 +2454,7 @@ extensions/querytools/querytools_env.sh,spatial.sh deploy
 		\label{config_table}
 	\end{table}
 	\paragraph{Properties} of configuration files mentioned above \ref{conf_files}
-	and in table\ref{config_table} are set before deployment by parameter
+	and in table \ref{config_table} are set before deployment by parameter
 	\textit{--properties} and its syntax. Below is shown example of deployment of cluster
 	with two nodes. The last parameter configuring the file \textit{hive-site.xml}, 
 	specifically defining the path for default source of *.jar libraries, which are
@@ -2483,7 +2486,7 @@ gcloud dataproc clusters create cluster-2
     \paragraph{Background}
     Desktop application GRASS GIS became as a powerful environment for analyzing
     spatial data, which can  reach characteristic of big data. In a box of GRASS GIS are 
-    thousands of modules. The main motivation behind GRASS GIS framework for Hadoop is 
+    hundreds of modules. The main motivation behind GRASS GIS framework for Hadoop is 
     a vision which allows user
     processing big vector dataset natively from desktop environment. In proprietary GIS field,
     ESRI comes with package \textit{Geoprocessing tools for Hadoop}\cite{esri_gtfp} 
@@ -2503,7 +2506,7 @@ gcloud dataproc clusters create cluster-2
     Described features of Esri approach are the source of inspiration for GRASS Hadoop framework, 
     which is developed within this work.
     
-    In first the chapter\ref{summary_libs} of this work is described and
+    In first the chapter \ref{summary_libs} of this work are described and
     summarized features of three different frameworks for processing large-scale
     data.     As the most suitable framework for this project became Esri Framework, which
     can be deployed without extra customization, natively includes considerable
@@ -2513,7 +2516,10 @@ gcloud dataproc clusters create cluster-2
     not been tested, the modular design of framework allows to partition each step
     of workflow which ensure easier future development. For example,
     user can generate GeoJSON from GRASS map and load it to HDFS using
+%%% ML: doporucuji vsechny modulu pojmenovat stejnym prefixem, co tedy hd.*?
+%%% ML: hd.vector.import
     \textit{hdfs.import.vector}, after that, create Hive table using
+%%% ML: hd.hive.json.table
     \textit{hive.json.table} and load data. These steps are independent.
     Thus the interface for interaction between GRASS and
     Hive/Hadoop can be used as library for interaction with different Hadoop spatial library.
@@ -2530,7 +2536,7 @@ gcloud dataproc clusters create cluster-2
 	
 	
 	\subsection{Functionality}
-    The GRASS Hadoop Framework(GHF) is Add-ons package of modules
+    The GRASS Hadoop Framework (GHF) is Add-ons package of modules
     for GRASS GIS. It provide interaction between GIS desktop environment and
     Hadoop/Hive. Although GHF can be used just for transferring data between filesystem
     and HDFS, the main purpose is to bring capability of Hadoop spatial
@@ -2543,12 +2549,15 @@ gcloud dataproc clusters create cluster-2
     If we assume that average user prefers friendly interface, than GHF is suitable
     choice. 
     
-    The package includes several modules\ref{tbl:modules} for managing connections,
-    exporting GRASS maps to customized GeoJSON(suitable for serialization), loading
+    The package includes several modules \ref{tbl:modules} for managing connections,
+    exporting GRASS maps to customized GeoJSON (suitable for serialization), loading
     them to HDFS, creating tables in Hive, loading data into table and after
     processing, importing result back to GRASS.
 
-	
+%%% ML: v textu mluvis o hdfs.vector.import, tady o hdfs.in.vector, je potreba to sjednotit
+%%% ML: k predchozi poznamce, prefix hdfs. je za me taky OK i kdyz deslo
+%%% ML: nazvy modulu v teto tabulce mi prijdou OK
+%%% ML: sladil bycj je ale pod jednen prefix, co tedy 'hd', tj. hd.db.connect, hd.hive.json.table a pod, kazdopadne by to mel byt jeden prefix!!!
 	\begin{table}[!htbp]
 		\centering
 		\begin{scriptsize}
@@ -2581,8 +2590,8 @@ gcloud dataproc clusters create cluster-2
     the database manager is derived from current GRASS db.* modules.
     Thus, based on set up primary connection which is use for all involved modules.
     In contrast, database manager for HDFS allows setting
-    connection id and its driver. Thus, for each type of database(driver) can be
-    stored several user connections distinct by user defined id(\textit{conn\_ide}
+    connection id and its driver. Thus, for each type of database (driver) can be
+    stored several user connections distinct by user defined id (\textit{conn\_ide}
     parameter) meanwhile  each driver can have only one primary connection.
 	
 	\begin{table}[!htbp]
@@ -2640,7 +2649,7 @@ gcloud dataproc clusters create cluster-2
     connection is added, the module automatically set the new one as active. 
     
     \paragraph{Connections management} Module offers several flags for handling
-    management of connections. In table\ref{tbl:connections} are described flags and
+    management of connections. In table \ref{tbl:connections} are described flags and
     theirs functions. In case of controlling several Hadoop clusters is suitable 
     to define its connection profiles and switching between by flag -a with parameter
     \textit{conn\_id} and \textit{driver}.
@@ -2662,7 +2671,7 @@ gcloud dataproc clusters create cluster-2
     
     %TODO run cluster and show output
     
-    \paragraph{GRASS Map to HDFS} Vector maps in native GRASS format is not
+    \paragraph{GRASS Map to HDFS} Vector maps in native GRASS format are not
     suitable for serialization which is needed to exploit the potential of
     spatial frameworks for Hadoop. The effective way and in the most cases the only
     possible is to store spatial data in JSON, especially GeoJSON. This format suits well  for serialization and library for reading is available in 
@@ -2679,12 +2688,13 @@ gcloud dataproc clusters create cluster-2
     In addition, hdfs.* package also include module \textit{hdfs.in.fs} which allows
     transfer of external files to HDFS. Usage of this module came important for
     uploading CSV or GeoJSON files outside of GRASS. For uploading external GoeJSON files to HDFS is
-    necessary to modify its standardized format. The serialize\ref{serialiser}  for
+%%% ML: neplatna reference
+    necessary to modify its standardized format. The serialize \ref{serialiser}  for
     JSON has several format requirements. %TODO add ref
 	
 	\begin{itemize}
 		\item Each vector feature must be on separated/new line.
-		\item brackets must be at the same line.
+		\item Brackets must be at the same line.
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
 // this will work
@@ -2698,7 +2708,7 @@ gcloud dataproc clusters create cluster-2
 		\end{footnotesize}
 		
 		%{footnotesize}
-		\item header of GeoJSON must be erased. For GeoJSON exported by
+		\item Header of GeoJSON must be erased. For GeoJSON exported by
 		\textit{v.out.ogr} means to remove first 5 lines and last 3.
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
@@ -2727,7 +2737,7 @@ gcloud dataproc clusters create cluster-2
     The module download deserialized GeoJSON file from HDFS and in the second step
     modify file to standard GeoJSON format. The second step is important to make
     file consistent according to GeoJSON standard. In that time, format is readable
-    by \textit{v.in.ogr} which is based on GDAL/OGR library and can be transformed
+    by \textit{v.in.ogr} which is based on GDAL library and can be transformed
     to the native vector map format.
     
     \subsubsection{GRASS Hive interface}
@@ -2736,7 +2746,7 @@ gcloud dataproc clusters create cluster-2
     consist several modules which start with prefix hive.* analogically to mentioned
     hdfs.* modules. Module for connection to Hive is covered by module
     \textit{hdfs.db.connect} which is an exception in naming nomenclature. The
-    "hive" modules provide functions for creating tables and loading data into.
+    "hive"~modules provide functions for creating tables and loading data into.
     Furthermore is available module for select queries and execute commands. Main
     two modules \textit{hive.csv.table} and \textit{hive.json.table} support user-friendly creation of tables and loading data into. The process of creation table
     and loading data can be split. The hive.*.table modules support creation table
@@ -2751,7 +2761,7 @@ gcloud dataproc clusters create cluster-2
     Defining feature of table is provided using parameters and flags of module. It helps
     to user make table with GeoJSON table without advanced knowledge of Hive
     syntax. In table \ref{hive.json} are described main features of each parameter.
-    The examples of usage are shown in the next section\ref{sec:usage_spatial}.
+    The examples of usage are shown in the next section \ref{sec:usage_spatial}.
     Second, slightly modified module supports creation of table suited for loading
     CSV data. In hive.* package is also module for loading data to table. This
     module is optional because is built-in for hdfs.*.table modules. 
@@ -2812,9 +2822,9 @@ gcloud dataproc clusters create cluster-2
 	\end{figure} 
 	
 	\subsection{Implementation}
-	Package GRASS Hadoop Framework has been developed in python language. The
-	background of the choice of python language is clear. GRASS GIS natively
-	supports python and GRASS libraries are fully covered by API. As GRASS GIS modular design, the
+	Package GRASS Hadoop Framework has been developed in Python language. The
+	background of the choice of Python language is clear. GRASS GIS natively
+	supports Python and GRASS libraries are fully covered by API. As GRASS GIS modular design, the
 	user interface of package GRASS Hadoop Framework is modular as well. The user
 	interface of GHF is provided by command line modules. 
 	The design of framework is based on several layers. The core library, the middle
@@ -2831,7 +2841,7 @@ gcloud dataproc clusters create cluster-2
 	\end{figure} 
 	
 	
-	\subsection{External libraries(drivers)}
+	\subsection{External libraries (drivers)}
 	In this section are introduced the external libraries for interaction with HDFS
 	and Hive which are used in GHF. 
 	
@@ -2839,15 +2849,18 @@ gcloud dataproc clusters create cluster-2
 	For communication with HDFS are used two libraries. First, wrapper of
 	\textit{HdfsCLI} command line shell which is primary developed to makes
 	interaction with HDFS more intuitive than standard \textit{hadoop fs} command
+%%% ML: ANSI formatting?
 	line shell. It has features as completion, command history and ANSI formatting.
-	For this tools is implemented wrapper as a python library. The controlling of
+%%% ML: tato veta zni divne (For this tool...)
+	For this tools is implemented wrapper as a Python library. The controlling of
 	remote HDFS is based on WebHDFS REST API and HttpFS supporting both secure and
 	insecure clusters.
 	
 	Second library which has been developed within Spotify project is called
+%%% ML: zni divne: This library is as well as first 
 	Snakebite. This library is as well as first shared under Apache licence, Version
 	2.0. The library is written as pure HDFS client to eliminate expensive calling
-	\textit{hadoop} from python. The HDFS client instead of calling hadoop use
+	\textit{hadoop} from Python. The HDFS client instead of calling hadoop use
 	Protocol Buffers, which  are a language-neutral, platform-neutral extensible
 	mechanism for serializing structured data.\cite{protobuf}. Snakebite relay on
 	protobuf messages and implements the Hadoop RPC protocol description for talking
@@ -2870,7 +2883,7 @@ gcloud dataproc clusters create cluster-2
 	used part of the code from \textit{Airflow} project, which is currently in
 	incubator of Apache \cite{airflow_diff}. The core library are mainly wrappers on
 	the mentioned external libraries. The classes of core library can be parted to
-	the  wrappers(hooks) and to the connection manager. 
+	the  wrappers (hooks) and to the connection manager. 
 	
 	\begin{figure}[!htbp]
 		\centering
@@ -2925,15 +2938,17 @@ return webhdfs_hook.WebHDFSHook(webhdfs_conn_id=self.conn_id)
 	provide essential functions as put data to HDFS, get data from HDFS, make
 	directory, check if path exists etc. 
 	The module \textit{ hive\_hook.py} consist three classes. The class
-	\textit{HiveServer2Hook} allows to interact with \textit{hiveserver2} cli. The
+	\textit{HiveServer2Hook} allows to interact with \textit{hiveserver2} CLI. The
 	second class is a simple wrapper around the hive CLI. It allso support beeline
 	Hive CLI, which is lighter due to independence on JDBC. Third class of this
 	module -  \textit{HiveMetastoreHook} provide access to meta store of Hive. 
 	
 	\subsection{Middle interface and GHF modules}
-	The middle interface consists two python modules. The Main one, called
+%%% ML: veta "The Main ... " zni divne
+	The middle interface consists two Python modules. The Main one, called
 	\textit{hdfs\_grass\_lib.py}, which includes classes for Connection management
 	and GeoJSON conversion.  The second module called \textit{hdfs\_grass\_util.py}
+%%% ML: their ?
 	is their helper. This interface allows to developed command lines
 	modules. These modules mainly calls API according to parsed parameters and flags.  
 	
@@ -2949,7 +2964,7 @@ return webhdfs_hook.WebHDFSHook(webhdfs_conn_id=self.conn_id)
 	Already introduced modules hdfs.* and hive.* as a user interface and endpoint
 	for accessing GHF from GRASS GIS user environment are developed accordingly to
 	GRASS "standard", where the GRASS parser read input flags and parameters. GRASS
-	parser is a function, which parse the header of python module.  Rules of syntax
+	parser is a function, which parse the header of Python module.  Rules of syntax
 	allows to comfortably interact with GRASS environment variables. Moreover, GRASS
 	parser works with any programming language. In addition, \textit{g.parser} can display
 	an auto-generated GUI interface, help page template, and command line option
@@ -2972,11 +2987,11 @@ return webhdfs_hook.WebHDFSHook(webhdfs_conn_id=self.conn_id)
 # %end
 		\end{lstlisting}
 	\end{footnotesize}
-	the first option is a parameter for defining values of driver. This parameter is
+	The first option is a parameter for defining values of driver. This parameter is
 	mandatory and currently has only one possible value. The second is a flag for
 	dropping table, before creation the new on. This flag is in the
-	\textit{guisection} table, which is after generating GUI form the GUI
-	page. Below is example of initialization and usage of \textit{g.praser}.
+	\textit{guisection} table, which is after generating GUI form the notebook
+	page. Below is example of initialization and usage of \textit{g.parser}.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 import grass.script as grass
@@ -3000,6 +3015,9 @@ true
 		\end{lstlisting}
 	\end{footnotesize}
 	
+%%% ML: co pridat screenshot vygenerovaneho GUI na ukazku??
+
+%%% ML: predpokladam, ze nahrajeme behem tohoto tydne (utery, streda)
 	\paragraph{GRASS Add-ons package} The GHF has been published to GRASS Add-ons
 	repository. GRASS module \textit{g.extension} allow to fetch and deploy packages
 	from Add-ons to the GRASS environment. Each package in Add-ons must include HTML
@@ -3007,7 +3025,8 @@ true
 	
 	
 	
-	\section{Usage: process workflow}\label{sec:usage_spatial}
+%%% ML: tohle patri spis do prilohy (minimalne instalace) nez do textu!!!
+	\section{Usage: Process Workflow}\label{sec:usage_spatial}
 	This section consist example of usage of developed GRASS Hadoop Framework within
 	the theses. In addition, the description is partly focused on configuration of
 	network and Hive essentials, such as serialization/deserialisation of GeoJSON
@@ -3020,9 +3039,9 @@ true
 	Below are listed  dependency on external packages. In addition, in second
 	paragraph is described deployment of GHF in GRASS GIS. 
 	\paragraph{Python dependency}
-	Project is written and tested in python 2.7, with emphasis to 3.x compatibility.
-	The GHF package use several external python libraries which must be deploy. For
-	installation of python libraries has been used Python Package Index (pip) which
+	Project is written and tested in Python 2.7, with emphasis to 3.x compatibility.
+	The GHF package uses several external Python libraries which must be deployed. For
+	installation of Python libraries has been used Python Package Index (pip) which
 	is command line tool, and provide installation from the \textit{pip} repository.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
@@ -3034,10 +3053,12 @@ pip install snakebite protobuf pydoop dagpype future
 	
 	\paragraph{GRASS GIS installation}
 	Installation of GRASS GIS is well described on official website. The developed
-	modules within theses are committed to the GRASS GIS Add-ons public repository.
-	GRASS allows using module g.extension fetch and install modules to the system.
-	On server \textit{geo102.fsv.cvut.cz} are each night compile packages for
+	modules within the thesis are available in the GRASS GIS Add-ons public repository.
+	GRASS allows by using module g.extension to fetch and install modules to the system.
+%%% ML: rozdeleni na windows a linux bych nedelal, na obou systemech se addons instaluji z pohledu uzivatele stejne, co je zatim neni pro praci podstatne
+	On server \textit{wingrass.fsv.cvut.cz} are each night compiled packages for
 	installation on Windows system. For Unix system the installer  fetching modules directly from repository. 
+%%% ML: tady mas na mysli, ze se nainstaluji vsechny moduly jako jeden balicek (jako toolbox)???
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 grass$ g.extension hdfs.client
@@ -3049,21 +3070,23 @@ Updating addons metadata file...
 Installation of <hdfs.client successfully finished
 		\end{lstlisting}
 	\end{footnotesize}
+%%% ML: tato veta mi nedava moc smysl, preformulovat
 	Above os installation command and standard out of GRASS console with successful
 	installation of package. 
 	
 	\subsubsection{Additional settings of cluster}
-	If the cluster is deployed using bdutil\ref{runcluster}  with parameter
-	\textit{--env\_var\_files spatial.sh} this script on master server install
+	If the cluster is deployed using bdutil \ref{runcluster}  with parameter
+	\textit{--env\_var\_files spatial.sh} this script on master server installs
 	spatial packages, dependency and Java packages for serialization JSON. If the
 	cluster is run with another way, the libraries must be compile manually.
 	
 	\paragraph{Compilation} Below are some important notes for compilation of used
+%%%: maven jsi nekde vysvetloval v textu?
 	libraries. Especially for compilation of libraries with maven profiles and for
 	package with strange behaviour. 
 	
-	Usage Esri Spatial Framework for Hadoop is dependent on package Geometry API
-	Java. After clone GIT repository with Esri Spatial Framework for Hadoop the
+	Usage of Esri Spatial Framework for Hadoop is dependent on package Geometry API
+	Java. After cloning GIT repository with Esri Spatial Framework for Hadoop the
 	maven test after packaging can failed. According to issue tracker of the
 	repository is suggested to skip tests.
 	\begin{footnotesize}
@@ -3107,7 +3130,7 @@ mvn -Phdp23 clean package
 $hive add jar ${env:HIVE_HOME}/lib/esri-geometry-api.jar;
 			\end{lstlisting}
 		\end{footnotesize}
-		\item Add destination \textless path\textgreater to Hadoop path; (works
+		\item Add destination \textless path\textgreater~to Hadoop path; (works
 		remotely)
 		\item Add to \textit{hive-site.xml} parameter \textit{hive.aux.jars.path} with
 		value \textless path.jar\textgreater; (works remotely)
@@ -3130,14 +3153,14 @@ $hive add jar ${env:HIVE_HOME}/lib/esri-geometry-api.jar;
 	
 	\paragraph{Firewall} For using machine capacity and services on Google Cloud, 
 	the installation process is described in section \textit{Setup working
-		environment}\ref{setup_w_e}. The proper network configuration for connection to
+		environment} \ref{setup_w_e}. The proper network configuration for connection to
 	Hadoop cluster is necessary. There are several steps for basic configuration of
 	Google network and local computer for batch processing. Firstly, in Google Cloud
 	must be added configure profile to firewall. Hadoop and Hive has several ports
 	for their services. Java daemons have by default opened ports for accessing it.
 	Important ports for controlling Hadoop and Hive are 50700 for accessing NameNode, 50705 for DataNodes
 	and for Hive 100000. In firewall must be created profile which allows access of
-	these ports from outside of Google sub network. To restrict access to the opens port,
+	these ports from outside of Google sub net\-work. To restrict access to the opens port,
 	in firewall profile must be set IP address limitation. There are several option
 	how to limit IP. The most common way is to define allowed IP address range. This
 	configuration is suitable for single user usage. Second way is to define sub
@@ -3148,7 +3171,7 @@ $hive add jar ${env:HIVE_HOME}/lib/esri-geometry-api.jar;
 	know all external IP address of master and workers of cluster. Each server has
 	external IP address and host name. The host name is automatically generated
 	during cluster deployment. In Hadoop configuration files are registered host
-	names of workers. After the client access HDFS daemon(port 50700) then it received
+	names of workers. After the client access HDFS daemon (port 50700) then it received
 	message with host and port of workers instead of IP address. If the client is
 	running from different machine than master, these IP addresses and host names
 	must be defined. In Linux systems the configuration of hosts  are declared in
@@ -3166,14 +3189,16 @@ ff02::2         ip6-allrouters
 	Master and workers, each of them has configuration similar to example of master
 	machine in Google Cloud. Important is the  last line. This line must be append to local
 	machine \textit{etc/hosts} file.
-	\begin{flushright}
+	% \begin{flushright}
 		
-	\end{flushright}
+	% \end{flushright}
 	
 	\subsection{Input data}
+%%% ML: sandbox
 	Note that the 2.3.2 sandbox does not have a directory in HDFS for the root user
 	and this can cause Hive queries to fail. To remedy this you need to issue the
 	following commands as root:
+%%% ML: chybejici formatovani
 	su hdfs
 	hdfs dfs -mkdir /user/root
 	hdfs dfs -chown root:hdfs /user/root
@@ -3188,13 +3213,14 @@ ff02::2         ip6-allrouters
 	present in the hiveserver host.
 	
 	Eg:
-	
+%%% ML: chybejici formatovani	
 	<property>
 	<name>hive.aux.jars.path </name>
 	
 	<value>file:///home/amal/hive/udf1.jar,file:///usr/lib/hive/lib/hive-hbase-handler.jar</value>
 	</property>
 	
+%%% ML: pockam na dopsani
 	\subsubsection{CSV}
 	
 	
@@ -3247,10 +3273,12 @@ ff02::2         ip6-allrouters
 	
 	
 	
-	
+%%% ML: chapter	
+%%% ML: prectu jeste jednou, stejne jako uvod, az bude hotovo
 	\section{Conclusion}
 	
-	The first part of work introduced essentials features of Hadoop design and its
+	The first part of the thesis introduced essentials features of Hadoop design and its
+%%% ML: problematic
 	components. The following discussion aimed on problematic of spatial library
 	for Hadoop. The second chapter expands the theoretical principles by the usage
 	in practise and describe functionality, implementation and usage of  developed
@@ -3260,13 +3288,15 @@ ff02::2         ip6-allrouters
 	distributed filesystem, layer for parallel processing - MapReduce and
 	architecture of Hadoop server components. Thereafter, detailed analysis of the
 	functionality and implementation characters of spatial libraries for Hadoop is
-	done. Fallowed by discussion dealing with the challenges connected to spatial
-	processing using MapReduce/HDFS and walk through particulars solutions of each
+	done. Followed by discussion dealing with the challenges connected to spatial
+	processing using Map\-Reduce/HDFS and walk through particulars solutions of each
 	library. The rest of first part is focused on Hadoop deployment on cluster using Google
 	Cloud Platform.
 	
+%%% ML: experiment part zni divne (practical framework), mam pocit, ze to mas v textu i takto
 	Experiment framework consist processing workflow included description of
 	implemented tools in detail. As first step in the workflow is familiarization
+%%% ML: nascent
 	with specific problems nascent within the setup working environment and Hadoop
 	configuration. Next section discuss design of implementation  aspects and
 	functionality of the implemented package for GRASS which allows natively
@@ -3278,7 +3308,8 @@ ff02::2         ip6-allrouters
 	vector data within GRASS GIS and test the functionality on the cluster of
 	computer nodes. 
 	
-	In the experiment part of work has been developed GRASS Hadoop framework(GHF).
+%%% ML: practical
+	In the experiment part of work has been developed GRASS Hadoop framework (GHF).
 	The package includes several GRASS command line modules for interaction between Hadoop and Hive. The full pack of
 	modules simplify the processing workflow, therefore: convert data to proper format
 	for serialization, ensure transaction of data to distributed filesystem, load
@@ -3294,6 +3325,7 @@ ff02::2         ip6-allrouters
 	\newpage
 	\necislovana{Acronyms}
 	\begin{acronym}
+%%% ML: chybi CLI a mozna i vic
 		\setlength{\parskip}{0ex}
 		\setlength{\itemsep}{1ex}
 		\acro{API}{Application Programming Interface}
@@ -3514,7 +3546,8 @@ ff02::2         ip6-allrouters
 	
 	\setcounter{footnote}{1}
 	\newpage
-	
+
+%%% ML: prectu az doladis	
 	\appendix
 	\chapter*{Attachment}
 	\section{Attachment:transformation SQL to BigQuery}
