@@ -3238,7 +3238,7 @@ ff02::2         ip6-allrouters
 	\section{Conclusion}
 	
 	The first part of work introduced essentials features of Hadoop design and its
-	components. The following discussion aimed on problematic of spatial library
+	components. The following discussion aimed on problematic of spatial libraries
 	for Hadoop. The second chapter expands the theoretical principles by the usage
 	in practise and describe functionality, implementation and usage of  developed
 	GRASS Hadoop framework in detail.
@@ -3249,31 +3249,21 @@ ff02::2         ip6-allrouters
 	functionality and implementation characters of spatial libraries for Hadoop is
 	done. Fallowed by discussion dealing with the challenges connected to spatial
 	processing using MapReduce/HDFS and walk through particulars solutions of each
-	library. The rest of first part is focused on Hadoop deployment on cluster using Google
-	Cloud Platform.
+	library. The rest of first part overview  Google Cloud Platform, especially services for cluster hosting.
 	
-	Experiment framework consist processing workflow included description of
-	implemented tools in detail. As first step in the workflow is familiarization
-	with specific problems nascent within the setup working environment and Hadoop
-	configuration. Next section discuss design of implementation  aspects and
-	functionality of the implemented package for GRASS which allows natively
-	interact with Hadoop.  
+	Experiment framework consist processing workflow included description of implemented tools in detail. As first step in the workflow are described tasks nascent within the setup of working environment and Hadoop configuration. Thus, 
+	set up environment for developing Hadoop/Hive client application. In addition, 
+	the configuration of  cluster for performance spatial processing is described as well. The next section introduce functionality of developed 
+	framework for GRASS and overview implementation design.  
 	
 	
 	\subsection*{Contribution}
-	The target of the work was to bring Hadoop support for storing and analyzing
-	vector data within GRASS GIS and test the functionality on the cluster of
-	computer nodes. 
+	The main target of the work was design and implement processing workflow for interaction  between  Hadoop and GRASS GIS. Especially brings native access to distributed filesystem and data warehouse Hive within GRASS. This combination allows to use external libraries for parallel spatial processing. 
 	
-	In the experiment part of work has been developed GRASS Hadoop framework(GHF).
-	The package includes several GRASS command line modules for interaction between Hadoop and Hive. The full pack of
-	modules simplify the processing workflow, therefore: convert data to proper format
-	for serialization, ensure transaction of data to distributed filesystem, load
-	data to Hive like-sql database which support two spatial frameworks for Hadoop.
-	After high performance spatial analysis the GHF provide transfer of results and
-	conversion to the native GRASS vector maps. 
+	As experiment within work has been developed GRASS Hadoop framework(GHF).
+	The package includes several GRASS command line modules for interaction between Hadoop and Hive. The full pack of modules simplified and automated the processing workflow. Therefore conversion data to serialized format, provide transaction of data to distributed filesystem and load data to Hive data warehouse which supports two  spatial libraries.  The result of demanded high performance spatial analysis the GRASS Hadoop Framework provide transfer of results to local filesystem and conversion to the native GRASS vector map. 
 	
-	Within work is shown test case of....
+	Within work is shown test case of...
 	
 	\chapter*{}\stepcounter{chapter}\addcontentsline{toc}{chapter}{}
 	
@@ -3540,7 +3530,35 @@ mwdump.csv gs://mwdata_export/
 			\end{lstlisting}
 		\end{footnotesize}
 		
-		In BigQury 
+		\paragraph{BigQuery} is a top performance service based on distributed database. The main characteristics are petabyte scale, low cost and unnecessary maintenance. BigQuery interface is
+		similar to SQL databases, where queries are similar. BigQuery is accessible by API in several language an allows programmatic way for controlling. The pricing model is based on 
+		pay-as-you-go.
+		
+		Using BigQuery Console has been created table \ref{tab_rec}accordingly to columns in csv file. 
+		
+		\begin{table}[]
+			\centering
+			\caption{Table record}
+			\label{tab_rec}
+			\begin{tabular}{@{}|l|l|l|@{}}
+				\toprule
+				column & datatype  & mode     \\ \midrule
+				linkid & INTEGER   & REQUIRED \\ \midrule
+				time   & TIMESTAMP & NULLABLE \\ \midrule
+				rx     & FLOAT     & NULLABLE \\ \midrule
+				tx     & FLOAT     & NULLABLE \\ \bottomrule
+			\end{tabular}
+		\end{table}
+		
+		Table has been queried by several queries, which had impact on slowing down the performance of GRASS GIS module g.gui.mwprecip, which is developed within my bachelor theses. The queries was massively speed up. Below are few comparison of queries on PosgreSQL database on geo102.fsv.cvut.cz and on BigQuery scalable engine.
+		
+		
+		SELECT linkid, avg(a) FROM record WHERE time >='%s' AND time<='%s' group by linkid order by 1
+		
+		SELECT linkid,time,txpower-rxpower as a FROM %s.record  WHERE time >= '%s' AND time <= '%s'          ORDER by recordid;
+		
+		SELECT min(time) FROM
+	
 	\renewcommand\thesection{\Alph{section}}
 	
 	\section{Attachment:python script for SQL export}
