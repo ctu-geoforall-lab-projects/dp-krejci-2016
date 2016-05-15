@@ -243,8 +243,7 @@ right=25mm
 	Over the years, the capability of hard drives have increased massively and
 	access speed too. According to the study by International Data Corp, since 2007,
 	we produce more data than we can store. Furthermore, the generators of data 
-%%% ML: growing
-	increasing fast which is proofed by the fact that 90\% of data volume has been
+	growing fast which is proofed by the fact that 90\% of data volume has been
 	generated since 2010. Current  annual global data production is  7.9 zettabytes
 	and the trend points 35 zettabytes in 2020 due to 30 times faster generation of
 	data.  
@@ -252,12 +251,12 @@ right=25mm
 %%% ML: which are ?
 	data which beyond the ability of commonly used software to store and process 
 %%% ML: Over years (viz prvni veta odstavce)
-	them.   Over years of innovation in SQL relational databases reached limits
+	them.   Over years of innovation, SQL relational databases reached limits
 %%% ML: and closely connected (veta zni divne)
-	thank it's architecture design and closely connected with the limitation of
+	thank it's architecture design hand by hand with the limitation of
 	hardware components.  Software engineering has been naturally pushed to 
 	investigate new form for handling big amount of data efficiently.  As  the new
-	phenomenon   of storing and managing big data in data centres over the word
+	phenomenon   of storing and managing big data in data centers over the word
 	became approach based on distributed file system and parallel computing. At the
 	beginning of this stage, big companies developed prototypes of software which
 	was strongly dependent on maintenance by top experts from the field.  The
@@ -277,8 +276,7 @@ right=25mm
 	efficient data manipulation, analysis and store come out several methods based
 	expensive high-performance hardware accompanied with technology for parallel
 	processing. Several libraries for parallel processing such an MPI or OpenMP and
-	Hadoop came with master and node  architecture which allows scaling up a cluster
-	on demand of the user. In contrast to other, Hadoop due to amiable interface for
+	Hadoop came with master and node  architecture. The design is built for scaling up a cluster. In contrast to other, Hadoop due to amiable interface for
 	developers reflect massive boom of its usage. In the last years, for Hadoop and its
 	whole ecosystem of extensions has been developed several libraries for raster
 	and vector data manipulation and analysis. Due to the space in clusters
@@ -292,9 +290,8 @@ right=25mm
 	scope of  processing big data in valuable time. Compare to  desktop GIS tools
 	which are suited for users with different scale of experience, Hadoop
 	environment, its configuration, deployment and usage of MapReduce is still
-	challenging task. More favourable conditions are ensured by developed spatial
-	frameworks, where the  main functionality is wrapped to the extension such Hive
-	or Pig.  Thus more expressive way of interaction is supported and like-SQL
+	challenging task. Effective storing of data expressive control is ensured by developed spatial
+	frameworks, where the  main functionality can be controlled within the extension such Hive or Pig.  Thus more expressive way of interaction is supported and like-SQL
 	approach on the top of Hadoop is provided. 
 	
 	The workflow of processing spatial data using  Hadoop and its spatial libraries
@@ -302,22 +299,21 @@ right=25mm
 	network and security configuration, exporting spatial data to serialization
 	format, transferring data to the cluster and distributed filesystem, knowledge
 	of Hive data warehouse, querying data using spatial framework, and  finally
-	exporting and visualisation of the result in GIS. This process cost time, and
+	exporting and visualization of the result in GIS. The process cost time, and
 %%% ML: posledni veta?
-	without effectively designed workflow is ineffective. Moreover, it required
-	advanced knowledges of touched problematic. 
+	without correct process workflow is not effective.
 	
 	\subsection*{The Aim and Contribution}
-	The main motivation of the thesis is to develop framework which simplify the
+	The main motivation of the work is to develop framework which simplify the
 	process workflow. Generally, to get familiar with the background of technology,
 	select appropriate components and develop tools which simplify each step as is
 	possible. Thus, the aim is to design effective work flow and developed its
-	components for elective processing big data in valuable time.
+	components for processing big data in valuable time.
 	
 	The essential task is to deploy cluster.  Under the hood of that is
 	understanding of Hadoop ecosystem and its configuration. In addition, for
 	reaping the benefits of Hadoop is suitable to deploy cluster using cloud
-	services which ensure fair computation power.  Second task of the project, thus 
+	services which ensure fair computation power. Second task of the project, thus 
 	meet requirements of simplifying the process, consist implementation of the
 	bridge between Hadoop/Hive systems and environment of GIS. More specifically,
 	according to the theses assignment to implement framework for GRASS GIS which is
@@ -336,12 +332,10 @@ right=25mm
 	The chapter \textit{Background of related work} is focused on familiarization
 	with theoretical aspects which are essential for fulfilling the aim of the work.
 	Firstly, introduce the Hadoop system, which supports distributed filesystem for
-%%% ML: or YARN
-	manipulation with data and computational framework MapReduce (or YARN) for
+	manipulation with data and computational framework MapReduce(or YARN) for
 	parallel processing. 
 	The next section is focused on review and comparison of spatial frameworks for
 	Hadoop which support geoprocessing tools of big data. For fulfilling the
-%%% ML: libraries?
 	capacity of Hadoop and its library is essential to dispose cluster of computer
 	machines. Thus, the last  part of theoretical introduction is aimed on cloud
 	services and its challenges.
@@ -366,25 +360,23 @@ right=25mm
 		\caption[Hadoop architecture2]{\centering Hadoop Logo.}
 	\end{figure}
 	
-%%% ML: chybejici reference
 	\paragraph*{History} of Hadoop stared in 2003. The roots of original Hadoop
 	comes from Google File System paper from 2003. 
 	
 	At the beginning of October 2003, Apache Nutch\cite{nutch_web} has been lunched.
-	Apache Nutch is a  web search engine. In the short time (in January 2006) was
+	Apache Nutch is a  web search engine and in the short time (in January 2006) was
 	moved to the new Hadoop sub project.
 	At the same time  distributed filesystem called Google
 	filesystem\cite{google_fs}, with the specific, permitting, efficient and
 	reliable access
 	the huge amount of data, has been created. This abstract filesystem, widely
-	called "user level"~filesystem, runs as a service that is accessible via APIs and libraries. 
-%%% ML: Neplatna reference
+	called "user level"
+	filesystem runs as a service that is accessible via APIs and libraries. 
 	In 2008, Hadoop was mad own top-level project at Apache.\cite{hadoop_web_news}
 	By this time, Hadoop was being used by many
 	other companies besides Yahoo!, such as Last.fm, Facebook, and the New York
 	Times. 
 	
-%%% ML: zdroj obrazku (pokud vlastni prace, tak uvest)
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=0.6\textwidth]{./img/schema2.pdf}
@@ -394,7 +386,7 @@ right=25mm
 	
 	
 	\paragraph*{The base Apache Hadoop}framework written in Java is composed of the
-	following modules (Hadoop Apache \cite{hadoop_web}):
+	following modules(Hadoop Apache \cite{hadoop_web}):
 	\begin{itemize}
 		\item \textbf{Hadoop Common} - The common utilities that support the other
 		Hadoop modules;
@@ -403,7 +395,6 @@ right=25mm
 		high-throughput access to application data;
 		\item \textbf{Hadoop YARN} - A framework for job scheduling and cluster resource
 		management;
-%%% ML: viz http://hadoop.apache.org/
 		\item \textbf{Hadoop MapReduce} - an implementation of the MapReduce programming
 		model 
 		for large scale data processing.
@@ -417,14 +408,11 @@ right=25mm
 	as shell-scripts. Moreover, for development \textit{Map} and \textit{Reduce}
 	parts  
 	with using "Hadoop Streaming" any programming language can be apply. 
-	Beside main modules, there are many Hadoop extensions for cluster management,
-%%% ML: this theses ?
+	Beside main modules, there are many Hadoop extensions for cluster management, 
 	data access and helpers for storing data in HDFS. As suitable example of this
 	theses is Apache Hive, 
-%%% ML: SQL-like ?
 	which expose higher level user interfaces and provide like SQL query syntax. 
 	
-%%% ML: in the core ?
 	There are two primary components at the core of Apache Hadoop 1.x: the Hadoop
 	Distributed File System 
 	(HDFS) and the MapReduce parallel processing framework. For Hadoop 2.x have been
@@ -443,10 +431,9 @@ right=25mm
 	machines, it is called Hadoop Distributed filesystem (HDFS). Is designed for
 	handling very large files with streaming
 	data access. As example suits well CSV, JSON or any data structure which can be
-	serialized. \cite{hadoop_hdfs_web} In HDFS, large files are broken down into
+	serialize. \cite{hadoop_hdfs_web} In HDFS, large files are broken down into
 	smaller blocks (128MB, by default) which are 
 	stored as independent units. The architecture of HDFS is a highly fault-tolerant
-%%% ML: permeability
 	and provides wide permeability
 	for access.   
 	A short overview of main characteristics of HDFS design is described in
@@ -551,7 +538,7 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 	\end{itemize}
 	These are basically daemons or programs that run on different physical servers.
 	The figure \ref{hdfs_arch} describes the main components and connections
-	between them.
+	between.
 	
 	\paragraph{Client}
 	computers have installed Hadoop with  all the configuration but they are not
@@ -560,9 +547,9 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 	the result or looking for jobs when finished.
 	
 	\subsubsection{NameNode, DataNode and SecondaryNameNode}
-	Hadoop comes with cluster architecture based on master (\textit{NameNode}) and
-	slave (\textit{DataNode}) design pattern. 
-	The \textit{NameNode} handles metadata of abstract filesystem (namespace), which
+	Hadoop comes with cluster architecture based on master(\textit{NameNode}) and\\
+	slave(\textit{DataNode}) design pattern. 
+	The \textit{NameNode} handles metadata of abstract filesystem(namespace), which
 	include
 	information about the structure of files and directories in the tree.  It does
 	not hold any cluster data itself. 
@@ -587,7 +574,7 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 		\url{https://hadoop.apache.org/docs/r1.2.1/hdfs_design.html}}
 	In recent Hadoop releases, there is also a backup node -
 	\textit{SecondaryNameNode}, always up to date 
-	with latest (per 1 hour by default) \textit{NameNode} status. It receives all the
+	with latest(per 1 hour by default) \textit{NameNode} status. It receives all the
 	operations done by \textit{NameNode} and 
 	stores them in local memory. This permits to have the latest, up to date
 	namespace status, when \textit{NameNode} fails. 
@@ -611,17 +598,17 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 	directly calls data.
 	
 	
-	\subsubsection{JobTracker and TaskTracker}
+	\subsubsection{JobTracker and TaskTrackers}
 	Above the filesystems is  the MapReduce layer, in other words, MapReduce engine,
 	which consists of 
-	JobTracker,  which ensures client applications to submit Map\-Reduce jobs. The
+	JobTracker,  which ensures client applications to submit MapReduce jobs. The
 	JobTracker handle work 
 	out to available TaskTracker nodes in the cluster, 
 	aiming to keep the jobs close to a data block.  Thus, JobTracker and TaskTracker
 	are two types of 
 	nodes for managing the execution process of  task.
 	Client submits MapReduce job  to the JobTracker to process a particular file.
-	JobTracker choose the 
+	JobTracker chose the 
 	DataNodes which store block with the desired file by asking the NameNode where 
 	metadata of filesystem are stored. 
 	JobTracker appends tasks to TaskTracker according to the  information obtained
@@ -661,7 +648,7 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 	\paragraph{Access mechanisms}
 	The basic mechanism for interaction with HDFS is \textit{hadoop fs}  command
 	line tool \textit{bin/hadoop fs $<$args$>$}. 
-	All fs shell commands take path URIs as arguments. Most of the commands in fs
+	All fs shell commands take path URIs as arguments. Most of the commands in FS
 	shell are derived from Unix commands. 
 	
 	The other mechanism for accessing HDFS is through application programming
@@ -717,10 +704,10 @@ Content-Length: 0
 	
 	
 	\paragraph{As MapReduce demonstration} of  data from cellular microwaves
-	links (MWL) are used.
+	links(MWL) are used.
 	Assuming that data are already serialized and stored in text files and each file
 	representing 24 hours 
-	of captured data. The size amount of weakly data is relatively small (100Mb)
+	of captured data. The size amount of weakly data is relatively small(~100Mb)
 	which suits well to the default block size.
 	The aim is to compute  mean of differences between transmitted and received
 	signal for 
@@ -769,11 +756,11 @@ linkid;data;rx;tx
 	query processing. The main idea 
 	grows up from the basis of MapReduce. On the figure, the dataset is partitioned
 	into four tiles. After 
-	query job is started, each tile is analyzed separately using Map (M1-M4)
+	query job is started, each tile is analyzed separately using Map(M1-M4)
 	function. For demonstration, 
-	query analyzes intersection of two datasets (red, blue) on each tile. Thus,
+	query analyzes intersection of two datasets(red, blue) on each tile. Thus,
 	relation between 
-	objects from the different dataset is detected. The result is done by Reduce (R)
+	objects from the different dataset is detected. The result is done by Reduce(R)
 	function, where results from each
 	map phase are processed.
 	
@@ -781,12 +768,12 @@ linkid;data;rx;tx
 		\centering
 		\includegraphics[width=0.6\textwidth]{./img/mapred_spatial.pdf}
 		\caption[Spatial MapReduce]{\centering Detection of spatial relations using
-			Map (\textit{M1-M4}) and Reduce (\textit{R}) functions}
+			Map(\textit{M1-M4}) and Reduce(\textit{R}) functions}
 		\label{fig:mapred_spatial}
 	\end{figure}
 	\paragraph{}
 	
-	The motivation for spatial processing in parallel is querying data in reasonable
+	The motivation for spatial processing in parallel is queering data in reasonable
 	time. 
 	Firstly, it is essential to introduce characteristics of queries for solving
 	different 
@@ -827,7 +814,7 @@ linkid;data;rx;tx
 	problem is a motivation for the parallel processing of spatial data. Spatial
 	Join 
 	is an operation used to combine two or more datasets with respect to a spatial 
-	relationship. Detection of relations between spatial objects using serial (used
+	relationship. Detection of relations between spatial objects using serial(used
 	in RDBMS) 
 	computing approach started to be limited by its design. On the scene comes
 	solutions
@@ -851,7 +838,7 @@ linkid;data;rx;tx
 	query components,
 	break them down into small tasks, and process these tasks in parallel. 
 	Design of first two systems, \textit{SpatialHadoop} and \textit{HadoopGIS}
-	extensions are well described in publications. Back\-ground of Esri library is not
+	extensions are well described in publications. Background of Esri library is not
 	described in an available
 	literature, on the other hand, the user documentation seems to be complex and
 	described in detail. 
@@ -1018,7 +1005,7 @@ linkid;data;rx;tx
 		ideal case, all partition are the 
 		same size. The number of partitions \emph{n} is computed as $n=S(1+ \alpha)/B$,
 		where \emph{S} is the size of input file, \emph{B} is the HDFS block size and
-		$\alpha$ is an overhead ratio (0.2 by default). 
+		$\alpha$ is an overhead ratio(0.2 by default). 
 		Next step is the definition of boundaries by of partitions. Boundaries are
 		represented by rectangles. Thus, a skew of data is not considered. 
 		The output of this step is set of rectangles representing  boundaries of
@@ -1081,7 +1068,7 @@ linkid;data;rx;tx
 	\begin{itemize}
 		\item \textbf{SpatialHadoop} indexing model is composed from three phases. The
 		first phase, partitioning is already
-		described \ref{Spatial_Data_Partitioning}.
+		described\ref{Spatial_Data_Partitioning}.
 		
 		The purpose of the second phase is to build \textit{local index}  for each
 		physical partition of data. 
@@ -1116,7 +1103,7 @@ linkid;data;rx;tx
 		restart of a cluster is possible to rebuild index from rectangular boundaries of
 		the file blocks. 
 		For accessing the master index is not necessary to parse it yourself.
-		Implementation offers API 
+		Implantation offers API 
 		which retrieves the global index as an object.
 		SpatialHadoop offers tree methods for building indexes. 
 		
@@ -1259,7 +1246,7 @@ linkid;data;rx;tx
 	The design of  SpatialHadoop implementation is open to extending available
 	indexes. Esri and 
 	SpatialHadoop offer more advanced indexing methods, such as 
-	QuadTree (Esri) and E-tree (SpatialHadoop). One of the main weakness of HadoopGIS
+	QuadTree(Esri) and E-tree(SpatialHadoop). One of the main weakness of HadoopGIS
 	is an limited indexing 
 	support. It disposables only by grid index method which can be 
 	effectively used only for uniformly distributed data.
@@ -1295,7 +1282,7 @@ linkid;data;rx;tx
 	
 	
 	Generally, all frameworks allow customization on the level of developing
-	Map\-Reduce functions. As Esri 
+	MapReduce functions. As Esri 
 	framework allows interaction with core libraries, the library is more focused or
 	GIS users than developers. 
 	Esri covers the wide portfolio of built-in spatial operators to compare
@@ -1449,7 +1436,7 @@ linkid;data;rx;tx
 	local variables.
 	Below is an example of deploying VM instance with default configuration. The
 	instance 
-	is accessible by \textit{gcloud} ssh tool (e.g. instance run in zone asia-east1).
+	is accessible by \textit{gcloud} ssh tool(e.g. instance run in zone asia-east1).
 	Access can be also provided 
 	by standard ssh protocol.
 	\begin{footnotesize}
@@ -1459,10 +1446,10 @@ $ gcloud compute instances create my-instance
 $ gcloud compute ssh my-instance --zone asia-east1
 		\end{lstlisting}
 	\end{footnotesize}
-	\textit{gcloud dataproc} \ref{subsub:dataproc} tools support deployment of
+	\textit{gcloud dataproc}\ref{subsub:dataproc} tools support deployment of
 	clusters with limited configuration compare to \textit{bdutil}. For deploying 
 	cluster with distributed filesystem, like Hadoop and Spark, is can be advantage
-	to use \textit{bdutil} \ref{subsub:bdutil} tools. 
+	to use \textit{bdutil}\ref{subsub:bdutil} tools. 
 	
 	\paragraph{Google Cloud Client Libraries} are for programmatic access to Google
 	Cloude Platform services. For development applications 
@@ -1492,7 +1479,6 @@ region = region).execute()
 	America, Europe, and Asia. Each location includes 
 	\textit{regions} and \textit{zones}. The choice of place, where service is
 	running is on developer. The statistics data and live stream of 
-%%% ML: Thereunto?
 	center resources, latency, availability, durability are available. Thereunto
 	using API the  manipulation with resources problematically is possible. 
 	%\begin{figure}[h!]
@@ -1557,7 +1543,8 @@ usage: 0.0
 	
 	
 	\subsection{Identity and Access Management}
-	Cloud Identity and Access Management (Cloud IAM) provide way for handling privacy
+	Cloud Identity and Access Management(Cloud IAM) provide way for handling privacy
+	
 	and permissions for \textit{Google Cloud} services. Currently, alpha  or beta
 	versions are 
 	supported for nine services over Google Cloud portfolio, 
@@ -1627,18 +1614,18 @@ usage: 0.0
 	collection 
 	of statements that specify who has what type of access. The policy is linked to
 	resources 
-	and control it's accessed. In Figure \ref{fig:iam}, (b) is 
+	and control it's accessed. In figure(\ref{fig:iam}, (b) is 
 	shown policy principle based on the relation between the collection of
 	statements IAM and 
 	Resources of Google Platform. Resources of Google Platform 
-	are organized hierarchically. Figure \ref{fig:iam}, (c) demonstrated example of
+	are organized hierarchically. Figure (\ref{fig:iam}, (c) demonstrated example of
 	the nodes 
 	in hierarchy. \textit{Organization} represent the root of 
 	the hierarchy and each child has only one parent. Inheritance of hierarchy 
 	handle sets and subsets of abstract classes, such as Organization, Project and
 	Resources. 
 	
-%%% ML: zdroj ?
+	
 	\begin{figure}[!htbp]
 		\centering
 		%\subfloat[Roles]{ \includegraphics[width=0.4\textwidth]{./img/iamroles.png}
@@ -1660,7 +1647,7 @@ usage: 0.0
 	
 	\subsection{Cloud Storage}
 	\label{subsub:datastore}
-	Google Cloud Storage, service with high level of availability and durability 
+	Google Cloud Storage, servis with high level of availability and durability 
 	over the world. Storage of data is highly persistent by replication data over
 	Google 
 	infrastructure. Service security protection is based 
@@ -1703,7 +1690,6 @@ durable_reduced_availability
 	conventions. Validator for creation process responds error message in the wrong
 	case. 
 	
-%%% ML: peace
 	\paragraph{Objects} represents peace of data placed in storage. Object have two
 	components: 
 	user data and metadata of quality. All \textit{objects} are immutable after
@@ -1714,13 +1700,13 @@ durable_reduced_availability
 	can proceed up to one second. Otherwise \textit{503 Service Unavailable errors}
 	is responded.
 	
-	\paragraph{Consistency} of data handle global Google net\-work of data centres. 
+	\paragraph{Consistency} of data handle global Google network of data centres. 
 	When success response is received, uploaded data are available from any location
 	in 
-	Google net\-work. Google has designed and constructed a private network 
+	Google network. Google has designed and constructed a private network 
 	for fast data transfer between their data centres around the word. Thus, data
 	throughput 
-	of Google back\-bone network is higher than the capability of the 
+	of Google backbone network is higher than the capability of the 
 	internet-facing network. The latency for writing is slightly higher for
 	replicated store 
 	than non-replicated. Restriction of accessing metadata of object immediately
@@ -1734,7 +1720,7 @@ durable_reduced_availability
 	or API. Cloud storage consists three different ways of buckets access
 	management.
 	\begin{itemize}
-		\item\textbf{Access Control Lists (ACLs)} provide way to manage read or write
+		\item\textbf{Access Control lists (ACLs)} provide way to manage read or write
 		access for specified Google accounts and groups.
 		\item\textbf{Signed URLs (query string authentication)} provide a way to set time 
 		limited read or write access to anyone who disposes of URL address. This way is
@@ -1746,8 +1732,8 @@ durable_reduced_availability
 	Additionally is available access control on the Project level. For controlling 
 	user's rules 
 	to access bucket on the project level is developed   \textit{Google Cloud
-		Identity and Access Management} (IAM). This service is described on 
-	the end of the section \ref{acl}.
+		Identity and Access Management}(IAM). This service is described on 
+	the and of the section\ref{acl}.
 	
 	\paragraph{Permissions} is logically divided to read, write and owner. For
 	\textit{objects}, 
@@ -1801,7 +1787,7 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 	
 	\subsection{Dataproc: Cluster services}
 	\label{subsub:dataproc}
-	\textbf{Dataproc} is a package of tools for managing Hadoop \ref{sec:hadoop} 
+	\textbf{Dataproc} is a package of tools for managing Hadoop\ref{sec:hadoop} 
 	and Spark\footnote{Apache spark: \url{http://spark.apache.org/}}.
 	The process of a deploying cluster is fully automatized using the default 
 	configuration. Hadoop and Spark deployment are compatible with official
@@ -1819,16 +1805,16 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 	
 	In the list of the main characteristic of \textit{Dataproc} solution is a 
 	low cost, quick starting and integration with Google Cloud services. 
-	The pricing is  \$0.01 per CPU for an hour (19.3.2016). Dataproc service can 
+	The pricing is  \$0.01 per CPU for an hour(19.3.2016). Dataproc service can 
 	include \textit{Preemptible instances} which offers pricing 
-	per minutes (min 10 minutes). This choice is suitable for batch jobs and 
+	per minutes(min 10 minutes). This choice is suitable for batch jobs and 
 	fault-tolerant workloads. The time for starting cluster is up to 
 	90 seconds in average. To compare e.g with Amazon cloud
-	services(EMR) \cite{amazon_emr}, starting Google cluster is 3 times faster.
+	services(EMR)\cite{amazon_emr}, starting Google cluster is 3 times faster.
 	
 	\paragraph{Create and manage cluster} Deploying process can be handled by three
 	main ways. First, using \textit{gcloud} command-line tool. Second, by running
-	\textit{bdutil} \ref{subsub:bdutil} script and the last option, with using 
+	\textit{bdutil}\ref{subsub:bdutil} script and the last option, with using 
 	\textit{Cloud Dataproc API} - \textit{cluster.create}. Google Cloud web
 	interface offers framework for cluster deployment as well. On the other hand,
 	the configuration and management is considerably limited. Command-line tool
@@ -1863,12 +1849,11 @@ $ gcloud dataproc clusters create <cluster-name>
 	
 	\paragraph{File system}
 	Google Cloud Dataproc offers two different storages based on distributed
-	filesystems. In chapter Hadoop \ref{subsec:hdfs} is described Hadoop Distributed File
-	system (HDFS) which is default filesystem for Apache Hadoop framework and is as an optional in Google
+	filesystems. In chapter Hadoop\ref{subsec:hdfs} is described Hadoop Distributed File
+	system(HDFS) which is default filesystem for Apache Hadoop framework and is as an optional in Google
 	Services. As default filesystem for Hadoop and Spark deployment provided by Google Cloud is
 	 \textit{Google Cloud storage}. 
 	
-%%% ML: Claude ??? opakuje se na vice mistech...
 	Google Claude Storage offers direct data access in available storage for the
 	rest of Google 	services. In addition the interoperability provide access between Spark and
 	Hadoop on Google. 	Next advantage is high data availability provided by Cloud
@@ -1887,7 +1872,7 @@ $ gcloud dataproc clusters create <cluster-name>
 	\paragraph{Machine type} Google Cloud Datagram clusters are built on Google
 	Compute Engine instances. \textit{Machine types} configuration define the virtualized hardware
 	 resources	available to an  virtual machine instance. Two ways how to define configuration are 
-	 available: \textit{predefined instance} and \textit{custom machine types}.  
+	 available:\textit{predefined instance} and \textit{custom machine types}.  
 	
 	\begin{footnotesize}
 		\begin{lstlisting}[style=mybash]
@@ -1928,7 +1913,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		for data management, image processing, graphics production, 
 		spatial modelling, and visualization of many types of data. It is Free (Libre)
 		Software/Open Source released under GNU General Public License 
-		(GPL) $>=$ V2. GRASS GIS is an official project of the Open Source Geospatial
+		(GPL) >= V2. GRASS GIS is an official project of the Open Source Geospatial
 		Foundation."\footnote{Cited from:
 			\url{https://grass.osgeo.org/documentation/general-overview/}}}
 	
@@ -1937,13 +1922,11 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		\includegraphics[width=0.2\textwidth]{./img/grasslogo.png}
 		\caption[Logo GRASS]{\centering Logo of GRASS GIS.}
 	\end{figure}   
-%%% ML: number set of ?
 	GRASS GIS vector map is a data layer which consists number set of a feature in
-	geographic space. These objects are represented by points, lines, areas, and volumes. Usually,
-%%% ML: set of attribute and its values (zni divne) 
+	geographic space. These objects are represented by points, lines, polygons, and volumes. Usually,
 	each feature in the map is  connected with the set of attribute and its values.
 	
-	For manipulation with vector data in GRASS GIS database are available by several drivers for interaction with different database backends. The main module for import and export of vectors datasets is
+	For manipulation with vector data in GRASS GIS database are available several drivers for interaction with different database backends. The main module for import and export of vectors datasets is
 	v.in.ogr and v.out.ogr which is based on widely used GDAL library. In addition, new module for v.import is available. Its advantage is projection conversion on the fly during importing.
 	In the current stable version of GRASS GIS is implemented a driver for PostGIS
 	support. PostGIS is an extension of object-rational PosgreSQL database which brings the support for
@@ -1952,12 +1935,12 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	As PostGIS is a spatial extension for PostgreSQL, analogically ESRI Spatial
 	Framework for Hadoop brings the support of spatial analysis for Hadoop and  Hive.
 	
-	The key feature for this project is the fact that GDAL supports reading and writing GeoJSON data
-	format, which is suitable for storing and analysing data using MapReduce framework. On the other hand, is not supported reading and writing to the unenclosed GeoJSON, and some edits of file format must be additionally done. 
+	The key feature for this project is the fact that GDAL OGR supports reading and writing GeoJSON data
+	format, which is suitable  or storing and analysing data using MapReduce framework. On the other hand, is not supported reading and writing to the unenclosed GeoJSON, and some edits of file format must be additionally done. 
 	Esri Spatial Frameworks for Hadoop allows exporting only to ESRI GeoJSON. The description of
 	GeoJSON and its serialization is mandatory due to the design of MapReduce 
 	for parallel computing. GeoJSON and its features are described in the second
-	part of the thesis \ref{json}.
+	part of the work\ref{json}.
 	
 	%\paragraph{Vector data}
 	
@@ -3565,9 +3548,24 @@ mwdump.csv gs://mwdata_export/
 		
 		Table has been queried by several queries, which had impact on slowing down the performance of GRASS GIS module g.gui.mwprecip, which is developed within my bachelor theses. The queries was massively speed up. Below are few comparison of queries on PosgreSQL database on geo102.fsv.cvut.cz and on BigQuery scalable engine.
 		
+	\begin{footnotesize}
+		\begin{lstlisting}[style=XML]
+SELECT linkid, avg(rxpower) FROM record WHERE time >='2014-07-07 10:53:00' AND \ time<='2014-07-27 10:53:00% group by linkid order by 1
+
+...
+206.8 ms
+		\end{lstlisting}
+	\end{footnotesize}
+
 		
-		SELECT linkid, avg(a) FROM record WHERE time >='%s' AND time<='%s' group by linkid order by 1
+	\begin{footnotesize}
+		\begin{lstlisting}[style=XML]
+SELECT linkid, time , txpower-rxpower as a FROM record where time >='2014-07-07 10:53:48.847' AND time<='2014-07-27 10:53:48.847' order by recordid
 		
+...
+206.8 ms
+		\end{lstlisting}
+	\end{footnotesize}	
 		SELECT linkid,time,txpower-rxpower as a FROM %s.record  WHERE time >= '%s' AND time <= '%s'          ORDER by recordid;
 		
 		SELECT min(time) FROM
