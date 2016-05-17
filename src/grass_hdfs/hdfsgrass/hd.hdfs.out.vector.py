@@ -100,20 +100,22 @@ def main():
 
     count=0
     files=os.listdir(tmp_dir)
-
+    map_string=''
     for block in files:
         block=os.path.join(tmp_dir,block)
+        map='%s_0%s'%(options['out'],str(count))
         map_build = GrassMapBuilderEsriToEsri(block,
-                                              '%s_0%s'%(options['out'],str(count)),
+                                              map,
                                               options['attributes'])
         try:
             map_build.build()
+            map_string+='%s,'%map
         except Exception ,e:
             grass.warning("Error: %s\n     Map < %s >  conversion failed"%(e,block))
         count+=1
 
 
-
+    grass.message("For merge map: v.patch -e --overwrite input=%s"%map_string)
 
 if __name__ == "__main__":
     options, flags = grass.parser()
