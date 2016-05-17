@@ -48,8 +48,8 @@
           <file leaf-file-name="hd.hdfs.out.vector.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/hdfsgrass/hd.hdfs.out.vector.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="2.7158082">
-                  <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.20426288">
+                  <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
                   <folding>
                     <element signature="e#1312#1321#0" expanded="true" />
                   </folding>
@@ -71,7 +71,7 @@
             <entry file="file://$PROJECT_DIR$/hdfsgrass/hd.esri2map.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+                  <caret line="38" column="43" selection-start-line="38" selection-start-column="43" selection-end-line="38" selection-end-column="43" />
                   <folding>
                     <element signature="e#442#451#0" expanded="true" />
                   </folding>
@@ -201,11 +201,11 @@
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.in.vector.py" />
         <option value="$PROJECT_DIR$/hdfswrapper/hive_table.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.info.py" />
-        <option value="$PROJECT_DIR$/hdfsgrass/hd.esri2map.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.out.vector.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hdfs.in.fs.py" />
+        <option value="$PROJECT_DIR$/hdfsgrass/hd.esri2map.py" />
         <option value="$PROJECT_DIR$/hdfsgrass/hd.hdfs.out.vector.py" />
       </list>
     </option>
@@ -1198,16 +1198,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hdfsgrass/hd.esri2map.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding>
-            <element signature="e#442#451#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hdfsgrass/hdfs_grass_lib.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.0645162">
@@ -1230,6 +1220,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/hdfsgrass/hd.esri2map.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="43" selection-start-line="38" selection-start-column="43" selection-end-line="38" selection-end-column="43" />
+          <folding>
+            <element signature="e#442#451#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/hdfsgrass/hd.hdfs.in.fs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.5833335">
@@ -1240,8 +1240,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hdfsgrass/hd.hdfs.out.vector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.7158082">
-          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.20426288">
+          <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
           <folding>
             <element signature="e#1312#1321#0" expanded="true" />
           </folding>

@@ -36,9 +36,10 @@ def main():
     files=os.listdir(options['path'])
 
     for block in files:
+        map='%s_0%s'%(options['out'],block)
         block=os.path.join(options['path'],block)
         map_build = GrassMapBuilderEsriToEsri(block,
-                                              '%s_%s'%(options['out'],str(count)),
+                                              map,
                                               options['attributes'])
         map_build.build()
         count+=1
