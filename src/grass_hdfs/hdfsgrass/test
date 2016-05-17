@@ -14,11 +14,12 @@
 
 
 
+cluster-4-m.c.hadoop-jakub.internal
 #hdfsweb google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=cluster-2-m.c.spatial-hadoop.internal port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=ccluster-4-m.c.hadoop-jakub.internal port=50070
 
 #hive_server2 google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-2-m.c.spatial-hadoop.internal port=10000 login=matt schema=default
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-4-m.c.hadoop-jakub.internal port=10000 login=matt schema=default
 
 #hive_cli
 /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hive_cli conn_id=hive_cli host=cluster-2-m port=10000

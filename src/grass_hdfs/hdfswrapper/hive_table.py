@@ -257,14 +257,17 @@ class HiveSpatial(object):
 
         out = self.describe_table(table)
         #print out
-        for cell in out:
-            if 'Location:' in cell[0]:
-                logging.info("Location of file in hdfs:  %s" % cell[1])
-                path = cell[1].split('/')
-                #print path
-                path = '/'+'/'.join(path[3:]) #todo windows
+        if out:
+            for cell in out:
+                if 'Location:' in cell[0]:
+                    logging.info("Location of file in hdfs:  %s" % cell[1])
+                    path = cell[1].split('/')
+                    #print path
 
-                return path
+                    path = '/'+'/'.join(path[3:]) #todo windows
+                    logging.info("path to table {} ".format(path))
+                    return path
+        return None
 
     def esri_query(self, hsql, temporary=True):
         STfce = ''

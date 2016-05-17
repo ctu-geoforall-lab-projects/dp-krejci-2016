@@ -246,20 +246,20 @@ right=25mm
 	growing fast which is proofed by the fact that 90\% of data volume has been
 	generated since 2010. Current  annual global data production is  7.9 zettabytes
 	and the trend points 35 zettabytes in 2020 due to 30 times faster generation of
-	data.  
+	data \cite{digit_universe}.  
 	The term \textit{big data} became as widely used expression for the volume of
 %%% ML: which are ?
 %%% MK: todo
 	data which beyond the ability of commonly used software to store and process 
 %%% ML: Over years (viz prvni veta odstavce)
 %%% MK: ok
-	them.   During decatedes of innovation, SQL relational databases reached limits
+	them.   During decades of innovation, SQL relational databases reached limits
 %%% ML: and closely connected (veta zni divne)
 %%% MK: hand by hand
 	thank it's architecture design hand by hand with the limitation of
 	hardware components.  Software engineering has been naturally pushed to 
 	investigate new form for handling big amount of data efficiently.  As  the new
-	phenomenon   of storing and managing big data in data centers over the word
+	phenomenon   of storing and managing big data in data centres over the word
 	became approach based on distributed file system and parallel computing. At the
 	beginning of this stage, big companies developed prototypes of software which
 	was strongly dependent on maintenance by top experts from the field.  The
@@ -2524,7 +2524,7 @@ gcloud dataproc clusters create cluster-2
 --image-version 1.0 
 --scopes 'https://www.googleapis.com/auth/cloud-platform' 
 --project spatial-hadoop
---properties 'hive:'hive.aux.jars.path=file:///usr/local/spatial/<jar>'
+--properties 'hive:'hive.aux.jars.path=:/usr/local/spatial/<jar>'
 		\end{lstlisting}
 	\end{footnotesize}
     
@@ -2775,7 +2775,7 @@ $hive add jar ${env:HIVE_HOME}/lib/esri-geometry-api.jar;
 %%% ML: neplatna reference
 %%% MK: ok
     necessary to modify its standardized format. The serialization  for
-    JSON has several formating requirements. %TODO add ref
+    JSON has several formatting requirements. %TODO add ref
 	
 	\begin{itemize}
 		\item Each vector feature must be on separated/new line.
@@ -3141,20 +3141,143 @@ true
 	\item Configure hosts on local computer\ref{hosts}
 	\end{enumerate}
 	
-	After finalising each particular step the state should be: Hadoop cluster is configured and running on Google Cloud, all dependencies on cluster are installed, Goggle network allows to connect on Hadoop from local computer and GRASS GIS and GRASS Hadoop Framework is installed. If all works well the processing of data can be made. Next section 
+	After finalising each particular step the status should be: Hadoop cluster is configured and running on Google Cloud, all dependencies on cluster are installed, Goggle network allows to connect on Hadoop from local computer and GRASS GIS and GRASS Hadoop Framework is installed. If all works well the processing of data can start. Next section 
 	
+		\begin{figure}[!htbp]
+			\centering
+			\includegraphics[width=0.8\textwidth]{./img/modules_schema.pdf}
+			\caption[GHF workflow]{\centering Process workflow of GRASS Hadoop Framework 
+			}
+			\label{wokrflow}
+		\end{figure} 
+		
 	
+	\subsection{Test case: Aggregation}\label{spatial_anal_usage}
+	The section Spatial Analysis show GRASS Hadoop framework in use. Especially, the interaction with Esri Spatial library for Hadoop. 
+	The first part of workflow is aimed on service management. After configuration working environment  second and part of workflow can be done. This part include preparation of data and querying Hive database. In addition it includes usage of functions from Esri Spatial Framework for Hadoop.
 	
-	\subsection{Spatial analysis}\label{spatial_anal_usage}
-	If all prerequisities for spatial processing are satisfy, thus cluster is running and client site is prepared as well the spatial analysis  using Hadoop and  GRASS GIS 
-	can start.
-	\begin{figure}[!htbp]
-		\centering
-		\includegraphics[width=0.8\textwidth]{./img/modules_schema.pdf}
-		\caption[GHF workflow]{\centering Process workflow of GRASS Hadoop Framework 
-		}
-	\end{figure} 
+
+%	In first part has been introduced functionality of Esri package and its user defined functions. In addition %within the library is tool for serialisation JSON files.
 	
+
+	For explanation of used technology is suitable to use dataset of big data volume. For this 
+	example is chosen Planet dataset from OpenStreetMap repository. Concretely dataset which covers Europe\footnote{source of dataset \url{http://osm.personalwerk.de/full-history-extracts/latest/continents/}} 
+	and includes all history of changes. The size of compressed dataset(pbf compression) of 
+	Europe is 23 Gb and consists approximately 1,3 billions of points.
+	The goal of this example is to crate density map of contribution. For this kind of analyses is suitable to use binning. Data binning  is a data pre-processing technique used to reduce the effects of minor observation errors. The original data values which fall in a given small interval, a bin, are replaced by a value representative of that interval or just add to . It is a form of aggregation used for creating density maps.
+\paragraph{Preparation of data}
+	 The tool Osmconvert\footnote{Osmcomverter web page\url{http://wiki.openstreetmap.org/wiki/Osmconvert}} allows to transform binary file to csv,  where each 	\textit{@} after \textit{--csv} parameter defining column of data.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+$ osmconvert italy.osh.pbf  -o=europe.csv --csv-separator=, \
+						--csv="@id  @lon  @lat  @timestamp"
+		\end{lstlisting}
+	\end{footnotesize}
+ After conversion, the size of file is 116Gb. Without writing special Hive UDF(User Defined Function) the timestamps of exported file must edited to proper \textit{datetime} format. Using \textit{sed} command line tool it is easy even for big data.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+$ sed "s/T/ /g"
+		\end{lstlisting}
+	\end{footnotesize}
+
+ 	Available are two ways how to put file to distributed filesystem . If GS filesystem is used and cluster is deployed using bdutil, than the bast way to load data to bucket which cluster is using. In more common way, using Hadoop and its \textit{hadoop fs} tool is possible to put data to HDFS.
+\begin{enumerate}
+\item HDFS  - loading data to the default distributed filesystem of Hadoop.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+$ hadoop fs -put europe_latest_fix.csv /data/
+		\end{lstlisting}
+	\end{footnotesize}
+\item Google Storage - loading data to bucket of GS, below is used slicing of file which speed up uploading process.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+$ gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp /
+		 europe_latest_fix.csv gs://data/
+		\end{lstlisting}
+	\end{footnotesize}
+\end{enumerate}
+This ensure that file is distributed over cluster to blocks. In addition according  configured number of replication, data is replicated over DataNodes. By default replication is set to 2.
+Above is shown approach where data are downloaded directly to the server. However, in some cases user cannot control the cluster directly, only over WebHDFS access. For this case is suitable to use module \textit{hd.hdfs.in.fs} which support it.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+# copy local file to HDFS on server
+$ hd.hdfs.in.fs  driver=webhdfs hdfs=/data local=europe_latest_fix.csv
+		\end{lstlisting}
+	\end{footnotesize}
+the HDFS folders and files can be check by module \textit{hd.hdfs.info}
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+# print path recursively
+$ hd.hdfs.info  driver=webhdfs path=/data -r
+		\end{lstlisting}
+	\end{footnotesize}
+
+However, the goal of analyses is to visualise heat map  of area Czech Republic. In GIS, clip function makes this task trivial. Assume that we have in GRASS database polygon of Czech boundaries. Before we can load GRASS vector map to Hadoop, firstly must be set connection to the server. Module hd.db.connect allows it. Firstly we set connection to HDFS.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+#connection using WebHDFS driver
+$ hdfs.db.connect.py   driver=webhdfs \
+					 conn_id=google \
+					 login=matt \
+					 host=cluster-4-m.c.hadoop-jakub.internal \
+					 port=50070
+	 		
+...
+   Test <webhdfs> connection (is path exists: ls /) 
+    True 
+		\end{lstlisting}
+	\end{footnotesize}
+
+If return is printed, the connection pass.
+Next, the connection to Hive data warehouse is done. It also test if the connection pass by query \textit{'show databases;'}
+\begin{footnotesize}
+	\begin{lstlisting}[style=python]
+#connection using wrapper around hiveserver2
+$ hd.db.connect. driver=hiveserver2 \
+			conn_id=hiveserver2_id \
+	 		host=cluster-4-m.c.hadoop-jakub.internal \
+	 		port=10000 login=matt schema=default 
+	 		
+...
+	Test connection (show databases;) 
+	
+			[['default']]
+		\end{lstlisting}
+	\end{footnotesize}
+
+
+
+If connection is established we can move to the next step. In cr-wgs84 GRASS dataset map \textit{cr} covers Czech Republic \ref{map_cz}. Goal of this step is to transform map from naive GRASS vector format to serialised GeoJSON. Module \textit{hd.hdfs.in.vector} allow convert file and put it into HDFS hosted on server. 
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./img/cr.png}
+	\caption[GHF workflow]{\centering Czech Republic map for clipping the Europe dataset.
+	}
+	\label{map_cz}
+\end{figure} 
+
+
+\begin{footnotesize}
+	\begin{lstlisting}[style=python]
+#copy vector map cr to hdfs://data
+$ hd.hdfs.in.vector driver=webhdfs  hdfs=/data map=cr layer=1
+..
+     File has been copied to: 
+
+ path :
+    /data
+	\end{lstlisting}
+\end{footnotesize}
+
+
+
+
+\paragraph{Preparation of Hive tables}
+
+
+
+
+%v.patch -e %input=italy_agg1_14@matt,italy_agg1_1@matt,italy_agg1_10@matt,italy_agg1_10@matt,italy_agg1_11@matt,italy_agg1_12@matt,italy_agg1_13@matt,italy_agg1_15 %@matt,italy_agg1_16@matt,italy_agg1_17@matt,italy_agg1_18@matt,italy_agg1_19@matt,italy_agg1_2@matt,italy_agg1_20@matt,italy_agg1_21@matt,italy_agg1_3@ %matt,italy_agg1_4@matt,italy_agg1_5@matt,italy_agg1_6@matt,italy_agg1_7@matt,italy_agg1_8@matt,italy_agg1_9@matt output=italy_agg1_fina
 
 
 	\subsubsection{CSV}
@@ -3264,7 +3387,10 @@ true
 	\begin{thebibliography}{99}
 		\label{References}
 		
-		
+		\bibitem{digit_universe}
+		John Gantz, David Reinsel. \textit{THE DIGITAL UNIVERSE IN 2020: Big Data, Bigger Digital Shadow and Biggest Growth in
+		the Far East}, December 2012
+		\textless\url{http://www.emc.com/collateral/analyst-reports/idc-the-digital-universe-in-2020.pdf}
 		
 		\bibitem{hadoop_definitive}
 		WHITE, Tom. \textit{Hadoop: the definitive guide. Fourth edition.} Beijing:

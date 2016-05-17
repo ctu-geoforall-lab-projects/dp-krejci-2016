@@ -225,7 +225,6 @@ class HiveTableBuilder:
         self.map = map
         self.layer = layer
 
-
     def get_structure(self):
         raise NotImplemented
         dtypes=['TINYINT','SMALLINT','INT','BIGINT','BOOLEAN','FLOAT','DOUBLE',
@@ -243,7 +242,6 @@ class HiveTableBuilder:
 
     def _get_map(self):
        raise NotImplemented
-
 
 class JSONBuilder:
     def __init__(self, grass_map=None, json_file=None):
@@ -330,13 +328,34 @@ class JSONBuilder:
         return out
 
 class GrassMapBuilder(object):
-    def __init__(self, json_file, map):
+    def __init__(self, json_file, map,attributes):
         self.file = json_file
         self.map = map
+        self.attr=attributes
 
     def build(self):
         raise NotImplemented
 
+    def remove_line(self, lineNumber):
+        with open(self.file, 'r+') as outputFile:
+            with open(self.file, 'r') as inputFile:
+
+                currentLineNumber = 0
+                while currentLineNumber < lineNumber:
+                    inputFile.readline()
+                    currentLineNumber += 1
+
+                seekPosition = inputFile.tell()
+                outputFile.seek(seekPosition, 0)
+
+                inputFile.readline()
+
+                currentLine = inputFile.readline()
+                while currentLine:
+                    outputFile.writelines(currentLine)
+                    currentLine = inputFile.readline()
+
+            outputFile.truncate()
 
     def _get_wkid(self):
         """
@@ -349,6 +368,12 @@ class GrassMapBuilder(object):
             if first_line.find('wkid') != -1:
                 return self._find_between(first_line,'wkid":','}')
 
+    def _rm_null(self):
+        with open(self.file, 'r') as f:
+            first_line = f.readline()
+            if first_line.find('null') != -1:
+                self.remove_line(0)
+
     def _find_between(self,s, first, last ):
         try:
             start = s.index( first ) + len( first )
@@ -358,12 +383,16 @@ class GrassMapBuilder(object):
             return ""
 
     def _create_map(self):
-        Module('v.import',
+        out1=Module('v.import',
               input=self.file,
               layer='OGRGeoJSON',
               output=self.map,
               verbose=True,
+              stderr_=PIPE,
               overwrite=True)
+
+        #grass.message(out1.outputs["stderr"].value.strip())
+        logging.debug(out1.outputs["stderr"].value.strip())
 
     def _json_parser(self):
         pass
@@ -393,6 +422,7 @@ class GrassMapBuilder(object):
             grass.fatal('Envelope is not supported')
 
     def replace_substring(self,foo,bar):
+
         path='%s1'%self.file
         io=open(path,'w')
         stream_lines(self.file) |\
@@ -417,13 +447,16 @@ class GrassMapBuilderEsriToStandard(GrassMapBuilder):
         self._create_map()
 
 class GrassMapBuilderEsriToEsri(GrassMapBuilder):
-    def __init__(self,json_file, map):
-        super(GrassMapBuilderEsriToEsri,self).__init__(json_file, map)
+    def __init__(self,json_file, map,attributes):
+        super(GrassMapBuilderEsriToEsri,self).__init__(json_file, map,attributes)
+        if not os.path.exists(self.file):
+            return
 
     def build(self):
+        self._rm_null()
         geom_type = self._get_type()
         wkid = self._get_wkid()
-        self.replace_substring('}}}','}}},')
+        self.replace_substring('}}','}},')
 
         header=self._generate_header(geom_type[1],wkid)
         self._prepend_line(header)
@@ -432,16 +465,39 @@ class GrassMapBuilderEsriToEsri(GrassMapBuilder):
         self._create_map()
 
     def _generate_header(self,geom_type,wkid):
+
+        cols=''
+        if self.attr:
+            items=self.attr.split(',')
+            for att in items:
+                col,typ=att.split(' ')
+                if 'int' in typ.lower():
+                    typ='esriFieldTypeInteger'
+                if 'str' in typ.lower():
+                    typ = 'esriFieldTypeString'
+                if 'double' in typ.lower():
+                    typ = 'esriFieldTypeDouble'
+                if 'id' in typ.lower():
+                    typ = 'esriFieldTypeOID'
+
+                cols+='{"name":"%s","type":"%s"},'%(col,typ)
+
+
+        cols = cols[:-1]
+
+        if not wkid:
+            wkid='4326' #TODO g.proj.identify3
         header =('{"objectIdFieldName":"objectid",'
                  '"globalIdFieldName":"",'
                  '"geometryType":"%s",'
                  '"spatialReference":{"wkid":%s},'
-                 '"fields":[],'
-                 '"features": ['%(geom_type,wkid))
+                 '"fields":[%s],'
+                 '"features": ['%(geom_type,wkid,cols))
 
         return header
 
     def _get_type(self):
+        logging.info("Get type for file: %s"%self.file)
         line = stream_lines(self.file) | nth(0)
         if line.find('ring'):
             return ['ring','esriGeometryPolygon']
@@ -468,6 +524,8 @@ class GrassHdfs():
         self.conn = ConnectionManager()
         self.conn.get_current_connection(self.conn_type)
         self.hook = self.conn.get_hook()
+
+
 
     @staticmethod
     def printInfo( hdfs, msg=None):
@@ -501,14 +559,12 @@ class GrassHdfs():
     def download(self, fs, hdfs, overwrite=True, parallelism=1):
         logging.info('Trying download : hdfs: %s to fs: %s   ' % (hdfs, fs))
 
-        if os.path.exists(fs):
-            os.remove(fs)
         out = self.hook.download_file( hdfs_path = hdfs,
                                        local_path = fs,
                                        overwrite = overwrite,
                                        parallelism = parallelism)
         if out:
-            self.printInfo(fs, "File has been copied to: \n      %s"%out)
+            self.printInfo(out)
         else:
             print('Copy error!')
         return out

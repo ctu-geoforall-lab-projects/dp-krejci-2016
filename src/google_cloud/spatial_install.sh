@@ -69,7 +69,7 @@ sudo cp ${ins_path}/spatial-framework-for-hadoop/json/target/spatial-sdk-json-1.
 #sudo hiveserver2 restart
 
 
-<property>
-<name>hive.aux.jars.path</name>
-<value>/usr/lib/hive/auxlib/spatial-sdk-json-1.1.1-SNAPSHOT.jar,/usr/lib/hive/auxlib/spatial-sdk-hive-1.1.1-SNAPSHOT.jar,/usr/lib/hive/auxlib/json-serde-1.3.8-SNAPSHOT-jar-with-dependencies.jar,/usr/lib/hive/auxlib/esri-geometry-api-1.2.1.jar</value>
-</property>
+#<property>
+#<name>hive.aux.jars.path</name>
+#<value>/usr/lib/hive/auxlib/spatial-sdk-json-1.1.1-SNAPSHOT.jar,/usr/lib/hive/auxlib/spatial-sdk-hive-1.1.1-SNAPSHOT.jar,/usr/lib/hive/auxlib/json-serde-1.3.8-SNAPSHOT-jar-with-dependencies.jar,/usr/lib/hive/auxlib/esri-geometry-api-1.2.1.jar</value>
+#</property>
