@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       db.hive.connect
+# MODULE:       hd.db.connect
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset

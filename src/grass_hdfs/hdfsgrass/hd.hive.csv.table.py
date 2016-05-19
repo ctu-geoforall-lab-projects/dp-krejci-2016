@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       db.hive.table
+# MODULE:       hd.hive.csv.table
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset

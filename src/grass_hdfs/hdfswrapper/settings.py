@@ -12,7 +12,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 BASE_LOG_URL = 'log'
-# SQL_ALCHEMY_CONN = 'sqlite:////home/matt/Dropbox/DIPLOMKA/sqlitedb.db'
 GISDBASE = grass.gisenv()['GISDBASE']
 LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
 MAPSET = grass.gisenv()['MAPSET']

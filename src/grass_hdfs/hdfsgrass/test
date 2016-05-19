@@ -16,7 +16,7 @@
 
 cluster-4-m.c.hadoop-jakub.internal
 #hdfsweb google
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=ccluster-4-m.c.hadoop-jakub.internal port=50070
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=webhdfs conn_id=google login=matt host=cluster-4-m.c.hadoop-jakub.internal port=50070
 
 #hive_server2 google
 /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.db.connect.py driver=hiveserver2 conn_id=hiveserver2 host=cluster-4-m.c.hadoop-jakub.internal port=10000 login=matt schema=default
@@ -26,11 +26,16 @@ cluster-4-m.c.hadoop-jakub.internal
 
 
 ##################################################################################################################
+
+#hd.esri2map
+ /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hd.esri2map.py  path=/tmp/grass7-matt-27684/italy_agg/italy_agg/italy_agg/ out=it_test attributes='count int'
+
 #hdfs.in.vector
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.in.vector.py driver=webhdfs  hdfs=/user/test map=cfm layer=1
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hd.hdfs.in.vector.py driver=webhdfs  hdfs=/data map=klad_zm10 layer=1
+
 
 #hdfs.out.vector
-/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hdfs.out.vector.py driver=webhdfs table=cansus_enc out=hdfsout
+/./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hd.hdfs.out.vector.py driver=webhdfs out=europe_agg2 attributes='count int,bin_id int' hdfs=/user/hive/warehouse/europe_agg1
 
 #v.hive.table
 /./home/matt/Dropbox/DIPLOMKA/dp-krejci-2016/src/grass_hdfs/hdfsgrass/hive.json.table.py driver=hiveserver2 table=cfm attributes="{'cat':'INT','nazev':'STRING','poityp':'STRING'}" jsonpath=/cfm_1_ENCLOSED.json -e

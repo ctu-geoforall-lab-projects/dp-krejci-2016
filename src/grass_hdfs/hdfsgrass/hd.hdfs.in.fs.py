@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       hdfs.copy
+# MODULE:       hd.hdfs.in.fs
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset

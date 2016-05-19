@@ -35,10 +35,10 @@ sudo mvn -Phdp23 clean package
 #sudo mvn -Pcdh4 clean package
 cd $ins_path
 
-sudo mkdir spatialhadoop
-cd spatialhadoop
-sudo wget http://spatialhadoop.cs.umn.edu/downloads/spatialhadoop-2.3.tar.gz
-sudo tar xzf spatialhadoop-2.3.tar.gz 
+#sudo mkdir spatialhadoop
+#cd spatialhadoop
+#sudo wget http://spatialhadoop.cs.umn.edu/downloads/spatialhadoop-2.3.tar.gz
+#sudo tar xzf spatialhadoop-2.3.tar.gz 
 #rm $ins_path/spatialhadoop-2.3.tar.gz
 
 cd $jar_path
@@ -52,10 +52,10 @@ sudo cp ${ins_path}/geometry-api-java/target/esri-geometry-api-1.2.1.jar $jar_pa
 sudo cp ${ins_path}/spatial-framework-for-hadoop/hive/target/spatial-sdk-hive-1.1.1-SNAPSHOT.jar $jar_path
 sudo cp ${ins_path}/spatial-framework-for-hadoop/json/target/spatial-sdk-json-1.1.1-SNAPSHOT.jar $jar_path
 
-/usr/lib/hive/auxlib/spatial-framework-for-hadoop/json/target/spatial-sdk-json-1.1.1-SNAPSHOT.jar 
-/usr/lib/hive/auxlib/spatial-framework-for-hadoop/hive/target/spatial-sdk-hive-1.1.1-SNAPSHOT.jar 
-/usr/lib/hive/auxlib/Hive-JSON-Serde/json-serde/target/json-serde-1.3.8-SNAPSHOT-jar-with-dependencies.jar
-/usr/lib/hive/auxlib/geometry-api-java/target/esri-geometry-api-1.2.1.jar
+#/usr/lib/hive/auxlib/spatial-framework-for-hadoop/json/target/spatial-sdk-json-1.1.1-SNAPSHOT.jar 
+#/usr/lib/hive/auxlib/spatial-framework-for-hadoop/hive/target/spatial-sdk-hive-1.1.1-SNAPSHOT.jar 
+#/usr/lib/hive/auxlib/Hive-JSON-Serde/json-serde/target/json-serde-1.3.8-SNAPSHOT-jar-with-dependencies.jar
+#/usr/lib/hive/auxlib/geometry-api-java/target/esri-geometry-api-1.2.1.jar
 
 
 /usr/lib/hive/auxlib/spatial-framework-for-hadoop/json/target/spatial-sdk-json-1.1.1-SNAPSHOT.jar,/usr/lib/hive/auxlib/spatial-framework-for-hadoop/hive/target/spatial-sdk-hive-1.1.1-SNAPSHOT.jar,/usr/lib/hive/auxlib/Hive-JSON-Serde/json-serde/target/json-serde-1.3.8-SNAPSHOT-jar-with-dependencies.jar,/usr/lib/hive/auxlib/geometry-api-java/target/esri-geometry-api-1.2.1.jar
@@ -67,6 +67,9 @@ sudo cp ${ins_path}/spatial-framework-for-hadoop/json/target/spatial-sdk-json-1.
 #/etc/hadoop/conf.empty/hadoop-env.sh
 #export HIVE_AUX_JARS_PATH=/usr/local/spatial/jar
 #sudo hiveserver2 restart
+
+
+#gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp gs://open_street/europe_latest.csv .
 
 
 #<property>

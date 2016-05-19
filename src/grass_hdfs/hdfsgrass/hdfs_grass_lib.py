@@ -383,16 +383,15 @@ class GrassMapBuilder(object):
             return ""
 
     def _create_map(self):
-        out1=Module('v.import',
+        out1=Module('v.in.ogr',
               input=self.file,
-              layer='OGRGeoJSON',
               output=self.map,
               verbose=True,
-              stderr_=PIPE,
+              #stderr_=PIPE,
               overwrite=True)
 
         #grass.message(out1.outputs["stderr"].value.strip())
-        logging.debug(out1.outputs["stderr"].value.strip())
+        #logging.debug(out1.outputs["stderr"].value.strip())
 
     def _json_parser(self):
         pass

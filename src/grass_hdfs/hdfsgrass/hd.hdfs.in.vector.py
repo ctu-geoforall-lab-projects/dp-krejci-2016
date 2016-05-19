@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       v.out.hdfs
+# MODULE:       hd.hdfs.in.vector
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset

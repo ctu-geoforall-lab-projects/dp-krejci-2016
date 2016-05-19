@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# MODULE:       v.hdfs.hive.table
+# MODULE:       hd.hive.json.table
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
 # PURPOSE:      Reproject the entire mapset
@@ -40,7 +40,6 @@
 #%option
 #% key: columns
 #% type: string
-#% description: python dictionary {attribute:datatype}
 #% guisection: table
 #%end
 #%option
