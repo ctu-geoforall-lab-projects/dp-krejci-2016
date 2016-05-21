@@ -3210,16 +3210,17 @@ true
 	Spatial Framework for Hadoop.
 	
 	The main goal suppose to create time series dataset, which show partial contribution to OpenStreetMap for each year. The motivation behind this task is to recognize which areas of
-	Europe are more touched by contributions and which year open street map
+	Europe are more touched by contributions and which year OpenStreetMap
 	project registered boom. Europe data extraction of Planet dataset from
         OpenStreetMap repository covers area of Europe\footnote{source of dataset
 	\url{http://osm.personalwerk.de/full-history-extracts/latest/continents/}} 
 	and includes all history of changes  within the project. The size of compressed
-	dataset(pbf compression) of 
+	dataset (pbf compression) of 
 	Europe is 23 Gb and consists approximately 1,3 billions of points.
 	The goal of this case study is to create density map of partial contributions in time
 	resolution of one year. For this kind of analyses it is suitable to use spatial
 	binning. Data binning is a data pre-processing technique used to reduce the
+        %%% ML: chyba reference
 	effects of minor observation errors \ref{bining}. The original data values which
 	fall in a given small interval, a bin, are replaced by a value representative of
 	that interval or just add to. It is a form of aggregation used for
@@ -3230,7 +3231,7 @@ true
 \paragraph{Data to HDFS}
 	 The tool Osmconvert\footnote{Osmcomverter web
 	page\url{http://wiki.openstreetmap.org/wiki/Osmconvert}} allows to transform
-	binary file to csv,  where each 	\textit{@} after \textit{--csv} parameter
+	binary file to CSV,  where each 	\textit{@} after \textit{--csv} parameter
 	defines column of data.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
@@ -3239,7 +3240,7 @@ $ osmconvert italy.osh.pbf  -o=europe.csv --csv-separator=, \
 		\end{lstlisting}
 	\end{footnotesize}
 	 After conversion, the size of file is 116Gb. Without writing special Hive
-	UDF(User Defined Function) the timestamps of exported file must edited to proper
+	UDF (User Defined Function) the timestamps of exported file must edited to proper
 	\textit{datetime} format. Using \textit{sed} command line tool it is easy even
 	for big data.
 	\begin{footnotesize}
@@ -3247,7 +3248,7 @@ $ osmconvert italy.osh.pbf  -o=europe.csv --csv-separator=, \
 $ sed "s/T/ /g"
 		\end{lstlisting}
 	\end{footnotesize}
-	 	Available are two ways how to put file to distributed filesystem . If GS
+	 	Available are two ways how to put file to distributed filesystem. If GS
 	filesystem is used and cluster is deployed using bdutil, than the best way to
 	load data is to bucket which cluster is used. 
 	In more common way, using Hadoop and
@@ -3270,7 +3271,7 @@ $ gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp /
 \end{enumerate}
 	This ensures that file is distributed over cluster to blocks. In addition
 	according  configured number of replication, data is replicated over DataNodes.
-	By default replication is set to 2.
+	By default replication is set to~2.
 	Above is shown approach where data are downloaded directly to the server.
 	However, in some cases user cannot control the cluster directly, only over
 	WebHDFS access. For this case it is suitable to use module \textit{hd.hdfs.in.fs}
@@ -3320,23 +3321,24 @@ $ hd.db.connect driver=hiveserver2 \
 	passed. If the test fails, it returns connection error message.
 	
 	
-		Module \textit{df.hive.json.table} allows to load exported GeoJSON data to
+		Module \textit{hd.hive.json.table} allows to load exported GeoJSON data to
 	table. ESRI implements Java libraries for serialization ESRI GeoJSON which is
 	supported by GDAL only for reading. Thus for serialization of GeoJSON another library must be
 	used. There are several libraries available. The most widely used is
+        %%% ML: onix -> Unix ?
 	from onix. In attachment \ref{serde} several notes is added about serialization
 	JSON.
 
 \paragraph{Table europe}
-		The 116 Gb csv file which consists all points over the history of OpenStreetMap on the area covered by Europe is separated by comma and without header. For this csv
+		The 116 Gb CSV file which consists all points over the history of OpenStreetMap on the area covered by Europe is separated by comma and without header. For this CSV
 	format without extra features it is possible to use built-in function for
 	serialization which is initialized by \textit{ROW FORMAT DELIMITED FIELDS
 	TERMINATED BY ',';} expression.
 		
 	Some benchmarks discussed on web site of
-	\textit{HortonWorks}\footnote{\url{http://tinyurl.com/hvvr5nt}} point that the fastest serialization of csv is reached using native approach. Benchmark shows
+	\textit{HortonWorks}\footnote{\url{http://tinyurl.com/hvvr5nt}} point that the fastest serialization of CSV is reached using native approach. Benchmark shows
 	that library \textit{org.apache.hadoop.hive.serde2.OpenCSVSerde} is 3x slower
-	than native csv reader. On the other hand, OpenCSVSerde allows to pares CSV with
+	than native CSV reader. On the other hand, OpenCSVSerde allows to pares CSV with
 	strange delimiters, such blanks.
 		
 		
@@ -3354,6 +3356,7 @@ CREATE EXTERNAL TABLE europe(id BIGINT,
 	Pure HQL command is shown above. Similarly, creation of table can by done using GHFs
 	module \textit{hd.hive.csv.table}. Additional options as serialization,
 	inserting data etc. are described in section
+        %%% ML: broken \ref
 	\textit{Functionality} \ref{hive:tables}. 
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
@@ -3367,12 +3370,12 @@ TIMESTAMP" \
 	This command of GHFs module analogically to HQL example creates external table
 	\textit{europe}. In addition flag \textit{-d} firstly drops table if exists.
 	Furthermore, the module allows to load data directly to table. In this case the
-	command parameter is \textit{csvpath} e.g.
+	command parameter is \textit{csvpath} e.g. \newline
 	\textit{csvpath=/data/europe\_latest\_fix.csv}.
 	
     Module \textit{hd.hive.load} provides another option to load data to the table.
 	Availability of this module ensures more space within building of the workflow
-	especially using scripting or GUI modeller of
+	especially using scripting or graphical modeler of
 	GRASS\footnote{\url{https://grass.osgeo.org/grass70/manuals/wxGUI.gmodeler.html}}.
 	
 	The loading data into prepared table within command line tool of Hive is by means:
@@ -3490,10 +3493,10 @@ hive.json.table driver=hiveserver2
 	\end{lstlisting}
 \end{footnotesize}
 	As has been created table for results, similarly have been created tables for each year between 
-	the beginning of project till 2014, so 2006,2007.. 2014. 
+	the beginning of project till 2014, so 2006, 2007, ..., 2014. 
 	
 	
-	The next and last stem is execution of spatial query for binning. The command firstly create bin(ST\_Bin) for each point. Bin is not special datatype but is represented as polygon simple feature which is in ESRI word called ring or \textit{esriGeometryRing}. Than, function \textit{ST\_BinEnvelope} create uniform  cells-based polygon of defined size. Actually, the function returning bin envelope for given bin ID or point. The \textit{GROUP BY} statements provide aggregation.
+	The next and last stem is execution of spatial query for binning. The command firstly create bin (ST\_Bin) for each point. Bin is not special datatype but is represented as polygon simple feature which is in ESRI word called ring or \textit{esriGeometryRing}. Than, function \textit{ST\_BinEnvelope} create uniform  cells-based polygon of defined size. Actually, the function returning bin envelope for given bin ID or point. The \textit{GROUP BY} statements provide aggregation.
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
 #Spatial binning for given time interval
@@ -3508,7 +3511,7 @@ GROUP BY bin_id;
 	Firstly, are created bins which are within the time interval and than are aggregate.
 	The size of bin was defined as 0.2 degrees which is approximately 22km.
 	
-	The execution of query can be made from \textit{hiveserver2} command line or using \textit{hd.hive.execute}. 
+	The execution of query can be made from \textit{hiveserver2} command line or using \newline \textit{hd.hive.execute}. 
 	
 	\paragraph{Transfer data to GRASS}
 	If Map and Reduce processing finish. Data are stored in table \textit{europe\_agg2014}, 
