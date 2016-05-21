@@ -15,7 +15,7 @@
 #############################################################################
 
 #%module
-#% description: Creating spatial tables based on ESRI spatial framework
+#% description: Creating Hive spatial tables for storing Json map
 #% keyword: database
 #% keyword: hdfs
 #% keyword: hive
@@ -84,6 +84,7 @@
 #% description: The EXTERNAL keyword lets you create a table and provide a LOCATION so that Hive does not use a default location for this table. This comes in handy if you already have data generated. When dropping an EXTERNAL table, data in the table is NOT deleted from the file system.
 #% guisection: table
 #%end
+
 import grass.script as grass
 
 from hdfs_grass_lib import ConnectionManager

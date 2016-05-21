@@ -5,7 +5,6 @@
 # MODULE:       hd.hdfs.in.fs
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -15,7 +14,7 @@
 #############################################################################
 
 #%module
-#% description: Module for export vector feature to hdfs(unenclosed JSON)
+#% description: Module for transfer file to HDFS
 #% keyword: database
 #% keyword: hdfs
 #% keyword: hive
@@ -53,7 +52,6 @@ def main():
         MAPSET = grass.gisenv()['MAPSET']
         MAPSET_PATH = os.path.join('grass_data_hdfs', LOCATION_NAME, MAPSET, 'external')
         options['hdfs'] = MAPSET_PATH
-    print options['hdfs']
 
     if options['local']:
         transf = GrassHdfs(options['driver'])

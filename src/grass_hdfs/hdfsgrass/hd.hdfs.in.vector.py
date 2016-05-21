@@ -5,7 +5,6 @@
 # MODULE:       hd.hdfs.in.vector
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -59,7 +58,7 @@ def main():
     if options['hdfs'] == '@grass_data_hdfs':
         options['hdfs'] = transf.get_path_grass_dataset()
 
-    print options['hdfs']
+    grass.message(options['hdfs'])
     grass_map = {"map": options['map'],
                  "layer": options['layer'],
                  "type": options['type'],
@@ -68,7 +67,7 @@ def main():
     json = JSONBuilder(grass_map)
     json = json.get_JSON()
 
-    print('upload %s' % json)
+    grass.message('upload %s' % json)
 
     transf.upload(json, options['hdfs'])
 

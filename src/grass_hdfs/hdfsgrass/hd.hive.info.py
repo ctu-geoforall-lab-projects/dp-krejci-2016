@@ -5,7 +5,6 @@
 # MODULE:       hd.hive.info
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -61,7 +60,6 @@ import grass.script as grass
 from hdfs_grass_lib import ConnectionManager
 
 
-# https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
 
 def main():
     conn = ConnectionManager()

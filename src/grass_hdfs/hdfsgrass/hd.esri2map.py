@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 ############################################################################
 #
 # MODULE:       hd.esri2map
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -17,7 +14,7 @@
 #############################################################################
 
 #%module
-#% description:  This module allows to convert esri GeoJson to grass map
+#% description:  Module for conversion esri GeoJson to Grass map
 #% keyword: database
 #% keyword: hdfs
 #% keyword: hive
@@ -50,6 +47,7 @@ def main():
 
     files=os.listdir(options['path'])
     map_string=''
+    #download and convert or blocks of table
     for block in files:
         map='%s_0%s'%(options['out'],block)
         block=os.path.join(options['path'],block)
@@ -63,7 +61,7 @@ def main():
             grass.warning("Error: %s\n     Map < %s >  conversion failed"%(e,block))
 
     path,folder_name = os.path.split(options['path'])
-    print("For merge map: v.patch output=%s -e --overwrite input=%s"%(folder_name,map_string))
+    grass.message("For merge map: v.patch output=%s -e --overwrite input=%s"%(folder_name,map_string))
 
 
 if __name__ == "__main__":

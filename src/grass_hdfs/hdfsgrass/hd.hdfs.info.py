@@ -5,7 +5,6 @@
 # MODULE:       hd.hdfs.info
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -54,7 +53,7 @@ def main():
     if options['path']:
 
         for path in (hive.check_for_content(options['path'], flags['r'])):
-            print path
+            grass.message(path)
 
 
 if __name__ == "__main__":

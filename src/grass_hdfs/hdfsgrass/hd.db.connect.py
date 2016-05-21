@@ -5,7 +5,6 @@
 # MODULE:       hd.db.connect
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -15,7 +14,7 @@
 #############################################################################
 
 #%module
-#% description: Connection manager for Hive database
+#% description: Connection manager for Hive and Hadoop database
 #% keyword: database
 #% keyword: hdfs
 #%end
@@ -170,7 +169,7 @@ def main():
         if not options['driver'] and options['conn_id']:
             conn.set_active_connection(options['driver'], options['conn_id'])
         else:
-            print("ERROR parameter < driver > and 'conn_id' must be set")
+            grass.fatal("ERROR parameter < driver > and 'conn_id' must be set")
 
 
 if __name__ == "__main__":

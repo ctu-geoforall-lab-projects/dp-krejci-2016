@@ -5,7 +5,7 @@ import inspect
 import logging
 import os
 import sys
-import mmap
+#import mmap
 path = os.path.join(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))), os.pardir)
 if not path in sys.path:
     sys.path.append(path)
@@ -24,6 +24,13 @@ from dagpype import stream_lines, to_stream,filt, nth
 
 class ConnectionManager:
     """
+    The handler of connection drivers for Hadoop/Hive.
+    The module provides storing of connection profiles in
+    default GRASS GIS database backend which is SQLite  by default.
+    Database manager for HDFS allows setting  connection id and its driver.
+    So for each type of database (driver) can be
+    stored several user connections distinctive by user defined id (\textit{conn\_ide}
+    parameter) meanwhile  each driver can have only one primary connection.
     >>> conn = ConnectionManager()
     >>> conn.set_connection(conn_type='hiveserver2',
     >>>                   conn_id='testhiveconn1',
@@ -37,7 +44,7 @@ class ConnectionManager:
     >>> conn.add_connection()
     >>> conn.test_connection(conn.get_current_Id())
     >>> conn.remove_conn_Id('testhiveconn1')
-    >>> print(conn.get_current_Id())
+    >>> grass.message(conn.get_current_Id())
     """
 
     def __init__(self):
@@ -58,6 +65,10 @@ class ConnectionManager:
         self.session = settings.Session
 
     def _connect(self):
+        """
+        Perform connection from initialisation.
+        :return: self.connection which is main class of Connection module
+        """
         if self.uri:
             self.connectionDict = {'uri': self.uri}
         else:
@@ -77,28 +88,44 @@ class ConnectionManager:
         self.connection = Connection(**self.connectionDict)
 
     def add_connection(self):
-        print('***' * 30)
-        print("\n     Adding new connection \n       conn_type: %s  \n" % self.conn_type)
+        """
+        Add connection to sql database. If connection already exists, is overwritten.
+        :return:
+        """
+        grass.message('***' * 30)
+        grass.message("\n     Adding new connection \n       conn_type: %s  \n" % self.conn_type)
         self.session.add(self.connection)
         try:
             self.session.commit()
             self._set_active_connection(self.conn_type, self.connectionDict['conn_id'])
         except IntegrityError, e:
-            print("       ERROR conn_id already exists. Will be overwritten...\n")
-            print('***' * 30)
+            grass.message("       ERROR conn_id already exists. Will be overwritten...\n")
+            grass.message('***' * 30)
             self.session.rollback()
             self.session.flush()
             self.remove_conn_Id(self.connectionDict['conn_id'])
             self.add_connection()
-            print('***' * 30)
+            grass.message('***' * 30)
 
     def set_connection(self, conn_id, conn_type,
                        host=None, port=None,
                        login=None, password=None,
                        schema=None, authMechanism=None):
+        """
+        Set new connection.
+        :param conn_id: id of connection
+        :param conn_type: driver
+        :param host:
+        :param port:
+        :param login:
+        :param password:
+        :param schema:
+        :param authMechanism: plain or kerberos
+        :return:
+        """
 
         if None in [conn_id, conn_type]:
-            print("ERROR: no conn_id or conn_type defined")
+            grass.fatal("ERROR: no conn_id or conn_type defined")
             return None
         self.conn_id = conn_id
         self.conn_type = conn_type
@@ -113,41 +140,60 @@ class ConnectionManager:
 
     @staticmethod
     def drop_connection_table():
+        """
+        Remove all saved connection
+        :return:
+        """
         from sqlalchemy import MetaData
         md = MetaData()
         connTable = Table('connection', md)
         try:
             connTable.drop(settings.engine)
             os.remove(settings.grass_config)
-            print('***' * 30)
-            print("\n     Table of connection has been removed \n")
-            print('***' * 30)
+            grass.message('***' * 30)
+            grass.message("\n     Table of connection has been removed \n")
+            grass.message('***' * 30)
         except Exception, e:
-            print('***' * 30)
-            print("\n     No table exists\n")
-            print('***' * 30)
+            grass.message('***' * 30)
+            grass.message("\n     No table exists\n")
+            grass.message('***' * 30)
 
     @staticmethod
     def show_connections():
+        """
+        Show all saved connection
+        :return:
+        """
         cn = settings.engine.connect()
-        print('***' * 30)
-        print("\n     Table of connection \n")
+        grass.message('***' * 30)
+        grass.message("\n     Table of connection \n")
         try:
             result = cn.execute('select * from connection')
             for row in result:
-                print("       %s\n" % row)
+                grass.message("       %s\n" % row)
             cn.close()
         except Exception, e:
-            print(e)
-            print("        No connection\n")
-        print('***' * 30)
+            grass.message(e)
+            grass.message("        No connection\n")
+        grass.message('***' * 30)
 
-    def set_active_connection(self, conn_type=None, idc=None):
-        self.set_connection(conn_type=conn_type, conn_id=idc)
+    def set_active_connection(self, conn_type=None, conn_id=None):
+        """
+        Set connection and than set it like active
+        :param conn_type: driver
+        :param idc: conn_id
+        :return:
+        """
+        self.set_connection(conn_type=conn_type, conn_id=conn_id)
         self._set_active_connection()
 
     def _set_active_connection(self, conn_type=None, idc=None):
-        # print("Saving connection: %s"%settings.grass_config)
+        """
+        Set active connection
+        :param conn_type:
+        :param idc:
+        :return:
+        """
         if conn_type is None:
             conn_type = self.conn_type
         if idc is None:
@@ -169,13 +215,13 @@ class ConnectionManager:
     def show_active_connections():
         cfg = read_dict(settings.grass_config)
         if cfg:
-            print('***' * 30)
-            print('\n     Primary connection for db drivers\n')
+            grass.message('***' * 30)
+            grass.message('\n     Primary connection for db drivers\n')
             for key, val in cfg.iteritems():
-                print('       conn_type: %s -> conn_id: %s\n' % (key, val))
+                grass.message('       conn_type: %s -> conn_id: %s\n' % (key, val))
         else:
-            print('      No connection defined\n')
-        print('***' * 30)
+            grass.message('      No connection defined\n')
+        grass.message('***' * 30)
 
     def get_current_connection(self, conn_type):
         idc = self.get_current_Id(conn_type)
@@ -195,16 +241,16 @@ class ConnectionManager:
     @staticmethod
     def remove_conn_Id(id):
         cn = settings.engine.connect()
-        print('***' * 30)
-        print("\n     Removing connection %s " % id)
+        grass.message('***' * 30)
+        grass.message("\n     Removing connection %s " % id)
         try:
-            print('       conn_id= %s \n' % id)
+            grass.message('       conn_id= %s \n' % id)
             cn.execute('DELETE FROM connection WHERE conn_id="%s"' % id)
             cn.close()
         except Exception, e:
-            print("       ERROR: %s \n" % e)
-            # print('     No connection with conn_id %s'%id)
-        print('***' * 30)
+            grass.message("       ERROR: %s \n" % e)
+            # grass.message('     No connection with conn_id %s'%id)
+        grass.message('***' * 30)
 
     def set_connection_uri(self, uri):
         self.uri = uri
@@ -217,7 +263,7 @@ class ConnectionManager:
         hook = self.get_hook()
         if hook:
             if not hook.test():
-                print('Cannot establish connection')
+                grass.message('Cannot establish connection')
                 return False
 
 class HiveTableBuilder:
@@ -318,7 +364,7 @@ class JSONBuilder:
                       stderr_=PIPE,
                       overwrite=True)
 
-        print(out1.outputs["stderr"].value.strip())
+        grass.message(out1.outputs["stderr"].value.strip())
 
         self.rm_last_lines(out, 3)
         # remove first 5 lines and last 3 to enseure format for serializetion
@@ -528,11 +574,11 @@ class GrassHdfs():
 
     @staticmethod
     def printInfo( hdfs, msg=None):
-        print('***' * 30)
+        grass.message('***' * 30)
         if msg:
-            print("     %s \n" % msg)
-        print(' path :\n    %s\n' % hdfs)
-        print('***' * 30)
+            grass.message("     %s \n" % msg)
+        grass.message(' path :\n    %s\n' % hdfs)
+        grass.message('***' * 30)
 
     def get_path_grass_dataset(self):
         LOCATION_NAME = grass.gisenv()['LOCATION_NAME']
@@ -544,16 +590,16 @@ class GrassHdfs():
     def upload(self, fs, hdfs, overwrite=True, parallelism=1):
         logging.info('Trying copy: fs: %s to  hdfs: %s   ' % (fs, hdfs))
         self.hook.upload_file(fs, hdfs, overwrite, parallelism)
-        self.printInfo(hdfs, "File has been copied to:")
+        self.grass.messageInfo(hdfs, "File has been copied to:")
 
     def mkdir(self, hdfs):
         self.hook.mkdir(hdfs)
-        self.printInfo(hdfs)
+        self.grass.messageInfo(hdfs)
 
     def write(self, hdfs, data, **kwargs):
         # Write file to hdfs
         self.hook.write(hdfs, data, **kwargs)
-        self.printInfo(hdfs)
+        self.grass.messageInfo(hdfs)
 
     def download(self, fs, hdfs, overwrite=True, parallelism=1):
         logging.info('Trying download : hdfs: %s to fs: %s   ' % (hdfs, fs))
@@ -563,9 +609,9 @@ class GrassHdfs():
                                        overwrite = overwrite,
                                        parallelism = parallelism)
         if out:
-            self.printInfo(out)
+            self.grass.messageInfo(out)
         else:
-            print('Copy error!')
+            grass.message('Copy error!')
         return out
 
 

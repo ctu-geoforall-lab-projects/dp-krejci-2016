@@ -5,7 +5,6 @@
 # MODULE:       hd.hdfs.out.vector
 # AUTHOR(S):    Matej Krejci (matejkrejci@gmail.com
 #
-# PURPOSE:      Reproject the entire mapset
 # COPYRIGHT:    (C) 2016 by the GRASS Development Team
 #
 #               This program is free software under the GNU General
@@ -15,7 +14,7 @@
 #############################################################################
 
 #%module
-#% description: Module for creting map from HIVE table. This module allows to convert esri GeoJson to grass map
+#% description: Module for creting map from HIVE table. Module convert esri GeoJson to Grass map
 #% keyword: database
 #% keyword: hdfs
 #% keyword: hive
@@ -62,7 +61,6 @@ from hdfs_grass_lib import GrassMapBuilderEsriToEsri, GrassHdfs, ConnectionManag
 from hdfs_grass_util import get_tmp_folder
 
 
-# https://github.com/Esri/gis-tools-for-hadoop/wiki/Getting-the-results-of-a-Hive-query-into-ArcGIS
 import shutil
 
 def main():
@@ -83,22 +81,16 @@ def main():
                         "Use param hdfs without param table")
 
         hive = conn.get_hook()
-        #table_path = hive.find_table_location(options['table'])
-        #tmp_tbl_dir = os.path.join(tmp_dir,options['table'])
-    #else:
-        #table_name_from_hdfs_path=os.path.basename(os.path.normpath(options['hdfs']))
-        #tmp_tbl_dir = os.path.join(tmp_dir,table_name_from_hdfs_path)
+        table_path = hive.find_table_location(options['table'])
+        tmp_dir = os.path.join(tmp_dir,options['table'])
 
-
-    #if not os.path.exists(tmp_tbl_dir):
-    #    os.mkdir(tmp_tbl_dir)
 
     if not transf.download(hdfs=table_path,
                            fs=tmp_dir):
         return
 
 
-    files=os.listdir(tmp_dir)
+    files = os.listdir(tmp_dir)
     map_string=''
     for block in files:
         map='%s_%s'%(options['out'],block)
@@ -114,7 +106,7 @@ def main():
             grass.warning("Error: %s\n     Map < %s >  conversion failed"%(e,block))
 
     path,folder_name = os.path.split(tmp_dir)
-    print("For merge map: v.patch output=%s -e --overwrite input=%s"%(folder_name,map_string))
+    grass.message("For merge map: v.patch output=%s -e --overwrite input=%s"%(folder_name,map_string))
 
 
 if __name__ == "__main__":
