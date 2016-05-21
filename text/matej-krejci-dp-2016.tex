@@ -3200,7 +3200,8 @@ true
 		\end{figure} 
 		
 	
-	\subsection{Test case: Spatial Binning}\label{spatial_anal_usage}
+	        \subsection{Test case: Spatial Binning}\label{spatial_anal_usage}
+                %%% ML: pridat odkaz na sekci Spatial Analysis
 	The section Spatial Analysis shows GRASS Hadoop framework in use, especially 
 	the interaction with ESRI Spatial library for Hadoop. 
 	At the first part introduction of work aims on service management that allows 
@@ -3208,11 +3209,10 @@ true
 	and querying Hive database. In addition it includes usage of functions from ESRI
 	Spatial Framework for Hadoop.
 	
-	The main goal suppose to create time series dataset, which show partial contribution to Open
-	Street Map for each year. The motivation behind this task is to recognize which areas of
+	The main goal suppose to create time series dataset, which show partial contribution to OpenStreetMap for each year. The motivation behind this task is to recognize which areas of
 	Europe are more touched by contributions and which year open street map
 	project registered boom. Europe data extraction of Planet dataset from
-	Open Street Map repository covers area of Europe\footnote{source of dataset
+        OpenStreetMap repository covers area of Europe\footnote{source of dataset
 	\url{http://osm.personalwerk.de/full-history-extracts/latest/continents/}} 
 	and includes all history of changes  within the project. The size of compressed
 	dataset(pbf compression) of 
@@ -3289,7 +3289,7 @@ $ hd.hdfs.info  driver=webhdfs path=/data -r
 		\end{lstlisting}
 	\end{footnotesize}
 	
-	Below continue analyses focused on visualization of Europe contribution to Open Street Map. 
+	Below continue analyses focused on visualization of Europe contribution to OpenStreetMap. 
 	In attachment \ref{hdfs2grass} is shown several steps which make further binning only for Czech
 	Republic area. Usage of \textit{ST\_Contain} is shown. 
 	
@@ -3328,8 +3328,7 @@ $ hd.db.connect driver=hiveserver2 \
 	JSON.
 
 \paragraph{Table europe}
-		The 116 Gb csv file which consists all points over the history of Open Street
-	Map on the area covered by Europe is separated by comma and without header. For this csv
+		The 116 Gb csv file which consists all points over the history of OpenStreetMap on the area covered by Europe is separated by comma and without header. For this csv
 	format without extra features it is possible to use built-in function for
 	serialization which is initialized by \textit{ROW FORMAT DELIMITED FIELDS
 	TERMINATED BY ',';} expression.
@@ -3341,7 +3340,7 @@ $ hd.db.connect driver=hiveserver2 \
 	strange delimiters, such blanks.
 		
 		
-	Table \textit{euro}pe according to CSV of Open Street Map data has columns: \textit{id, lat, lon
+	Table \textit{euro}pe according to CSV of OpenStreetMap data has columns: \textit{id, lat, lon
 and time.}
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
@@ -3451,7 +3450,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 	user specified size.
 
 
-	From shown \ref{map_eu} visualisation of Open Street Map it is hard to recognize any specific
+	From shown \ref{map_eu} visualisation of OpenStreetMap it is hard to recognize any specific
 		information. For classification  and visualisation this amount of data no
 		desktop GIS tools is available. The possible approach use aggregation of data into bins, and
 		visualises map of reasonable amount of data using desktop GIS.
@@ -3459,7 +3458,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 			\centering
 			\includegraphics[width=0.8\textwidth]{./img/eu_all.png}
 			\caption[GHF workflow]{\centering Snap shot of 1.3 billions of points from
-			Open Street Map Planet dataset \newline
+			OpenStreetMap Planet dataset \newline
 			Source: \textless\url{http://spatialhadoop.cs.umn.edu/datasets/osm2/all_nodes.pyramid/}}
 			\label{map_eu}
 		\end{figure}
@@ -3533,7 +3532,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 	
 	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures \ref{fig:outmap}, \ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
-	 In addition, using the same precess patter was aggregate all points for whole history of Open Street Map project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment \ref{open_street_agg_all}. 
+	 In addition, using the same precess patter was aggregate all points for whole history of OpenStreetMap project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment \ref{open_street_agg_all}. 
 	
 	
 	
