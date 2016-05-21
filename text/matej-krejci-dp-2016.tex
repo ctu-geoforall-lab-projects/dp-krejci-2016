@@ -1235,7 +1235,7 @@ linkid;data;rx;tx
 	
 	
 	Three mentioned spatial processing frameworks (section \textit{Spatial
-		Join}\ref{sub:spatial_join}) 
+		Join} \ref{sub:spatial_join}) 
 	for Hadoop show different design for storing and accessing data. Similarly, the
 	interface for 
 	configuration, data management and query data varies.
@@ -1392,7 +1392,7 @@ linkid;data;rx;tx
 	desired product by combining separate but compatible services. Portfolio of
 	services is parted into six main categories 
 	which are overview  in
-	table\ref{tab:google_all} \cite{gc_product_services}.
+	table \ref{tab:google_all} \cite{gc_product_services}.
 	
 	The user interface offers three different ways for managing services of Google
 	Cloud. Web-based interface, command-line 
@@ -1465,7 +1465,7 @@ linkid;data;rx;tx
 				real-time data processing for batch and stream data processing                  
 				\\
 				\cmidrule(l){2-3} 
-				& Dataproc\ref{subsub:dataproc}                                              
+				& Dataproc \ref{subsub:dataproc}                                              
 				& management for Spark and Hadoop services. Quick deployment           
 				
 				\\ \cmidrule(l){2-3} 
@@ -1655,7 +1655,7 @@ usage: 0.0
 	\textit{Read role}. This approach is applied e.g. in Cloud Storage as default.
 	Second, 
 	curated roles are new and allow more advanced policy management. 
-	Currently (28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a) are in alpha or
+	Currently (28.3.2016), \textit{Curated roles} (\ref{fig:iam}, (a) are in alpha or
 	beta 
 	development version and are not suggested to use for production 
 	use. However, these Curated roles provide additional granular access to specific
@@ -2585,7 +2585,7 @@ gcloud dataproc clusters create cluster-2
 	If the cluster is deployed using bdutil \ref{runcluster}  with parameter
 	\textit{--env\_var\_files spatial.sh} this script on master server installs
 	spatial packages, dependency and Java packages for serialization JSON. If the
-	cluster runs by another way, the libraries must be compile manually. In attachment is described important configuration for packaging Java libraries\ref{att:java}
+	cluster runs by another way, the libraries must be compile manually. In attachment is described important configuration for packaging Java libraries \ref{att:java}
 
 
 
@@ -3181,12 +3181,12 @@ true
 	
 
 	\begin{enumerate}
-	\item Set up project\ref{setup_gcloud} in Google Cloud and configure storage\ref{data_mgr};
-	\item Configure networking\ref{network_cfg};
-	\item Configure and deploy Hadoop cluster with Hive\ref{hadoop_deployment};
-	\item Install all prerequisites on cluster\ref{att:java};
-	\item Install all prerequisites on client computer\ref{grass_install};
-	\item Configure hosts on local computer\ref{hosts}
+	\item Set up project \ref{setup_gcloud} in Google Cloud and configure storage \ref{data_mgr};
+	\item Configure networking \ref{network_cfg};
+	\item Configure and deploy Hadoop cluster with Hive\ ref{hadoop_deployment};
+	\item Install all prerequisites on cluster \ref{att:java};
+	\item Install all prerequisites on client computer \ref{grass_install};
+	\item Configure hosts on local computer \ref{hosts}
 	\end{enumerate}
 
 
@@ -3220,7 +3220,7 @@ true
 	The goal of this case study is to create density map of partial contributions in time
 	resolution of one year. For this kind of analyses it is suitable to use spatial
 	binning. Data binning is a data pre-processing technique used to reduce the
-	effects of minor observation errors\ref{bining}. The original data values which
+	effects of minor observation errors \ref{bining}. The original data values which
 	fall in a given small interval, a bin, are replaced by a value representative of
 	that interval or just add to. It is a form of aggregation used for
 	generalization and for creation of density maps.
@@ -3290,7 +3290,7 @@ $ hd.hdfs.info  driver=webhdfs path=/data -r
 	\end{footnotesize}
 	
 	Below continue analyses focused on visualization of Europe contribution to Open Street Map. 
-	In attachment\ref{hdfs2grass} is shown several steps which make further binning only for Czech
+	In attachment \ref{hdfs2grass} is shown several steps which make further binning only for Czech
 	Republic area. Usage of \textit{ST\_Contain} is shown. 
 	
 
@@ -3355,7 +3355,7 @@ CREATE EXTERNAL TABLE europe(id BIGINT,
 	Pure HQL command is shown above. Similarly, creation of table can by done using GHFs
 	module \textit{hd.hive.csv.table}. Additional options as serialization,
 	inserting data etc. are described in section
-	\textit{Functionality}\ref{hive:tables}. 
+	\textit{Functionality} \ref{hive:tables}. 
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
 #cretion of table for Europe dataset
@@ -3451,7 +3451,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 	user specified size.
 
 
-	From shown\ref{map_eu} visualisation of Open Street Map it is hard to recognize any specific
+	From shown \ref{map_eu} visualisation of Open Street Map it is hard to recognize any specific
 		information. For classification  and visualisation this amount of data no
 		desktop GIS tools is available. The possible approach use aggregation of data into bins, and
 		visualises map of reasonable amount of data using desktop GIS.
@@ -3531,9 +3531,9 @@ hd.hdfs.out.vector.py driver=webhdfs
 	 define name of table and hive driver\footnote{using hd.connect must be set connection to Hive} using Hql query 'describe formatted' recognize location of table in HDFS.
 	 Second way is to define HDFS path manually using parameter \textit{hdfs}
 	
-	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures\ref{fig:outmap},\ref{fig:outmap1} is shown visualization aggregated points into bins.
+	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures \ref{fig:outmap}, \ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
-	 In addition, using the same precess patter was aggregate all points for whole history of Open Street Map project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment\ref{open_street_agg_all}. 
+	 In addition, using the same precess patter was aggregate all points for whole history of Open Street Map project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment \ref{open_street_agg_all}. 
 	
 	
 	
@@ -4039,7 +4039,7 @@ select linkid,avg(rx-tx) as m from record group by linkid
 %%%: maven jsi nekde vysvetloval v textu?
 %OK
 	libraries. Especially for compilation of libraries with Apache
-Maven\footnote{Apache packaging system for Java \url{https://maven.apache.org/}}
+Maven \footnote{Apache packaging system for Java \url{https://maven.apache.org/}}
 profiles.
 	
 	Usage of ESRI Spatial Framework for Hadoop is dependent on package Geometry API
@@ -4278,7 +4278,7 @@ and geometry constructor from ESRI \textit{ST\_GeomFromGeoJSON} is able to parse
 For complex JSON structures is useful to use generator of scheme from JSON
 source.
 \begin{enumerate}
-\item install Scala\footnote{\url{http://www.scala-sbt.org/download.html}}
+\item install Scala \footnote{\url{http://www.scala-sbt.org/download.html}}
 \item Clone repository of hive schema generator
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
