@@ -220,7 +220,7 @@ right=20mm
 			and deployment of Hadoop cluster using cloud platform is provided.
 			
 			In developed GRASS Hadoop Framework is implemented several command line  modules for interaction between GRASS and Hadoop/Hive. The framework allows to control Hadoop spatial libraries using GRASS. The connection manager for different drivers is included. Thus, 
-			is provided both side data conversion, put/get data to HDFS and Hive table management. As use case of developed framework the Europe extraction of Open Street Map history dataset which included approx. 1.3 billions of points has been processed and visualized from GRASS GIS. .
+			is provided both side data conversion, put/get data to HDFS and Hive table management. As use case of developed framework the Europe extraction of Open Street Map history dataset which included approx. 1.3 billions of points has been processed and visualized from GRASS GIS.
 			
 			\klicslova{Keywords}{Hadoop, GRASS GIS, Big Data, spatial processing}
 		\end{abstractx}
@@ -2709,7 +2709,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 	
 	
     \subsubsection{Connection management} 
-    The handler of connection drivers for Hadoop and Hive is covered under
+    The handler of connection drivers for Hadoop/Hive is covered under
     \textit{hd.hdfs.db.connect}. The module provides storing of connection profiles in
     default GRASS GIS database backend which is SQLite  by default. The usage of 
     the database manager is derived from current GRASS db.* modules.
@@ -3522,11 +3522,9 @@ hd.hdfs.out.vector.py driver=webhdfs
 	
 	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures \ref{fig:outmap}, \ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
-<<<<<<< HEAD
-	 In addition, using the same process workflow has been aggregated all points for whole history of Open Street Map project restrictedoonf Europe ara.  A. Thus, approximately ons  of points has been aggregated into bins in  size to bin  resolution 0.1 shownus in attachment\ref{open_streetgg_all}. 
-=======
+
 	 In addition, using the same precess patter was aggregate all points for whole history of OpenStreetMap project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment \ref{open_street_agg_all}. 
->>>>>>> ae7244b00a12e5fd85f81774cdc086abfe8dfcbf
+
 	
 	
 	
@@ -3652,7 +3650,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 		\acro{HC}{Hilbert curve partitioning}
 		\acro{HDFS}{Hadoop Distributed File system}
 		\acro{CLI}{Comand line interface}
-		\acro{HttpFS}{HttpFS is a server that provides a REST HTTP gateway}
+		\acro{HttpFS}{is a server that provides a REST HTTP gateway}
 		\acro{IAM}{Identity and Access Management}
 		\acro{IP}{Internet Protocol address}
 		\acro{JDBC}{Java Database Connectivity}
