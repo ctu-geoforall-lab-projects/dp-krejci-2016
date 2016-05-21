@@ -64,34 +64,6 @@
 \usepackage{etoolbox}
 \preto\tabular{\shorthandoff{-}}
 
-%%% ML: tex.stackexchange.com/questions/299969/titlesec-loss-of-section-numbering-with-the-new-update-2016-03-15
-%\makeatletter
-%\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
-%\patchcmd{\ttlh@hang}{\noindent}{}{}{}
-%\makeatother
- 
-%\def\ttlh@hang#1#2#3#4#5#6#7#8{%
-%  \gdef\ttl@makeline##1{\ttl@calc\hspace{#6}##1\ttl@calc\hspace{#7}}%
-%  \setlength\leftskip{#6}%
-%  \setlength\rightskip{#7}%
-%  \interlinepenalty\@M
-%  \ttl@changecentercr
-%  \ttl@beginlongest
-%  #1{\ifhmode\ttl@hmode@error\fi
-%     \ttl@glcmds
-%     \parindent\z@
-%     \leavevmode % <------ MISSING
-%     \begingroup
-%       \ifttl@label
-%          \sbox\z@{#2\strut\ttl@calc\hspace{#3}}%
-%          \hangindent\wd\z@
-%          \box\z@ % \noindent was redundant
-%       \fi
-%       #4{#8}%
-%       \kern\z@\strut\@@par
-%     \endgroup
-%     \nobreak\ttl@midlongest#5\@@par}%
-%  \ttl@endlongest}
 
 
 %\usepackage{etoolbox}
@@ -216,11 +188,12 @@ right=20mm
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 	\pagestyle{empty}
+	\selectlanguage{english}
 	
 	\renewcommand*\listfigurename{List of figures}
 	 
 	\renewcommand*\listtablename{List of  Tables}
-	
+	%\renewcommand*\tableofcontents{Table of Contents}
 	
 	\renewcommand{\bibname}{References}
 	\renewcommand{\contentsname}{Content}
@@ -240,21 +213,39 @@ right=20mm
 	\input{listsezadanim}
 	\newpage
 	\begin{abstractpage}
-		\begin{abstractx}{czech}
-			
-			CIL..
-			
-			
-			\klicslova{Klíčová slova}{GIS, GRASS}
-		\end{abstractx}
-		
 		\begin{abstractx}{english}
 			
-			Aim of...
+			The aim of the thesis is design and developed workflow for managing and processing big spatial data within GRASS GIS. The thesis explains necessary fundamentals to understand aspects of Hadoop ecosystem. After that, the  distributed spatial processing is analyzed as well as available spatial frameworks for Hadoop. In addition, configuration
+			and deployment of Hadoop cluster using cloud platform is provided.
 			
-			\klicslova{Keywords}{GIS, GRASS}
+			In developed GRASS Hadoop Framework is implemented several command line  modules for interaction between GRASS and Hadoop/Hive. The framework allows to control Hadoop spatial libraries using GRASS. The connection manager for different drivers is included. Thus, 
+			is provided both side data conversion, put/get data to HDFS and Hive table management. As use case of developed framework the Europe extraction of Open Street Map history dataset which included approx. 1.3 billions of points has been processed and visualized from GRASS GIS. .
+			
+			\klicslova{Keywords}{Hadoop, GRASS GIS, Big Data, spatial processing}
 		\end{abstractx}
 	\end{abstractpage}
+	
+	
+	
+
+		\begin{abstractx}{czech}
+		
+
+		 		Cílem práce je návrh řešení a jeho implementace   pro zpracovaní vektorových  dat velkého objemu z prostredi GRASS GIS.
+		 		V práci jsou popsány principy Hadoop systému a jeho komponent. Dále text navazuje rešerší nastrojů, které umožňují 
+		 		prostorové analýzy s využitím Hadoop a jejich porovnání. Konec první kapitoly se zabíva seznámením s cloud řešením pro
+		 		configuraci a spuštění Hadoop clusteru.
+		 		
+		 		V rámci praktické časti byl implementován GRASS Hadoop Framework, který obsahuje moduly umožňující komunikaci mezi GRASS a Hadoop/Hive. Nástroj umožňuje ovládat knihovny psané pro system Hadoop a zajišťuje konverzi vektorových map, jejich přenos a správu  tabulek v databázi.
+		 		Pro správu účtů jednotlivých připojení je implementován modul s SQL rozhraním. Vytvořený nástroj byl otestován nad datasetm Open Street Map pro území Evropy, kde bylo zpracováno  a vizualizováno 1.3 miliardy bodů z prostredí GRASS GIS
+		
+	
+	
+
+	
+			
+			\klicslova{Klíčová slova}{Hadoop, GRASS GIS, Big Data, prostorové analýzy}
+		\end{abstractx}
 	
 	
 
@@ -379,7 +370,7 @@ right=20mm
 	
 %%% JK ,to reap the..
 %%% MK: ok
-	In addition, to utilise the benefits of Hadoop it is suitable to deploy cluster using cloud
+	In addition, to utilize the benefits of Hadoop it is suitable to deploy cluster using cloud
 	services which ensure fair computation power. Second task of the project, that meet
 	requirements of the process simplification, consists of implementation
 	of the bridge between Hadoop/Hive systems and environment of GIS. More specifically,
@@ -405,7 +396,7 @@ right=20mm
 	capacity of Hadoop and its extensions is essential to dispose cluster of computer
 	machines. Thus, the last  part of theoretical introduction is aimed on cloud
 	services and its challenges.
-	\section{Hadoop Framework}
+	\section{Hadoop system}
 	\label{sec:hadoop}
 	\subsection*{Hadoop}
 	\emph{"The Apache Hadoop software library is a framework that allows for the
@@ -1253,7 +1244,7 @@ linkid;data;rx;tx
 	The implementation of spatial operators are designed to be used as defined
 	functions (UDFs) which are seamless to integrate with existing  non-spatial
 	operations in Hive or Pig for SpatialHadoop. The spatial operators of all three
-	libraries fulfil implementation rules according to OGC standard.
+	libraries fulfill implementation rules according to OGC standard.
 	
 	
 %%%JK:kontrola velkych/malych pismen v tabulce	
@@ -2001,7 +1992,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	\textit{"\textbf{Geographic Resources Analysis Support System}, 
 		commonly referred to as GRASS GIS, is a Geographic Information System (GIS) used
 		for data management, image processing, graphics production, 
-		spatial modelling, and visualization of many types of data. It is Free (Libre)
+		spatial modeling, and visualization of many types of data. It is Free (Libre)
 		Software/Open Source released under GNU General Public License 
 		(GPL) $>=$ V2. GRASS GIS is an official project of the Open Source Geospatial
 		Foundation."\footnote{Cited from:
@@ -2028,7 +2019,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	Framework for Hadoop brings the support of spatial analysis for Hadoop and  Hive.
 	
 	The key feature for this project is the fact that GDAL supports reading and writing GeoJSON data
-	format, which is suitable for storing and analysing data using MapReduce framework. On the other hand, there is no support for reading and writing to the unenclosed GeoJSON, and some edits of file format must be additionally done. 
+	format, which is suitable for storing and analyzing data using MapReduce framework. On the other hand, there is no support for reading and writing to the unenclosed GeoJSON, and some edits of file format must be additionally done. 
 	ESRI Spatial Frameworks for Hadoop allows exporting only to ESRI GeoJSON. The description of
 	GeoJSON and its serialization is mandatory due to the design of MapReduce 
 	for parallel computing. GeoJSON and its features are described in the second
@@ -2136,7 +2127,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		\end{scriptsize}
 %%% ML: Fix the caption
 		\caption{Default configuration of firewall for accessing machines from external networks.}
-		\label{my-label}
+		\label{firewall}
 	\end{table}
 	By default, incoming traffic from outside of your network is blocked. To allow
 	incoming traffic a firewall rule must be set. Firewall rules regulate only incoming
@@ -2214,7 +2205,7 @@ ff02::2         ip6-allrouters
 	\begin{itemize}\label{conf_files}
 		\item \textbf{hadoop-env.sh} The file specifies environment variables that
 		affects JDK used by daemons. For example \textbf{\$JAVA\_HOME}, \textit{HADOOP\_HOME}.
-		\item \textbf{core-site.sh}   This file informs Hadoop deamon where NameNode
+		\item \textbf{core-site.sh}   This file informs Hadoop daemon where NameNode
 		runs in the cluster. Furthermore, it  
 		informs about port number used for Hadoop instance, memory limit for data
 		size,  memory allocated for HDFS, and size of read and write buffers.
@@ -3533,12 +3524,12 @@ hd.hdfs.out.vector.py driver=webhdfs
 	
 	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures\ref{fig:outmap},\ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
-	 In addition, using the same precess patter was aggregate all points for whole history of Open Street Map project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment\ref{open_street_agg_all}. 
+	 In addition, using the same process workflow has been aggregated all points for whole history of Open Street Map project restrictedoonf Europe ara.  A. Thus, approximately ons  of points has been aggregated into bins in  size to bin  resolution 0.1 shownus in attachment\ref{open_streetgg_all}. 
 	
 	
 	
-	\paragraph{Summary of usage GHF}
-	GRASS Hadoop framework
+	\paragraph{Summary of GHF usage}
+
 		
 		
 		
@@ -3620,11 +3611,11 @@ hd.hdfs.out.vector.py driver=webhdfs
 	
 	The design of GHF respecting design layers based on interfaces hierarchy. The fact that core API is implemented independently on GRASS  and middle interface is dependent only partly is allowed to bring developed code into another GIS project. In field of open source free GIS open room for developing similar framework for Quantum GIS(QGis). Due to design, this task will consists only implementation of GUI interface(QtGUI) and minor refracting of part of code which is connected to GRASS map conversion tools.
 
-	 	\pagenumbering{gobble}
+
 	
 	
 	\chapter*{}\stepcounter{chapter}\addcontentsline{toc}{chapter}{}
-	
+		 %	\pagenumbering{gobble}
 		\listoffigures
 		 
 		\listoftables
