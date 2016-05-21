@@ -64,7 +64,34 @@
 \usepackage{etoolbox}
 \preto\tabular{\shorthandoff{-}}
 
-
+%%% ML: tex.stackexchange.com/questions/299969/titlesec-loss-of-section-numbering-with-the-new-update-2016-03-15
+%\makeatletter
+%\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+%\patchcmd{\ttlh@hang}{\noindent}{}{}{}
+%\makeatother
+ 
+%\def\ttlh@hang#1#2#3#4#5#6#7#8{%
+%  \gdef\ttl@makeline##1{\ttl@calc\hspace{#6}##1\ttl@calc\hspace{#7}}%
+%  \setlength\leftskip{#6}%
+%  \setlength\rightskip{#7}%
+%  \interlinepenalty\@M
+%  \ttl@changecentercr
+%  \ttl@beginlongest
+%  #1{\ifhmode\ttl@hmode@error\fi
+%     \ttl@glcmds
+%     \parindent\z@
+%     \leavevmode % <------ MISSING
+%     \begingroup
+%       \ifttl@label
+%          \sbox\z@{#2\strut\ttl@calc\hspace{#3}}%
+%          \hangindent\wd\z@
+%          \box\z@ % \noindent was redundant
+%       \fi
+%       #4{#8}%
+%       \kern\z@\strut\@@par
+%     \endgroup
+%     \nobreak\ttl@midlongest#5\@@par}%
+%  \ttl@endlongest}
 
 
 %\usepackage{etoolbox}
