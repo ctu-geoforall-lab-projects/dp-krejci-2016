@@ -5,8 +5,9 @@
 \usepackage{xcolor}
 \usepackage[english,czech]{babel}
 \usepackage[pdftex, final]{graphicx}
-\usepackage{alltt}
+	\usepackage{alltt}
 \usepackage{paralist}
+
 \usepackage{mdwlist}
 \usepackage{subfig}
 
@@ -1226,7 +1227,7 @@ linkid;data;rx;tx
 	
 	
 	Three mentioned spatial processing frameworks (section \textit{Spatial
-		Join}\ref{sub:spatial_join}) 
+		Join} \ref{sub:spatial_join}) 
 	for Hadoop show different design for storing and accessing data. Similarly, the
 	interface for 
 	configuration, data management and query data varies.
@@ -1383,7 +1384,7 @@ linkid;data;rx;tx
 	desired product by combining separate but compatible services. Portfolio of
 	services is parted into six main categories 
 	which are overview  in
-	table\ref{tab:google_all} \cite{gc_product_services}.
+	table \ref{tab:google_all} \cite{gc_product_services}.
 	
 	The user interface offers three different ways for managing services of Google
 	Cloud. Web-based interface, command-line 
@@ -1456,7 +1457,7 @@ linkid;data;rx;tx
 				real-time data processing for batch and stream data processing                  
 				\\
 				\cmidrule(l){2-3} 
-				& Dataproc\ref{subsub:dataproc}                                              
+				& Dataproc \ref{subsub:dataproc}                                              
 				& management for Spark and Hadoop services. Quick deployment           
 				
 				\\ \cmidrule(l){2-3} 
@@ -1646,7 +1647,7 @@ usage: 0.0
 	\textit{Read role}. This approach is applied e.g. in Cloud Storage as default.
 	Second, 
 	curated roles are new and allow more advanced policy management. 
-	Currently (28.3.2016), \textit{Curated roles}(\ref{fig:iam}, (a) are in alpha or
+	Currently (28.3.2016), \textit{Curated roles} (\ref{fig:iam}, (a) are in alpha or
 	beta 
 	development version and are not suggested to use for production 
 	use. However, these Curated roles provide additional granular access to specific
@@ -1702,7 +1703,7 @@ usage: 0.0
 	handle sets and subsets of abstract classes, such as Organization, Project and
 	Resources. 
 	
-%%% ML: zdroj ?
+
 	\begin{figure}[!htbp]
 		\centering
 		%\subfloat[Roles]{ \includegraphics[width=0.4\textwidth]{./img/iamroles.png}
@@ -2003,11 +2004,10 @@ n1-highcpu-16  asia-east1-c   16   14.40
 		\includegraphics[width=0.2\textwidth]{./img/grasslogo.png}
 		\caption[Logo GRASS]{\centering Logo of GRASS GIS.}
 	\end{figure}   
-%%% ML: number set of ?
-	GRASS GIS vector map is a data layer which consists of feature sets in
+
+	GRASS GIS vector map is a data layer which consists of number sets in
 	geographic space. These objects are represented by points, lines, areas, and volumes. Usually,
-%%% ML: set of attribute and its values (zni divne) 
-	each feature in the map is  connected with the set of attributes and its values.
+	each feature in the map is  connected with the set of attributes and attached  values.
 	
 	For manipulation of vector data in GRASS GIS database several drivers for interaction with different database backends are available. The main module for import and export of vectors datasets is
 	v.in.ogr and v.out.ogr which is based on widely used GDAL library. In addition, new module for v.import is available. Its advantage is projection conversion on the fly during importing.
@@ -2126,7 +2126,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 			\end{tabular}
 		\end{scriptsize}
 %%% ML: Fix the caption
-		\caption{Default configuration of firewall for accessing machines from external networks.}
+		\caption{Default values of firewall configuration for accessing machines from external networks.}
 		\label{firewall}
 	\end{table}
 	By default, incoming traffic from outside of your network is blocked. To allow
@@ -2134,7 +2134,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	traffic to an instance. When a connection is established with an instance,
 	traffic is permitted in both directions over that connection. On web of Google
 	Cloud Platform there is a manager for defining of firewall rules. By default several
-%%% ML: fix ref
+
 	profiles are predefined, how was already mentioned in table \ref{firewall}.
 	%https://dzone.com/articles/hadoop-rest-api-webhdfs
 	
@@ -2234,7 +2234,6 @@ ff02::2         ip6-allrouters
 		single-node and behave
 		like multi-node. It is provided by running Hadoop daemons in separate Java
 		processes. To configure pseudo-distributed Hadoop must be modify
-%%% ML: broken citation
 		\textit{core-site.xml} and \textit{hdfs-site.xml} file \cite{hadoop_definitive}.  
 		
 		
@@ -2576,7 +2575,7 @@ gcloud dataproc clusters create cluster-2
 	If the cluster is deployed using bdutil \ref{runcluster}  with parameter
 	\textit{--env\_var\_files spatial.sh} this script on master server installs
 	spatial packages, dependency and Java packages for serialization JSON. If the
-	cluster runs by another way, the libraries must be compile manually. In attachment is described important configuration for packaging Java libraries\ref{att:java}
+	cluster runs by another way, the libraries must be compile manually. In attachment is described important configuration for packaging Java libraries \ref{att:java}
 
 
 
@@ -2868,7 +2867,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
     	\includegraphics[width=1\textwidth]{./img/ghf_overview.pdf}
     	\caption[Components interaction]{\centering Components interaction}
     \end{figure} 
-    \subsubsection{GRASS Hive interface}
+    \subsubsection{GRASS Hive interface}\label{hive:tables}
     Two spatial frameworks, from ESRI and HadoopGIS use Hive as a top layer for
     usage MapReduce-based library in more expressive way. The GRASS Hadoop Framework
     consist several modules which start with prefix hd.hive.* analogically to mentioned
@@ -3160,8 +3159,8 @@ true
 	\section{Usage: Process Workflow}\label{sec:usage_spatial}
 	This section shows  developed GRASS Hadoop Framework in use. Two main groups of particular tasks covers the full spatial processing workflow.
 	\begin{enumerate}
-	\item Setup working environment: cluster and client computer\ref{prereq}
-	\item Spatial analysis: processing spatial data using Hadoop within GRASS GIS\ref{spatial_anal_usage}
+	\item Setup working environment: cluster and client computer \ref{prereq}
+	\item Spatial analysis: processing spatial data using Hadoop within GRASS GIS \ref{spatial_anal_usage}
 	\end{enumerate}
 	The second group is partly focused on description of
 	Hive usage, such as serialization/deserialization of GeoJSON
@@ -3172,12 +3171,12 @@ true
 	
 
 	\begin{enumerate}
-	\item Set up project\ref{setup_gcloud} in Google Cloud and configure storage\ref{data_mgr};
-	\item Configure networking\ref{network_cfg};
-	\item Configure and deploy Hadoop cluster with Hive\ref{hadoop_deployment};
-	\item Install all prerequisites on cluster\ref{att:java};
-	\item Install all prerequisites on client computer\ref{grass_install};
-	\item Configure hosts on local computer\ref{hosts}
+	\item Set up project \ref{setup_gcloud} in Google Cloud and configure storage \ref{data_mgr};
+	\item Configure networking \ref{network_cfg};
+	\item Configure and deploy Hadoop cluster with Hive\ \ref{hadoop_deployment};
+	\item Install all prerequisites on cluster \ref{att:java};
+	\item Install all prerequisites on client computer \ref{grass_install};
+	\item Configure hosts on local computer \ref{hosts}
 	\end{enumerate}
 
 
@@ -3191,27 +3190,28 @@ true
 		\end{figure} 
 		
 	
-	\subsection{Test case: Spatial Binning}\label{spatial_anal_usage}
-	The section Spatial Analysis shows GRASS Hadoop framework in use, especially 
+	        \subsection{Test case: Spatial Binning}\label{spatial_anal_usage}
+
+	The section \textit{Test case: Spatial Binning} will show GRASS Hadoop framework in use, especially 
 	the interaction with ESRI Spatial library for Hadoop. 
 	At the first part introduction of work aims on service management that allows 
 	the second of part of workflow to start and proceed. This part includes preparation of data
 	and querying Hive database. In addition it includes usage of functions from ESRI
 	Spatial Framework for Hadoop.
 	
-	The main goal suppose to create time series dataset, which show partial contribution to Open
-	Street Map for each year. The motivation behind this task is to recognize which areas of
-	Europe are more touched by contributions and which year open street map
+	The main goal suppose to create time series dataset, which show partial contribution to OpenStreetMap for each year. The motivation behind this task is to recognize which areas of
+	Europe are more touched by contributions and which year OpenStreetMap
 	project registered boom. Europe data extraction of Planet dataset from
-	Open Street Map repository covers area of Europe\footnote{source of dataset
+        OpenStreetMap repository covers area of Europe\footnote{source of dataset
 	\url{http://osm.personalwerk.de/full-history-extracts/latest/continents/}} 
 	and includes all history of changes  within the project. The size of compressed
-	dataset(pbf compression) of 
+	dataset (pbf compression) of 
 	Europe is 23 Gb and consists approximately 1,3 billions of points.
 	The goal of this case study is to create density map of partial contributions in time
 	resolution of one year. For this kind of analyses it is suitable to use spatial
 	binning. Data binning is a data pre-processing technique used to reduce the
-	effects of minor observation errors\ref{bining}. The original data values which
+        %%% ML: chyba reference
+	effects of minor observation errors \cite{bining}. The original data values which
 	fall in a given small interval, a bin, are replaced by a value representative of
 	that interval or just add to. It is a form of aggregation used for
 	generalization and for creation of density maps.
@@ -3221,7 +3221,7 @@ true
 \paragraph{Data to HDFS}
 	 The tool Osmconvert\footnote{Osmcomverter web
 	page\url{http://wiki.openstreetmap.org/wiki/Osmconvert}} allows to transform
-	binary file to csv,  where each 	\textit{@} after \textit{--csv} parameter
+	binary file to CSV,  where each 	\textit{@} after \textit{--csv} parameter
 	defines column of data.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
@@ -3230,7 +3230,7 @@ $ osmconvert italy.osh.pbf  -o=europe.csv --csv-separator=, \
 		\end{lstlisting}
 	\end{footnotesize}
 	 After conversion, the size of file is 116Gb. Without writing special Hive
-	UDF(User Defined Function) the timestamps of exported file must edited to proper
+	UDF (User Defined Function) the timestamps of exported file must edited to proper
 	\textit{datetime} format. Using \textit{sed} command line tool it is easy even
 	for big data.
 	\begin{footnotesize}
@@ -3238,7 +3238,7 @@ $ osmconvert italy.osh.pbf  -o=europe.csv --csv-separator=, \
 $ sed "s/T/ /g"
 		\end{lstlisting}
 	\end{footnotesize}
-	 	Available are two ways how to put file to distributed filesystem . If GS
+	 	Available are two ways how to put file to distributed filesystem. If GS
 	filesystem is used and cluster is deployed using bdutil, than the best way to
 	load data is to bucket which cluster is used. 
 	In more common way, using Hadoop and
@@ -3261,7 +3261,7 @@ $ gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M cp /
 \end{enumerate}
 	This ensures that file is distributed over cluster to blocks. In addition
 	according  configured number of replication, data is replicated over DataNodes.
-	By default replication is set to 2.
+	By default replication is set to~2.
 	Above is shown approach where data are downloaded directly to the server.
 	However, in some cases user cannot control the cluster directly, only over
 	WebHDFS access. For this case it is suitable to use module \textit{hd.hdfs.in.fs}
@@ -3280,8 +3280,8 @@ $ hd.hdfs.info  driver=webhdfs path=/data -r
 		\end{lstlisting}
 	\end{footnotesize}
 	
-	Below continue analyses focused on visualization of Europe contribution to Open Street Map. 
-	In attachment\ref{hdfs2grass} is shown several steps which make further binning only for Czech
+	Below continue analyses focused on visualization of Europe contribution to OpenStreetMap. 
+	In attachment \ref{hdfs2grass} is shown several steps which make further binning only for Czech
 	Republic area. Usage of \textit{ST\_Contain} is shown. 
 	
 
@@ -3311,28 +3311,26 @@ $ hd.db.connect driver=hiveserver2 \
 	passed. If the test fails, it returns connection error message.
 	
 	
-		Module \textit{df.hive.json.table} allows to load exported GeoJSON data to
+		Module \textit{hd.hive.json.table} allows to load exported GeoJSON data to
 	table. ESRI implements Java libraries for serialization ESRI GeoJSON which is
 	supported by GDAL only for reading. Thus for serialization of GeoJSON another library must be
-	used. There are several libraries available. The most widely used is
-	from onix. In attachment \ref{serde} several notes is added about serialization
+	used. There are several libraries available. In attachment \ref{serde} several notes is added about serialization
 	JSON.
 
 \paragraph{Table europe}
-		The 116 Gb csv file which consists all points over the history of Open Street
-	Map on the area covered by Europe is separated by comma and without header. For this csv
+		The 116 Gb CSV file which consists all points over the history of OpenStreetMap on the area covered by Europe is separated by comma and without header. For this CSV
 	format without extra features it is possible to use built-in function for
 	serialization which is initialized by \textit{ROW FORMAT DELIMITED FIELDS
 	TERMINATED BY ',';} expression.
 		
 	Some benchmarks discussed on web site of
-	\textit{HortonWorks}\footnote{\url{http://tinyurl.com/hvvr5nt}} point that the fastest serialization of csv is reached using native approach. Benchmark shows
+	\textit{HortonWorks}\footnote{\url{http://tinyurl.com/hvvr5nt}} point that the fastest serialization of CSV is reached using native approach. Benchmark shows
 	that library \textit{org.apache.hadoop.hive.serde2.OpenCSVSerde} is 3x slower
-	than native csv reader. On the other hand, OpenCSVSerde allows to pares CSV with
+	than native CSV reader. On the other hand, OpenCSVSerde allows to pares CSV with
 	strange delimiters, such blanks.
 		
 		
-	Table \textit{euro}pe according to CSV of Open Street Map data has columns: \textit{id, lat, lon
+	Table \textit{euro}pe according to CSV of OpenStreetMap data has columns: \textit{id, lat, lon
 and time.}
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
@@ -3346,7 +3344,7 @@ CREATE EXTERNAL TABLE europe(id BIGINT,
 	Pure HQL command is shown above. Similarly, creation of table can by done using GHFs
 	module \textit{hd.hive.csv.table}. Additional options as serialization,
 	inserting data etc. are described in section
-	\textit{Functionality}\ref{hive:tables}. 
+	\textit{Functionality} \ref{hive:tables}. 
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
 #cretion of table for Europe dataset
@@ -3359,12 +3357,12 @@ TIMESTAMP" \
 	This command of GHFs module analogically to HQL example creates external table
 	\textit{europe}. In addition flag \textit{-d} firstly drops table if exists.
 	Furthermore, the module allows to load data directly to table. In this case the
-	command parameter is \textit{csvpath} e.g.
+	command parameter is \textit{csvpath} e.g. \newline
 	\textit{csvpath=/data/europe\_latest\_fix.csv}.
 	
     Module \textit{hd.hive.load} provides another option to load data to the table.
 	Availability of this module ensures more space within building of the workflow
-	especially using scripting or GUI modeller of
+	especially using scripting or graphical modeler of
 	GRASS\footnote{\url{https://grass.osgeo.org/grass70/manuals/wxGUI.gmodeler.html}}.
 	
 	The loading data into prepared table within command line tool of Hive is by means:
@@ -3442,7 +3440,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 	user specified size.
 
 
-	From shown\ref{map_eu} visualisation of Open Street Map it is hard to recognize any specific
+	From shown \ref{map_eu} visualisation of OpenStreetMap it is hard to recognize any specific
 		information. For classification  and visualisation this amount of data no
 		desktop GIS tools is available. The possible approach use aggregation of data into bins, and
 		visualises map of reasonable amount of data using desktop GIS.
@@ -3450,7 +3448,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 			\centering
 			\includegraphics[width=0.8\textwidth]{./img/eu_all.png}
 			\caption[GHF workflow]{\centering Snap shot of 1.3 billions of points from
-			Open Street Map Planet dataset \newline
+			OpenStreetMap Planet dataset \newline
 			Source: \textless\url{http://spatialhadoop.cs.umn.edu/datasets/osm2/all_nodes.pyramid/}}
 			\label{map_eu}
 		\end{figure}
@@ -3482,10 +3480,10 @@ hive.json.table driver=hiveserver2
 	\end{lstlisting}
 \end{footnotesize}
 	As has been created table for results, similarly have been created tables for each year between 
-	the beginning of project till 2014, so 2006,2007.. 2014. 
+	the beginning of project till 2014, so 2006, 2007, ..., 2014. 
 	
 	
-	The next and last stem is execution of spatial query for binning. The command firstly create bin(ST\_Bin) for each point. Bin is not special datatype but is represented as polygon simple feature which is in ESRI word called ring or \textit{esriGeometryRing}. Than, function \textit{ST\_BinEnvelope} create uniform  cells-based polygon of defined size. Actually, the function returning bin envelope for given bin ID or point. The \textit{GROUP BY} statements provide aggregation.
+	The next and last stem is execution of spatial query for binning. The command firstly create bin (ST\_Bin) for each point. Bin is not special datatype but is represented as polygon simple feature which is in ESRI word called ring or \textit{esriGeometryRing}. Than, function \textit{ST\_BinEnvelope} create uniform  cells-based polygon of defined size. Actually, the function returning bin envelope for given bin ID or point. The \textit{GROUP BY} statements provide aggregation.
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
 #Spatial binning for given time interval
@@ -3500,7 +3498,7 @@ GROUP BY bin_id;
 	Firstly, are created bins which are within the time interval and than are aggregate.
 	The size of bin was defined as 0.2 degrees which is approximately 22km.
 	
-	The execution of query can be made from \textit{hiveserver2} command line or using \textit{hd.hive.execute}. 
+	The execution of query can be made from \textit{hiveserver2} command line or using \newline \textit{hd.hive.execute}. 
 	
 	\paragraph{Transfer data to GRASS}
 	If Map and Reduce processing finish. Data are stored in table \textit{europe\_agg2014}, 
@@ -3522,9 +3520,13 @@ hd.hdfs.out.vector.py driver=webhdfs
 	 define name of table and hive driver\footnote{using hd.connect must be set connection to Hive} using Hql query 'describe formatted' recognize location of table in HDFS.
 	 Second way is to define HDFS path manually using parameter \textit{hdfs}
 	
-	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures\ref{fig:outmap},\ref{fig:outmap1} is shown visualization aggregated points into bins.
+	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures \ref{fig:outmap}, \ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
+<<<<<<< HEAD
 	 In addition, using the same process workflow has been aggregated all points for whole history of Open Street Map project restrictedoonf Europe ara.  A. Thus, approximately ons  of points has been aggregated into bins in  size to bin  resolution 0.1 shownus in attachment\ref{open_streetgg_all}. 
+=======
+	 In addition, using the same precess patter was aggregate all points for whole history of OpenStreetMap project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment \ref{open_street_agg_all}. 
+>>>>>>> ae7244b00a12e5fd85f81774cdc086abfe8dfcbf
 	
 	
 	
@@ -4030,7 +4032,7 @@ select linkid,avg(rx-tx) as m from record group by linkid
 %%%: maven jsi nekde vysvetloval v textu?
 %OK
 	libraries. Especially for compilation of libraries with Apache
-Maven\footnote{Apache packaging system for Java \url{https://maven.apache.org/}}
+Maven \footnote{Apache packaging system for Java \url{https://maven.apache.org/}}
 profiles.
 	
 	Usage of ESRI Spatial Framework for Hadoop is dependent on package Geometry API
@@ -4269,7 +4271,7 @@ and geometry constructor from ESRI \textit{ST\_GeomFromGeoJSON} is able to parse
 For complex JSON structures is useful to use generator of scheme from JSON
 source.
 \begin{enumerate}
-\item install Scala\footnote{\url{http://www.scala-sbt.org/download.html}}
+\item install Scala \footnote{\url{http://www.scala-sbt.org/download.html}}
 \item Clone repository of hive schema generator
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
