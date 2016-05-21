@@ -2601,7 +2601,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 	
 	\begin{itemize}
 		\item exchange data between ArcGIS Geodatabase and a Hadoop system, and allows
-		ArcGIS to run Hadoop workflows jobs,
+		ArcGIS to run Hadoop workflow jobs,
 		\item copy data files from ArcGIS to Hadoop, and copy files from Hadoop to
 		ArcGIS, and 
 		\item run an Oozie workflow in Hadoop, and to check the status of a submitted
@@ -2818,7 +2818,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 		\textit{v.out.ogr} it means to remove first 5 lines and last 3.
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
-//GeoJSON format. Not possible to serialise
+//GeoJSON format. Not possible to serialize
 {
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def...
@@ -2829,7 +2829,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 ]
 }
 
-// possible to serialise
+// possible to serialize
 { "type": "Feature", "properties": { "cat": 546 }, "geometry":...
 { "type": "Feature", "properties": { "cat": 539 }, "geometry":...
 			\end{lstlisting}
@@ -2987,7 +2987,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 	data to/from HDFS and interacts with HDFS using essential filesystem commands.
 	The part focused on Hive interaction allows to create specific table for
 	loading CSV and JSON files, fetch metadata from meta store of Hive and execute
-	non-optimised queries or fetch result of select query. In the core library there is
+	non-optimized queries or fetch result of select query. In the core library there is
 	used part of the code from \textit{Airflow} project, which is currently in
 	incubator of Apache \cite{airflow_diff}. 
 	The core library consists mainly from wrappers on
@@ -3146,7 +3146,7 @@ true
 	\item Spatial analysis: processing spatial data using Hadoop within GRASS GIS\ref{spatial_anal_usage}
 	\end{enumerate}
 	The second group is partly focused on description of
-	Hive usage, such as serialization/deserialisation of GeoJSON
+	Hive usage, such as serialization/deserialization of GeoJSON
 	and its limitation with different libraries.
 	
 	\subsection{Prerequisites}\label{prereq}
@@ -3196,7 +3196,7 @@ true
 	effects of minor observation errors\ref{bining}. The original data values which
 	fall in a given small interval, a bin, are replaced by a value representative of
 	that interval or just add to. It is a form of aggregation used for
-	generalisation and for creation of density maps.
+	generalization and for creation of density maps.
 	
 	
 \subsubsection{Preparation of data}
@@ -3262,9 +3262,9 @@ $ hd.hdfs.info  driver=webhdfs path=/data -r
 		\end{lstlisting}
 	\end{footnotesize}
 	
-	Below continue analyses focused on visualisation of Europe contribution to Open Street Map. 
-	In attachment\ref{cr_clip} is shown several steps which make further binning only for Czech
-	Republic area. After several step in 
+	Below continue analyses focused on visualization of Europe contribution to Open Street Map. 
+	In attachment\ref{hdfs2grass} is shown several steps which make further binning only for Czech
+	Republic area. Usage of \textit{ST\_Contain} is shown. 
 	
 
 \subsubsection{Loading data to Hive}
@@ -3294,21 +3294,21 @@ $ hd.db.connect driver=hiveserver2 \
 	
 	
 		Module \textit{df.hive.json.table} allows to load exported GeoJSON data to
-	table. ESRI implements Java libraries for serialisation ESRI GeoJSON which is
-	supported by GDAL only for reading. Thus for serialisation of GeoJSON another library must be
+	table. ESRI implements Java libraries for serialization ESRI GeoJSON which is
+	supported by GDAL only for reading. Thus for serialization of GeoJSON another library must be
 	used. There are several libraries available. The most widely used is
-	from onix. In attachment \ref{serde} several notes is added about serialisation
+	from onix. In attachment \ref{serde} several notes is added about serialization
 	JSON.
 
 \paragraph{Table europe}
 		The 116 Gb csv file which consists all points over the history of Open Street
 	Map on the area covered by Europe is separated by comma and without header. For this csv
 	format without extra features it is possible to use built-in function for
-	serialisation which is initialised by \textit{ROW FORMAT DELIMITED FIELDS
+	serialization which is initialized by \textit{ROW FORMAT DELIMITED FIELDS
 	TERMINATED BY ',';} expression.
 		
 	Some benchmarks discussed on web site of
-	\textit{HortonWorks}\footnote{\url{http://tinyurl.com/hvvr5nt}} point that the fastest serialisation of csv is reached using native approach. Benchmark shows
+	\textit{HortonWorks}\footnote{\url{http://tinyurl.com/hvvr5nt}} point that the fastest serialization of csv is reached using native approach. Benchmark shows
 	that library \textit{org.apache.hadoop.hive.serde2.OpenCSVSerde} is 3x slower
 	than native csv reader. On the other hand, OpenCSVSerde allows to pares CSV with
 	strange delimiters, such blanks.
@@ -3326,7 +3326,7 @@ CREATE EXTERNAL TABLE europe(id BIGINT,
 		\end{lstlisting}
 	\end{footnotesize}
 	Pure HQL command is shown above. Similarly, creation of table can by done using GHFs
-	module \textit{hd.hive.csv.table}. Additional options as serialisation,
+	module \textit{hd.hive.csv.table}. Additional options as serialization,
 	inserting data etc. are described in section
 	\textit{Functionality}\ref{hive:tables}. 
 \begin{footnotesize}
@@ -3437,7 +3437,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 			\label{map_eu}
 		\end{figure}
 	
-Let's create table for output of spatial binning. Notice, that for serialisation of data is used library of ESRI framework. 
+Let's create table for output of spatial binning. Notice, that for serialization of data is used library of ESRI framework. 
 	The last line consists from class for replacing key by null before feeding the writer of output format.
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
@@ -3504,9 +3504,9 @@ hd.hdfs.out.vector.py driver=webhdfs
 	 define name of table and hive driver\footnote{using hd.connect must be set connection to Hive} using Hql query 'describe formatted' recognize location of table in HDFS.
 	 Second way is to define HDFS path manually using parameter \textit{hdfs}
 	
-	Now, the spatial analyses using GHF and ESRI spatial framework for Hadoop is done and result can be processed within GRASS GIS natively. In figure is shown visualisation of maps.
+	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures\ref{fig:outmap},\ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
-	 In addition, using the same precess patter was aggregate all points for whole history of Open Street Map project on the area of Europe. Thus approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment\ref{open_street_agg_all}. 
+	 In addition, using the same precess patter was aggregate all points for whole history of Open Street Map project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment\ref{open_street_agg_all}. 
 	
 	
 	
@@ -3525,6 +3525,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 			\label{figur}\caption{Aggregation of OSM points for particulars 1 year interval. 
 			The resolution of spatial binning is 0.2 degree (approx 20km). The source OSM map consists of 1.3 billions of points.
 			}
+			\label{fig:outmap}
 		\end{figure}
 	
 	\begin{figure}[htp]
@@ -3540,6 +3541,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 		\label{figur}\caption{Aggregation of OSM points for particulars 1 year interval. 
 		The resolution of spatial binning is 0.2 degree (approx 20km). The source OSM map consists of 1.3 billions of points.
 		}
+		\label{fig:outmap1}
 	\end{figure}
 	
 
@@ -3549,7 +3551,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 	
 	The first part of work introduced essentials and features of Hadoop design and its
 	components. The following discussion aims on problems of spatial libraries coupled with Hadoop. 
-	The second chapter expands the theoretical principles by the application in practise and describes 
+	The second chapter expands the theoretical principles by the application in practice and describes 
 	functionality, implementation and usage of developed GRASS Hadoop framework in detail.
 	First chapter briefly introduced Hadoop ecosystem and its main components: distributed filesystem, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the
 	functionality and implementation strategy of spatial libraries for Hadoop is
@@ -3585,7 +3587,11 @@ hd.hdfs.out.vector.py driver=webhdfs
 	 has been processed on Hadoop using GRASS native interface. The developed framework
 	 met expectations to be user friendly and effective tool.
 	
+	\subsection*{Further work}
+	Package GRASS Hadoop Framework to compare with ESRI Hadoop GP Toolbox
+	provide in many ways same functionality, even more, like Hive support or manager for connections. On the other hand, ESRI supports executing Apache Oozie workflow for Hadoop even  it is with several limitation. The further enhancement of GHF is supposed to be implementation of Oozie workflow support.
 	
+	The design of GHF respecting design layers based on interfaces hierarchy. The fact that core API is implemented independently on GRASS  and middle interface is dependent only partly is allowed to bring developed code into another GIS project. In field of open source free GIS open room for developing similar framework for Quantum GIS(QGis). Due to design, this task will consists only implementation of GUI interface(QtGUI) and minor refracting of part of code which is connected to GRASS map conversion tools.
 
 	 	\pagenumbering{gobble}
 	
@@ -4077,14 +4083,12 @@ repository.
 system.
 	%%% ML: rozdeleni na windows a linux bych nedelal, na obou systemech se addons
 %instaluji z pohledu uzivatele stejne, co je zatim neni pro praci podstatne
-		On server \textit{wingrass.fsv.cvut.cz} are each night compiled packages for
-		installation on Windows system. For Unix system the installer  fetching
-modules directly from repository. 
 	%%% ML: tady mas na mysli, ze se nainstaluji vsechny moduly jako jeden balicek
 %(jako toolbox)???
+    %%% MK: OK
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
-	grass$ g.extension hd.hdfs.client
+	grass$ g.extension hd.client
 	...
 	Fetching <hdfs.client> from GRASS GIS Addons repository (be patient)...
 	Compiling...
@@ -4094,23 +4098,21 @@ modules directly from repository.
 			\end{lstlisting}
 		\end{footnotesize}
 	%%% ML: tato veta mi nedava moc smysl, preformulovat
-		Above os installation command and standard out of GRASS console with
-successful
-		installation of package. 
+		Above is shown GRASS console with successful installation of package. 
 
 
 \newpage
 \section{Attachment: Serialization ESRI GeoJSON}\label{serde}
 
 		To hold integrity with GHF modules, as library for storing data and
-	serialisation must be use
-	\textit{com.ESRI.json.hadoop.Unenclosed\\JsonInputFormat} or
-	\textit{com.ESRI.json.hadoop.EnclosedJsonInputFormat}. This serialise store data
+	serialization must be use
+	\textit{com.esri.json.hadoop.Unenclosed\\JsonInputFormat} or
+	\textit{com.esri.json.hadoop.EnclosedJsonInputFormat}. This serialize store data
 	in format ESRI GeoJSON. The differences between enclosed and unenclosed JSON is that 
 	Enclosed format includes header.\cite{ESRI_serde}
 	\begin{itemize}
 	\item Enclosed JSON include header of structure. This format not suits to
-	serialisation.
+	serialization.
 		\begin{footnotesize}
 			\begin{lstlisting}[style=python]
 {
@@ -4183,7 +4185,7 @@ successful
 		
 	\section{Attachment: Serialization JSON}\label{serde}
 	
-In this section are described some findings around JSON and serialisation. In
+In this section are described some findings around JSON and serialization. In
 last paragraph is introduced generator of Hive schema from JSON source file.
 
 SerDe from version Hive 1.2 is included in hcatalog core. Below is example of
@@ -4291,8 +4293,8 @@ LOAD DATA LOCAL INPATH 'test.json' INTO TABLE data;
 \end{enumerate}
 
 \newpage
-\section{Attachment: Transformation map from GRASS to HDFS}\label{pythonscr}
-Although, the goal of the main analyses is to visualise heat map Europe, someone can be
+\section{Attachment: Transformation map from GRASS to HDFS}\label{hdfs2grass}
+Although, the goal of the main analyses is to visualize heat map Europe, someone can be
 interested only to data within Czech Republic boundaries. In GIS, clip function
 makes this task trivial. Assume that we have in GRASS database polygon of Czech
 boundaries. Before we can load GRASS vector map to Hadoop, firstly connection
@@ -4315,7 +4317,7 @@ $ hdfs.db.connect  driver=webhdfs \
 		If \textit{True} is printed, the connection pass.
 		If connection is established we can continue next steps. In cr-wgs84 GRASS
 		dataset map \textit{cr} covers Czech Republic \ref{map_cz}. Goal of this step is
-		to transform map from naive GRASS vector format to serialised GeoJSON. Module
+		to transform map from naive GRASS vector format to serialized GeoJSON. Module
 		\textit{hd.hdfs.in.vector} allow convert file and put it into HDFS hosted on
 		server. 
 	\begin{footnotesize}
@@ -4351,7 +4353,7 @@ CREATE EXTERNAL TABLE cr_europe(id BIGINT, lat DOUBLE, lon DOUBLE, time TIMESTAM
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
 		\end{lstlisting}
 	\end{footnotesize}
-For  analysing relation between vector features, concretely if polygon A contains feature B, thus Czech Republic contains points is used user defined function \textit{ST\_Contains}
+For  analyzing relation between vector features, concretely if polygon A contains feature B, thus Czech Republic contains points is used user defined function \textit{ST\_Contains}
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 create temporary function ST_Contains as 'com.esri.hadoop.hive.ST_Contains';
@@ -4369,7 +4371,7 @@ JOIN cr
 WHERE ST_Contains(ST_GeomFromGeoJSON(cr.geometry), ST_Point(europe.lon, europe.lat)) ;
 		\end{lstlisting}
 	\end{footnotesize}
-And than form hiveserver2 console of using hd.hive.execute can be executed query for clipping points.
+And than form hiveserver2 console using hd.hive.execute can be executed query for clipping points.
 
 
 \newpage
@@ -4404,7 +4406,7 @@ google_cloud/
 \begin{lstlisting}[style=mybash]
 	.
 	|-- src
-->  |	 -- airflow.dif
+->	|   -- airflow.dif
 	|   `-- grass_hdfs
 	|       |-- hdfsgrass
 	|       `-- hdfswrapper
