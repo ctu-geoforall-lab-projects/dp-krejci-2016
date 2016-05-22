@@ -672,8 +672,6 @@ class GrassHdfs():
         self.conn.get_current_connection(self.conn_type)
         self.hook = self.conn.get_hook()
 
-
-
     @staticmethod
     def printInfo( hdfs, msg=None):
         grass.message('***' * 30)
