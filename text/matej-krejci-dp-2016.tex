@@ -249,7 +249,7 @@ right=20mm
 		 		prostorové analýzy s~využi\-tím systému Hadoop a jejich porovnáním. Závěr první kapitoly se zabývá sezná\-mením s~cloudovými řešeními pro
 		 		konfiguraci a spuštění Hadoop clusteru.
 		 		
-		 		V rámci praktické časti byl implementován GRASS Hadoop Framework, který obsahuje moduly umožňující komunikaci mezi GRASS a Hadoop/Hive.Tímto nástrojem se ovládají knihovny psané pro systém Hadoop a je zajištěna konverze vektorových map, jejich přenos a správa tabulek v databázi.
+		 		V rámci praktické časti byl implementován GRASS Hadoop Framework, který obsahuje moduly umožňující komunikaci mezi GRASS a Hadoop/Hive. Tímto nástrojem se ovládají knihovny umožňující prostorové analýzy s využitím Hadoop a je zajištěna konverze vektorových map, jejich přenos a správa tabulek v databázi.
 		 		Pro správu účtů jednotlivých připojení je implementován modul s SQL rozhraním. Vytvořený nástroj byl otestován nad datasetem OpenStreetMap pro území Evropy, kde bylo zpracováno  a vizualizováno 1.3 miliardy bodů z prostředí GRASS GIS.
 %%% ML: viz poznamka u anglickeho textu, zpracovani prohehlo v Hadoop a ne v GRASSu	
 %%% ML: z prostredi dava smysl, je to to v poradku
@@ -3578,7 +3578,8 @@ hd.hdfs.out.vector.py driver=webhdfs
    The first part of work introduces essentials and features of Hadoop design and its
    components. The following discussion aims on problems of spatial libraries coupled with Hadoop.
    The second chapter expands the theoretical principles by the application in practice and describes
-   functionality, implementation and usage of developed GRASS Hadoop framework in detail.
+   functionality, implementation and usage of developed GRASS Hadoop Framework in detail.
+   
    The first chapter briefly introduced Hadoop ecosystem and its main components: distributed filesystem, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the
    functionality and implementation strategy of spatial libraries for Hadoop is
    provided. Following discussion deals with the challenges connected to spatial
@@ -3586,35 +3587,29 @@ hd.hdfs.out.vector.py driver=webhdfs
    library. The rest of the first part overviews Google Cloud Platform,
    especially services for cluster hosting.
    
-   
-   Experiment framework consists of processing workflow and includes description of
-   implemented tools in detail. As the first step in the workflow tasks nascent
+   Experiment framework consists of spatial processing workflow, description of
+   implemented tools in detail and the usage. As the first step in the workflow tasks nascent
    within the setup of working environment and Hadoop configuration is described. Therefore,
-   set up environment for developing Hadoop/Hive client application is provided. In addition,
-   the configuration of  cluster for performance of spatial processing is also described.
-   The next section introduces functionality of developed framework for GRASS and overview
-   implementation design. 
-   
+   the configuration of cluster for developing software and performance of spatial processing is also described. After that, the functionality of developed framework for GRASS and 
+   implementation design is overview. The usage of developed framework is shown on the end.
 
-	implementation design.  
-	
 	\subsection*{Contribution}
  The main goal of the work was design and implement processing workflow for
  interaction  between  Hadoop and GRASS GIS, especially bring native access to
  distributed filesystem and data warehouse Hive within GRASS. This combination
  allows to use external libraries for parallel spatial processing.
  
- As experiment within work GRASS Hadoop framework(GHF) has been developed.
+ As experiment within the work GRASS Hadoop Framework (GHF) has been developed.
  The package includes several GRASS command line modules for interaction between
  Hadoop and Hive. The full pack of modules simplifies and automates the
- processing workflow. Therefore conversion data to serialized format provides
+ processing workflow. Therefore  provides conversion data to serialized format,
  transaction of data to distributed filesystem and load data to Hive data
  warehouse which supports two spatial libraries. The result of highly demanding
  performance of spatial analysis by the GRASS Hadoop Framework provides transfer of
  results to local filesystem and conversion to the native GRASS vector map.
  
  The selected case shown example of GRASS Hadoop Framework use. The Europe extraction of OSM Planet dataset consisting 1.3 billions of point
- has been processed on Hadoop using GRASS native interface. The developed framework
+ has been processed on Hadoop from GRASS native interface. The developed framework
  meets expectations to be user friendly and effective tool.
 	
 	\subsection*{Further work}
@@ -3928,61 +3923,60 @@ hashing}, Bindel,  [2016-04-29].
 	
 \newpage	
 	\chapter*{Attachment}
-\section{Attachment: Transformation of SQL to BigQuery}
-		\paragraph{SQL data migration} Within project have been created several
-buckets
-		for storing exported data from SQL. Data captured by microwave operator
-T-Mobile has been 
-		described	in my bachelor theses\cite{bp_krejci}. 	Date are stored in relation
-database 
-		PostgreSQL and includes over $3e9$ rows. Due to big data characteristic has
-bee	developed python\ref{pythonscr} %TODO
-		script for exporting data in defined time interval. It protects a database
-from overloading by queries for all rows in one	query. 
-		
-		As a machine for exporting, merging and uploading data to bucket was used VM
-		instance from Google Compute engine.
-		
-		\begin{footnotesize}
-			\begin{lstlisting}[style=mybash]
+	\section{Attachment: Transformation of SQL to BigQuery}
+	\paragraph{SQL data migration} Within project there have been created several
+	buckets
+	for storing exported data from SQL. Data captured by microwave operator
+	T-Mobile has been 
+	described	in my bachelor theses\cite{bp_krejci}. 	Date are stored in relation
+	database 
+	PostgreSQL and includes over $3e9$ rows. Due to big data characteristic there has
+	been developed python\ref{pythonscr} %TODO
+	script for exporting data in defined time interval. It protects a database
+	from overloading by queries for all rows in one	query. 
+	
+	VM instance from Google Compute engine was used as a machine for exporting, merging and uploading data to bucket. 
+	
+	\begin{footnotesize}
+		\begin{lstlisting}[style=mybash]
 #create compute engine with 500 GB persistent disk
 $ gcloud compute --project "spatial-hadoop" disks create "vmexport" --size "500"
 \
 --zone "europe-west1-b" --type "pd-standard" --image \
 "/debian-cloud/backports-debian-7-wheezy-v20160418"
-			\end{lstlisting}
-		\end{footnotesize}
-		
-		Table public.record from mwdb database has been exported in time step one
-week.
-		The merge of each exported 
-		csv files has been merged using Unix \textit{cat} command. The size of
-exported
-		table record is around 98 GB or 17 GB tarball.
-		
-		
-		\begin{footnotesize}
-			\begin{lstlisting}[style=mybash]
+		\end{lstlisting}
+	\end{footnotesize}
+	
+	Table public.record from mwdb database has been exported in time step one
+	week.
+	For merge of each exported 
+	csv files Unix \textit{cat} command has been applied. The size of
+	exported
+	table record is around 98 GB or 17 GB tarball.
+	
+	
+	\begin{footnotesize}
+		\begin{lstlisting}[style=mybash]
 #create bucket 
 $ gsutil mb -l EU gs://mwdata_export
 #copy big file with slicing
 $ gsutil -m -o GSUtil:parallel_composite_upload_threshold=100M cp \
 mwdump.csv gs://mwdata_export/
-			\end{lstlisting}
-		\end{footnotesize}
-		
-		\paragraph{BigQuery} is a top performance service based on distributed
-database. The main characteristics are petabyte scale, low cost and unnecessary
-maintenance. BigQuery interface is
-		similar to SQL databases, where queries are similar. BigQuery is accessible by
-API in several language an allows programmatic way for controlling. The pricing
-model is based on pay-as-you-go.
-		
-		Using BigQuery has been created table\ref{tab_rec} accordingly to columns in
-CSV file. 
-		\begin{table}[]
-			\centering
-			\begin{footnotesize}
+		\end{lstlisting}
+	\end{footnotesize}
+	
+	\paragraph{BigQuery} is a top performance service based on distributed
+	database. The main characteristics are petabyte scale, low cost and unnecessary
+	maintenance. BigQuery interface is
+	similar to SQL databases, where queries are alike. BigQuery is accessible by
+	API in several languages an allows programmatic way for control. The pricing
+	model is based on pay-as-you-go.
+	
+	By use of BigQuery table\ref{tab_rec} accordingly to columns in
+	CSV file has been created. 
+	\begin{table}[]
+		\centering
+		\begin{footnotesize}
 			
 			\begin{tabular}{@{}|l|l|l|@{}}
 				\toprule
@@ -3994,59 +3988,59 @@ CSV file.
 			\end{tabular}
 			\caption{Table record}
 			\label{tab_rec}
-			\end{footnotesize}
-		\end{table}
-		
-		Table has been queried by several queries, which had impact on slowing down
-the performance of GRASS GIS module \textit{g.gui.mwprecip}, which is developed
-within my bachelor theses. The queries was massively speed up. Below are few
-comparison of queries on PosgreSQL database on \textit{geo102.fsv.cvut.cz} and
-on BigQuery scalable engine.
+		\end{footnotesize}
+	\end{table}
+	
+	Table has been queried by several queries, which had impact on slowing down
+	the performance of GRASS GIS module \textit{g.gui.mwprecip}, which is developed
+	within my bachelor theses. The queries was massively speed up. Below are few
+	comparison of queries on PosgreSQL database on \textit{geo102.fsv.cvut.cz} and
+	on BigQuery scalable engine.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 SELECT linkid, avg(rxpower) FROM record WHERE time >='2014-07-07 10:53:00'\
- AND  time<='2014-07-27 10:53:00% \
- group by linkid order by 1
+AND  time<='2014-07-27 10:53:00% \
+group by linkid order by 1
 		\end{lstlisting}
 	\end{footnotesize}
-\begin{itemize}
-\item PostgreSQL: 206.8 second
-\item BigQuery: 2.3 second
-\end{itemize}
+	\begin{itemize}
+		\item PostgreSQL: 206.8 second
+		\item BigQuery: 2.3 second
+	\end{itemize}
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 SELECT min(time) FROM mw.record
 		\end{lstlisting}
 	\end{footnotesize}
-\begin{itemize}
-\item PostgreSQL: 2.3 millisecond (index on time)
-\item BigQuery: 2.4 second
-\end{itemize}
+	\begin{itemize}
+		\item PostgreSQL: 2.3 millisecond (index on time)
+		\item BigQuery: 2.4 second
+	\end{itemize}
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 select linkid,avg(rx-tx) as m from record group by linkid
 		\end{lstlisting}
 	\end{footnotesize}
-\begin{itemize}
-\item PostgreSQL: 91.5 minutes
-\item BigQuery: 4.2 second
-\end{itemize}
+	\begin{itemize}
+		\item PostgreSQL: 91.5 minutes
+		\item BigQuery: 4.2 second
+	\end{itemize}
 	
-
-\newpage
-\section{Attachment: Compilation Spatial Libraries}
-\label{att:java}
-	\paragraph{Compilation} Below are some important notes for compilation of used
-%%%: maven jsi nekde vysvetloval v textu?
-%OK
-	libraries. Especially for compilation of libraries with Apache
-Maven \footnote{Apache packaging system for Java \url{https://maven.apache.org/}}
-profiles.
+	
+	\newpage
+	\section{Attachment: Compilation Spatial Libraries}
+	\label{att:java}
+	\paragraph{Compilation} Below there are shown some important notes for compilation of used
+	%%%: maven jsi nekde vysvetloval v textu?
+	%OK
+	libraries, especially for compilation of libraries with Apache
+	Maven \footnote{Apache packaging system for Java \url{https://maven.apache.org/}}
+	profiles.
 	
 	Usage of ESRI Spatial Framework for Hadoop is dependent on package Geometry API
 	Java. After cloning GIT repository with ESRI Spatial Framework for Hadoop the
 	maven test after packaging can failed. According to issue tracker of the
-	repository is suggested to skip tests.
+	repository there is suggested to skip tests.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 sudo mvn clean package -DskipTests 
@@ -4055,10 +4049,10 @@ sudo mvn clean package -DskipTests
 	
 	For packaging JsonSerde \footnotetext{Json SerDe for Hive
 		\textless\url{https://github.com/rcongiu/Hive-JSON-Serde}}
-	must be choose package profile. According documentation is clear that the
+	package profile must be choosen. According documentation it is clear that the
 	profiles are set to Hadoop distribution project such a \textit{Cloudera} and
 	\textit{HortonWorks}. Thus its not completely clear which profile should be
-used
+	used
 	for different Hadoop versions. 
 	
 	For using Hadoop 1.x on Google Cloud works profile for Cloudera 4 (CDH4)
@@ -4067,157 +4061,157 @@ used
 mvn -Pcdh4 clean package
 		\end{lstlisting}
 	\end{footnotesize}
-	For building package for Hadoop 2.x was tested profile for Hortonworks Data
-	Platform 2.3
+	For building package for Hadoop 2.x profile for Hortonworks Data
+	Platform 2.3 was tested. 
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 mvn -Phdp23 clean package
 		\end{lstlisting}
 	\end{footnotesize}
 	
-	In attachment of this work is bash script for automated deployment of packages.
+	In attachment of this work there is bash script for automated deployment of packages.
 	Above mentioned \textit{maven} profile settings must be change according the
 	used Hadoop version.
 	
 	
-\newpage	
+	\newpage	
 	
-\section{Attachment: Installation of GRASS and GHF}\label{grass_install}
-		
-		Below are listed  dependency on external packages. In addition, in second
-		paragraph is described deployment of GHF in GRASS GIS. 
-		\paragraph{Python dependency}
-		Project is written and tested in Python 2.7, with emphasis to 3.x
-compatibility.
-		The GHF package uses several external Python libraries which must be deployed.
-For
-		installation of Python libraries has been used Python Package Index (pip)
-which
-		is command line tool, and provide installation from the \textit{pip}
-repository.
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
-	pip install pyhs2 hdfs thrift urlparse jaydebeapi cryptography
-	pip install snakebite protobuf pydoop dagpype future
-			\end{lstlisting}
-		\end{footnotesize}
-		
-		
-		\paragraph{GRASS GIS installation}
-		Installation of GRASS GIS is well described on official website. The developed
-		modules within the thesis are available in the GRASS GIS Add-ons public
-repository.
-		GRASS allows by using module g.extension to fetch and install modules to the
-system.
+	\section{Attachment: Installation of GRASS and GHF}\label{grass_install}
+	
+	Below there are listed  dependency on external packages. In addition, in second
+	paragraph there is described deployment of GHF in GRASS GIS. 
+	\paragraph{Python dependency}
+	Project is written and tested in Python 2.7, with emphasis to 3.x
+	compatibility.
+	The GHF package uses several external Python libraries which must be deployed.
+	For
+	installation of Python libraries has been used Python Package Index (pip)
+	which
+	is command line tool, and provide installation from the \textit{pip}
+	repository.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+pip install pyhs2 hdfs thrift urlparse jaydebeapi cryptography
+pip install snakebite protobuf pydoop dagpype future
+		\end{lstlisting}
+	\end{footnotesize}
+	
+	
+	\paragraph{GRASS GIS installation}
+	Installation of GRASS GIS is well described on official website. The developed
+	modules within the thesis are available in the GRASS GIS Add-ons public
+	repository.
+	GRASS allows by using module g.extension to fetch and install modules to the
+	system.
 	%%% ML: rozdeleni na windows a linux bych nedelal, na obou systemech se addons
-%instaluji z pohledu uzivatele stejne, co je zatim neni pro praci podstatne
+	%instaluji z pohledu uzivatele stejne, co je zatim neni pro praci podstatne
 	%%% ML: tady mas na mysli, ze se nainstaluji vsechny moduly jako jeden balicek
-%(jako toolbox)???
-    %%% MK: OK
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
-	grass$ g.extension hd.client
-	...
-	Fetching <hdfs.client> from GRASS GIS Addons repository (be patient)...
-	Compiling...
-	Installing...
-	Updating addons metadata file...
-	Installation of <hd.hdfs.client successfully finished
-			\end{lstlisting}
-		\end{footnotesize}
-		Above is shown GRASS console with successful installation of the package. 
-
-
-\newpage
-\section{Attachment: Serialization ESRI GeoJSON}\label{serde}
-		To hold integrity with GHF modules, as library for storing data and
+	%(jako toolbox)???
+	%%% MK: OK
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
+grass$ g.extension hd.client
+...
+Fetching <hdfs.client> from GRASS GIS Addons repository (be patient)...
+Compiling...
+Installing...
+Updating addons metadata file...
+Installation of <hd.hdfs.client successfully finished
+		\end{lstlisting}
+	\end{footnotesize}
+	Above is shown GRASS console with successful installation of the package. 
+	
+	
+	\newpage
+	\section{Attachment: Serialization ESRI GeoJSON}\label{serde}
+	To hold integrity with GHF modules, as library for storing data and
 	serialization must be use
 	\textit{com.esri.json.hadoop.Unenclosed\\JsonInputFormat} or
 	\textit{com.esri.json.hadoop.EnclosedJsonInputFormat}. This serialize store data
 	in format ESRI GeoJSON. The differences between enclosed and unenclosed JSON is that 
 	Enclosed format includes header.\cite{ESRI_serde}
-	\begin{itemize}
-	\item Enclosed JSON include header of structure. This format not suits to
-	serialization.
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
-{
-    "geometryType": "ESRIGeometryPoint",
-    "spatialReference": {
-      "wkid": 4326
-    },
-    "fields": [
-      {
-        "name": "Id",
-        "type": "esriFieldTypeOID",
-        "alias": "Id"
-      },
-      {
-        "name": "Name",
-        "type": "esriFieldTypeString",
-        "alias": "Name"
-      }
-    ],
-    "features": [
-      {
-        "geometry": {
-          "x": -104.44,
-          "y": 34.83
-        },
-        "attributes": {
-          "Id": 43,
-          "Name": "Feature 1"
-        }
-      },
-      {
-        "geometry": {
-          "x": -100.65,
-          "y": 33.69
-        },
-        "attributes": {
-          "Id": 67,
-          "Name": "Feature 2"
-        }
-      }
-    ]
- }
-			\end{lstlisting}
-		\end{footnotesize}
-	\item Unenclosed JSON is represented by dictionaries where each line consist one
-	dictionary - vector feature.
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
-{
-  "geometry": {
-          "x": -104.44,
-          "y": 34.83
-        },
-  "attributes": {
-          "Id": 43,
-          "Name": "Feature 1"
-        }
-}
-			\end{lstlisting}
-		\end{footnotesize}
-	
-	\end{itemize}
+  \begin{itemize}
+  	\item Enclosed JSON include header of structure. This format not suits to
+  	serialization.
+  	\begin{footnotesize}
+  		\begin{lstlisting}[style=python]
+  		{
+  		"geometryType": "ESRIGeometryPoint",
+	  		"spatialReference": {
+	  		"wkid": 4326
+  		},
+  		"fields": [
+  		{
+  		"name": "Id",
+	  		"type": "esriFieldTypeOID",
+	  		"alias": "Id"
+  		},
+  		{
+  		"name": "Name",
+	  		"type": "esriFieldTypeString",
+	  		"alias": "Name"
+  		}
+  		],
+  		"features": [
+  		{
+  		"geometry": {
+	  		"x": -104.44,
+	  		"y": 34.83
+  		},
+  		"attributes": {
+	  		"Id": 43,
+	  		"Name": "Feature 1"
+  		}
+  		},
+  		{
+  		"geometry": {
+	  		"x": -100.65,
+	  		"y": 33.69
+  		},
+  		"attributes": {
+	  		"Id": 67,
+	  		"Name": "Feature 2"
+  		}
+  	   }
+  	]
+  }
+  		\end{lstlisting}
+  	\end{footnotesize}
+  	\item Unenclosed JSON is represented by dictionaries where each line consist one
+  	dictionary - vector feature.
+  	\begin{footnotesize}
+  		\begin{lstlisting}[style=python]
+  		{
+  		"geometry": {
+	  		"x": -104.44,
+	  		"y": 34.83
+  		},
+  		"attributes": {
+	  		"Id": 43,
+	  		"Name": "Feature 1"
+  		}
+  		}
+  		\end{lstlisting}
+  	\end{footnotesize}
+  	
+  \end{itemize}
 	GDAL driver allows to exporting and read only Unenclosed GeoJSON, so editing of format
 	before conversion must be made.
-
-
-
-
-\newpage	
-		
+	
+	
+	
+	
+	\newpage	
+	
 	\section{Attachment: Serialization JSON}\label{serde}
 	
-In this section are described some findings around JSON and serialization. In
-last paragraph is introduced generator of Hive schema from JSON source file.
-
-SerDe from version Hive 1.2 is included in hcatalog core. Below is example of
-usage.
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+	In this section are described some findings around JSON and serialization. In
+	last paragraph is introduced generator of Hive schema from JSON source file.
+	
+	SerDe from version Hive 1.2 is included in hcatalog core. Below is example of
+	usage.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 add jar ${env:HIVE_HOME}/hcatalog/share/hcatalog/hcatalog-core-0.12.0.jar;
 
 CREATE EXTERNAL TABLE links1 (
@@ -4226,40 +4220,40 @@ properties map<string,string>,
 geometry string
 )ROW FORMAT SERDE 'org.apache.hcatalog.data.JsonSerDe'
 STORED AS TEXTFILE;
-			\end{lstlisting}
-		\end{footnotesize}
-
-This SerDe from \textit{hcatalog} does`t work properly with GeoJSON. Hcatalog
-SerDe not allows to parse array in array structures as string which can be
-useful for conversion to geometry  datatype(for ESRI Spatial Framework)
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+		\end{lstlisting}
+	\end{footnotesize}
+	
+	This SerDe from \textit{hcatalog} does`t work properly with GeoJSON. Hcatalog
+	SerDe not allows to parse array in array structures as string which can be
+	useful for conversion to geometry  datatype(for ESRI Spatial Framework)
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 #GeoJson input- cant pares array in array
 { "geometry": { "type": "LineString", "coordinates": [ [ 15.7912, 50.2392 ],\
- 				                	[ 15.7451, 50.23 ] ] } }
+[ 15.7451, 50.23 ] ] } }
 
 #usage
 select ST_GeomFromGeoJSON(geometry) from links1;
-			\end{lstlisting}
-		\end{footnotesize}
-
-Solution is to use SerDe
-\footnote{\url{https://github.com/rcongiu/Hive-JSON-Serde}} . Compiling SerDe
-for Google Cloud must be with CDH4 mvn profile for Hadoop1.x. For Hadoop 2.x
-with profile for HortonwWorks Sandbox.
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+		\end{lstlisting}
+	\end{footnotesize}
+	
+	Solution is to use SerDe
+	\footnote{\url{https://github.com/rcongiu/Hive-JSON-Serde}} . Compiling SerDe
+	for Google Cloud must be with CDH4 mvn profile for Hadoop1.x. For Hadoop 2.x
+	with profile for HortonwWorks Sandbox.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 sudo apt-get install -y maven openjdk-7-jdk git  && \
 git clone https://github.com/rcongiu/Hive-JSON-Serde.git && \
 cd Hive-JSON-Serde && \
 mvn -Pcdh4 clean package
 Hive SerDe schema generator
-			\end{lstlisting}
-		\end{footnotesize}
-
-The SerDe from openx library works well.
-\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+		\end{lstlisting}
+	\end{footnotesize}
+	
+	The SerDe from openx library works well.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 add jar ${env:HIVE_HOME}/hcatalog/share/hcatalog/hcatalog-core-0.12.0.jar;
 
 CREATE EXTERNAL TABLE links1 (
@@ -4268,93 +4262,86 @@ properties map<string,string>,
 geometry string
 )ROW FORMAT SERDE 'org.apache.hcatalog.data.JsonSerDe'
 STORED AS TEXTFILE;
-			\end{lstlisting}
-\end{footnotesize}
-and geometry constructor from ESRI \textit{ST\_GeomFromGeoJSON} is able to parse it.
-
-
-\paragraph{Hive schema generator from JSON}
-For complex JSON structures is useful to use generator of scheme from JSON
-source.
+		\end{lstlisting}
+	\end{footnotesize}
+	and geometry constructor from ESRI \textit{ST\_GeomFromGeoJSON} is able to parse it.
+	
+	
+	\paragraph{Hive schema generator from JSON}
+	For complex JSON structures is useful to use generator of scheme from JSON
+	source.
 \begin{enumerate}
-\item install Scala \footnote{\url{http://www.scala-sbt.org/download.html}}
-\item Clone repository of hive schema generator
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+	\item install Scala \footnote{\url{http://www.scala-sbt.org/download.html}}
+	\item Clone repository of hive schema generator
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 git clone https://github.com/strelec/hive-serde-schema-gen.git
-			\end{lstlisting}
-		\end{footnotesize}
-\item  Conversion
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+		\end{lstlisting}
+	\end{footnotesize}
+	\item  Conversion
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 $ cd hive-serde-schema-gen
 $ touch test.json && echo '"{ "type": "Feature", "properties":\
-  { "cat": 546 }, "geometry": { "type": "LineString", "coordinates":\
-  [ [ 14.4881, 50.1503 ], [ 14.5033, 50.1508 ] ] } }"' > test.json
+{ "cat": 546 }, "geometry": { "type": "LineString", "coordinates":\
+[ [ 14.4881, 50.1503 ], [ 14.5033, 50.1508 ] ] } }"' > test.json
 $ sbt "run test.json"
-			\end{lstlisting}
-		\end{footnotesize}
-		output:		
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+		\end{lstlisting}
+	\end{footnotesize}
+	output:		
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 CREATE TABLE data (
-    type VARCHAR(7),
-    properties STRUCT<
-        cat: SMALLINT
-    >,
-    geometry STRUCT<
-        coordinates: ARRAY<
-            ARRAY<
-                FLOAT
-            >
-        >
-        type: VARCHAR(10)
-    >
+type VARCHAR(7),
+properties STRUCT<cat: SMALLINT >,
+geometry STRUCT<coordinates:
+ARRAY<ARRAY<FLOAT>>
+type: VARCHAR(10)
+>
 ) ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.JsonSerde';
-
 LOAD DATA LOCAL INPATH 'test.json' INTO TABLE data;
-			\end{lstlisting}
-		\end{footnotesize}
-		
+		\end{lstlisting}
+	\end{footnotesize}
+	
 \end{enumerate}
-
-\newpage
-\section{Attachment: Transformation map from GRASS to HDFS}\label{hdfs2grass}
-Although, the goal of the main analyses is to visualize heat map Europe, someone can be
-interested only to data within Czech Republic boundaries. In GIS, clip function
-makes this task trivial. Assume that we have in GRASS database polygon of Czech
-boundaries. Before we can load GRASS vector map to Hadoop, firstly connection
-must be set  to the server. Module \textit{hd.db.connect} allows it. Firstly we
-set connection to HDFS.
-		\begin{footnotesize}
-			\begin{lstlisting}[style=python]
+	
+	\newpage
+	\section{Attachment: Transformation map from GRASS to HDFS}\label{hdfs2grass}
+	Although, the goal of the main analyses is to visualize heat map Europe, someone can be
+	interested only to data within Czech Republic boundaries. In GIS, clip function
+	makes this task trivial. Assume that we have in GRASS database polygon of Czech
+	boundaries. Before we can load GRASS vector map to Hadoop, firstly connection
+	must be set  to the server. Module \textit{hd.db.connect} allows it. Firstly we
+	set connection to HDFS.
+	\begin{footnotesize}
+		\begin{lstlisting}[style=python]
 #connection using WebHDFS driver
 $ hdfs.db.connect  driver=webhdfs \
-                conn_id=google \
-                login=matt \
-                host=cluster-4-m.c.hadoop-jakub.internal \
-                port=50070
-	 		
+conn_id=google \
+login=matt \
+host=cluster-4-m.c.hadoop-jakub.internal \
+port=50070
+
 ...
-  Test <webhdfs> connection (is path exists: ls /) 
-               True 
-			\end{lstlisting}
-		\end{footnotesize}
-		If \textit{True} is printed, the connection pass.
-		If connection is established we can continue next steps. In cr-wgs84 GRASS
-		dataset map \textit{cr} covers Czech Republic \ref{map_cz}. Goal of this step is
-		to transform map from naive GRASS vector format to serialized GeoJSON. Module
-		\textit{hd.hdfs.in.vector} allow convert file and put it into HDFS hosted on
-		server. 
+Test <webhdfs> connection (is path exists: ls /) 
+True 
+		\end{lstlisting}
+	\end{footnotesize}
+	If \textit{True} is printed, the connection pass.
+	If connection is established we can continue next steps. In cr-wgs84 GRASS
+	dataset map \textit{cr} covers Czech Republic \ref{map_cz}. Goal of this step is
+	to transform map from naive GRASS vector format to serialized GeoJSON. Module
+	\textit{hd.hdfs.in.vector} allow convert file and put it into HDFS hosted on
+	server. 
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 #copy vector map cr to hdfs://data
 $ hd.hdfs.in.vector driver=webhdfs  hdfs=/data map=cr layer=1
 
 ...
-  File has been copied to: 
-    path :
-           /data
+File has been copied to: 
+path :
+/data
 		\end{lstlisting}
 	\end{footnotesize}
 	
@@ -4362,32 +4349,32 @@ $ hd.hdfs.in.vector driver=webhdfs  hdfs=/data map=cr layer=1
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=0.5\textwidth]{./img/cr.png}
-		\caption[CR boundaries vector]{\centering Czech Republic map for clipping the Europedataset.}
+		\caption[Czech Rep. boundaries]{\centering Czech Republic map for clipping the Europedataset.}
 		\label{map_cz}
 	\end{figure} 
 	
-		Above, in this section, we copied all mandatory data to HDFS. The Europe
-		dataset was prepared in cloud using performance VMs
-		and loaded to HDFS of cluster. In contrast, Czech boundary map has been
-		converted to serialized GeoJSON and copied directly from GRASS GIS DataNodes of
-		cluster.
-		
-		The next step is to prepare table which will store only data within Czech boundary.
+	Above, in this section, we copied all mandatory data to HDFS. The Europe
+	dataset was prepared in cloud using performance VMs
+	and loaded to HDFS of cluster. In contrast, Czech boundary map has been
+	converted to serialized GeoJSON and copied directly from GRASS GIS DataNodes of
+	cluster.
+	
+	The next step is to prepare table which will store only data within Czech boundary.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 CREATE EXTERNAL TABLE cr_europe(id BIGINT, lat DOUBLE, lon DOUBLE, time TIMESTAMP)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
 		\end{lstlisting}
 	\end{footnotesize}
-For  analyzing relation between vector features, concretely if polygon A contains feature B, thus Czech Republic contains points is used user defined function \textit{ST\_Contains}
+	For  analyzing relation between vector features, concretely if polygon A contains feature B, thus Czech Republic contains points is used user defined function \textit{ST\_Contains}
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 create temporary function ST_Contains as 'com.esri.hadoop.hive.ST_Contains';
 create temporary function ST_GeomFromGeoJson as 'com.esri.hadoop.hive.ST_GeomFromGeoJson';
 		\end{lstlisting}
 	\end{footnotesize}
-The exported GeoJSON file and its geometry can be constructed as binary geometry
- datatype using \textit{ST\_GeomFromGeoJson} UDF.
+	The exported GeoJSON file and its geometry can be constructed as binary geometry
+	datatype using \textit{ST\_GeomFromGeoJson} UDF.
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 INSERT OVERWRITE TABLE cr_europe
@@ -4397,88 +4384,85 @@ JOIN cr
 WHERE ST_Contains(ST_GeomFromGeoJSON(cr.geometry), ST_Point(europe.lon, europe.lat)) ;
 		\end{lstlisting}
 	\end{footnotesize}
-And than form hiveserver2 console using hd.hive.execute can be executed query for clipping points.
-
-
-\newpage
-	\section{Attachment: Europe map aggregation}\label{open_street_agg_all}
+	And than form hiveserver2 console using hd.hive.execute can be executed query for clipping points.
 	
-			\begin{figure}[!htbp]
-				\centering
-				\includegraphics[width=1\textwidth]{./img/osm/history.png}
-					\caption[Spatial binning-result]{\centering Aggregation of OSM points created between 2006 and end of 2014
-						The resolution of spatial binning is 0.1 degree (approx 10km). The source OSM map consists of 1.3 billions of points.}
-				\label{map_cz}
-			\end{figure} 
-\newpage		
+	
+	\newpage
+	\section*{Attachment: Europe map aggregation}\label{open_street_agg_all}
+	
+	\begin{figure}[!htbp]
+		\centering
+		\includegraphics[width=1\textwidth]{./img/osm/history.png}
+		\caption[Spatial binning all history]{\centering Aggregation of OSM points created between 2006 and end of 2014
+			The resolution of spatial binning is 0.1 degree (approx 10km). The source OSM map consists of 1.3 billions of points.}
+		\label{map_cz}
+	\end{figure} 
+	\newpage		
 	\section{Attachment: Configuration of  bdutil and BigQuery migration}\label{pythonscr}
 	\begin{footnotesize}
-	\begin{lstlisting}[style=mybash]
-google_cloud/
-|-- bdutil-1.3.4
-|   |-- spatial1.sh
-|   |-- spatial.sh
-|-- bigquery
-    `-- mw_schema.json
-
-	\end{lstlisting}
+		\begin{lstlisting}[style=mybash]
+	google_cloud/
+	|-- bdutil-1.3.4
+	|   |-- spatial1.sh
+	|   |-- spatial.sh
+	|-- bigquery
+	`-- mw_schema.json
+		\end{lstlisting}
 	\end{footnotesize}
 	
 	
 	
 	\section{Attachment: Airflow diff}\label{airflow_dif}
 	The difference file between Airflow and developed GHF.
-\begin{footnotesize}
-\begin{lstlisting}[style=mybash]
+	\begin{footnotesize}
+		\begin{lstlisting}[style=mybash]
 	.
 	|-- src
-->	|   -- airflow.dif
+	->	|   -- airflow.dif
 	|   `-- grass_hdfs
 	|       |-- hdfsgrass
 	|       `-- hdfswrapper
 	|-- text
 	`-- zadani
-	
-\end{lstlisting}
-\end{footnotesize} 	
-\newpage
+		
+		\end{lstlisting}
+	\end{footnotesize} 	
+	\newpage
 	\section{Attachment: Source code of GHF}\label{att:install}
 	The CD with source code is attached to the printed version of the thesis.
-\begin{footnotesize}
-\begin{lstlisting}[style=mybash]
-.
-|-- hdfsgrass
-|   |-- grass_map.py
-|   |-- hd.db.connect.py
-|   |-- hd.esri2map.py
-|   |-- hdfs_grass_lib.py
-|   |-- hdfs_grass_util.py
-|   |-- hd.hdfs.info.py
-|   |-- hd.hdfs.in.fs.py
-|   |-- hd.hdfs.in.vector.py
-|   |-- hd.hdfs.out.vector.py
-|   |-- hd.hive.csv.table.py
-|   |-- hd.hive.execute.py
-|   |-- hd.hive.info.py
-|   |-- hd.hive.json.table.py
-|   |-- hd.hive.load.py
-|   `-- hd.hive.select.py
-`-- hdfswrapper
-    |-- base_hook.py
-    |-- connections.py
-    |-- hdfs_hook.py
-    |-- hive_hook.py
-    |-- hive_table.py
-    |-- __init__.py
-    |-- security_utils.py
-    |-- settings.py
-    |-- utils.py
-    `-- webhdfs_hook.py
-
-\end{lstlisting}
-\end{footnotesize} 
+	\begin{footnotesize}
+		\begin{lstlisting}[style=mybash]
+	.
+	|-- hdfsgrass
+	|   |-- grass_map.py
+	|   |-- hd.db.connect.py
+	|   |-- hd.esri2map.py
+	|   |-- hdfs_grass_lib.py
+	|   |-- hdfs_grass_util.py
+	|   |-- hd.hdfs.info.py
+	|   |-- hd.hdfs.in.fs.py
+	|   |-- hd.hdfs.in.vector.py
+	|   |-- hd.hdfs.out.vector.py
+	|   |-- hd.hive.csv.table.py
+	|   |-- hd.hive.execute.py
+	|   |-- hd.hive.info.py
+	|   |-- hd.hive.json.table.py
+	|   |-- hd.hive.load.py
+	|   `-- hd.hive.select.py
+	`-- hdfswrapper
+		|-- base_hook.py
+		|-- connections.py
+		|-- hdfs_hook.py
+		|-- hive_hook.py
+		|-- hive_table.py
+		|-- __init__.py
+		|-- security_utils.py
+		|-- settings.py
+		|-- utils.py
+		`-- webhdfs_hook.py
+		\end{lstlisting}
+	\end{footnotesize} 
 \end{document}
-
 
 
 

@@ -56,7 +56,7 @@ class WebHDFSHook(BaseHook):
             return True
 
         except Exception, e:
-            print("\n     EROOR: connection can not be established: %s" % e)
+            print("\n     ERROR: connection can not be established: %s" % e)
             print('***' * 30)
             return False
 
