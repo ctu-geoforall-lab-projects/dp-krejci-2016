@@ -217,7 +217,8 @@ right=20mm
 		\begin{abstractx}{english}
 			
 %%% ML: is to design?
-			The aim of the thesis is design and developed workflow for managing and processing big spatial data within GRASS GIS. The thesis explains necessary fundamentals to understand aspects of Hadoop ecosystem. After that, the  distributed spatial processing is analyzed as well as available spatial frameworks for Hadoop. In addition, configuration
+%%% ML: zatim zadna odezva, prozatim jsem to tam pridal
+			The aim of the thesis is to design and developed workflow for managing and processing big spatial data within GRASS GIS. The thesis explains necessary fundamentals to understand aspects of Hadoop ecosystem. After that, the  distributed spatial processing is analyzed as well as available spatial frameworks for Hadoop. In addition, configuration
 			and deployment of Hadoop cluster using cloud platform is provided.
 			
 			In developed GRASS Hadoop Framework is implemented several command line  modu\-les for interaction between GRASS and Hadoop/Hive. The framework allows to control Hadoop spatial libraries using GRASS. The connection manager for different drivers is included. Thus, 
@@ -235,9 +236,9 @@ right=20mm
 		\begin{abstractx}{czech}
 		
 
-		 		Cílem práce je návrh řešení pro zpracovaní vektorových  dat velkého objemu v prostředí GRASS GIS a jeho implementace.
-		 		V práci jsou popsány principy systému Hadoop a jeho komponent. Dále text navazuje rešerší nastrojů, které umožňují 
-		 		prostorové analýzy s~využitím systému Hadoop a jejich porovnáním. Závěr první kapitoly se zabývá sezná\-mením s cloudovými řešeními pro
+		 		Cílem práce je návrh řešení pro zpracovaní vektorových  dat velkého objemu v prostředí GRASS GIS a~jeho implementace.
+		 		V práci jsou popsány principy systému Hadoop a~jeho komponent. Dále text navazuje rešerší nastrojů, které umožňují 
+		 		prostorové analýzy s~využi\-tím systému Hadoop a jejich porovnáním. Závěr první kapitoly se zabývá sezná\-mením s~cloudovými řešeními pro
 		 		konfiguraci a spuštění Hadoop clusteru.
 		 		
 		 		V rámci praktické časti byl implementován GRASS Hadoop Framework, který obsahuje moduly umožňující komunikaci mezi systémy GRASS a Hadoop/Hive. Nástroj umožňuje ovládat knihovny psané pro systém Hadoop a zajišťuje konverzi vektorových map, jejich přenos a správu  tabulek v databázi.
@@ -833,7 +834,7 @@ linkid;data;rx;tx
 
 	
 	\section{Spatial Processing in Parallel}
-	\subsubsection{Introduction to Spatial MapReduce Query}
+	\subsection{Introduction to Spatial MapReduce Query}
 	Figure \ref{fig:mapred_spatial} shows a simple example of distributed spatial
 	query processing. The main idea 
 	grows up from the basis of MapReduce. On the figure, the dataset is partitioned
@@ -1520,6 +1521,7 @@ linkid;data;rx;tx
 	is accessible by \textit{gcloud} ssh tool (e.g. instance run in zone asia-east1).
 	Access can be also provided 
 	by standard ssh protocol.
+        \newpage
 	\begin{footnotesize}
 		\begin{lstlisting}[style=mybash]
 $ gcloud compute instances create my-instance
@@ -2138,7 +2140,6 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	traffic to an instance. When a connection is established with an instance,
 	traffic is permitted in both directions over that connection. On web of Google
 	Cloud Platform there is a manager for defining of firewall rules. By default several
-
 	profiles are predefined, how was already mentioned in table \ref{firewall}.
 	%https://dzone.com/articles/hadoop-rest-api-webhdfs
 	
@@ -2184,7 +2185,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 ff02::1         ip6-allnodes
 ff02::2         ip6-allrouters
 
-10.132.0.2 cluster-2-m.c.hadoop-jakub.internal cluster-2-m  # Added by Google
+10.132.0.2 cluster-2-m.c.hadoop-matej.internal cluster-2-m  # Added by Google
 		\end{lstlisting}
 	\end{footnotesize}
 	Master and workers, each of them has configuration similar to example of master
@@ -2647,7 +2648,6 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 %%% MK:ok
     \textit{hd.hdfs.in.vector}, and after that create Hive table using
 %%% ML: hd.hive.json.table+
-
     \textit{hd.hive.json.table} and load data. These steps are independent.
     Thus the interface for interaction between GRASS and
     Hive/Hadoop can be used as library for interaction with different Hadoop spatial library.
@@ -3199,7 +3199,7 @@ true
 	The section \textit{Test case: Spatial Binning} will show GRASS Hadoop framework in use, especially 
 	the interaction with ESRI Spatial library for Hadoop. 
 	At the first part introduction of work aims on service management that allows 
-	the second of part of workflow to start and proceed. This part includes preparation of data
+	the second of part of workflow to be started and proceeded. This part includes preparation of data
 	and querying Hive database. In addition it includes usage of functions from ESRI
 	Spatial Framework for Hadoop.
 	
@@ -3224,9 +3224,10 @@ true
 \subsubsection{Preparation of data}
 \paragraph{Data to HDFS}
 	 The tool Osmconvert\footnote{Osmcomverter web
-	page\url{http://wiki.openstreetmap.org/wiki/Osmconvert}} allows to transform
+	page, \url{http://wiki.openstreetmap.org/wiki/Osmconvert}} allows to transform
 	binary file to CSV,  where each 	\textit{@} after \textit{--csv} parameter
 	defines column of data.
+        \newpage
 	\begin{footnotesize}
 		\begin{lstlisting}[style=python]
 $ osmconvert italy.osh.pbf  -o=europe.csv --csv-separator=, \
@@ -3353,8 +3354,7 @@ CREATE EXTERNAL TABLE europe(id BIGINT,
 	\begin{lstlisting}[style=python]
 #cretion of table for Europe dataset
 $ hd.hive.csv.table driver=hiveserver2 table=europe \
-                    attributes="id BIGINT, lat DOUBLE, lon DOUBLE, time
-TIMESTAMP" \
+                    attributes="id BIGINT, lat DOUBLE, lon DOUBLE, time TIMESTAMP" \
                    -e -d
 		\end{lstlisting}
 	\end{footnotesize}
@@ -3470,7 +3470,8 @@ OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat';
 	\end{footnotesize}
 	
 	In table named europe\_agg2011 there will be stored result of spatial binning of points contribution between June 2010 and June 2011.
-	Analogically creation of table within GHF is developed module \textit{hd.hive.json.table}
+	Analogically creation of table within GHF is developed module \textit{hd.hive.json.table}.
+\newpage
 \begin{footnotesize}
 	\begin{lstlisting}[style=python]
 # Creation of table using  GHF
@@ -3522,23 +3523,22 @@ hd.hdfs.out.vector.py driver=webhdfs
 	map block is converted to ESRI GeoJSON and exported as native GRASS vector map. In addition is build and printed GRASS command for merging split blocks to a contiguous map. This task is not automatic due to size block variability  and further processing variation. Module allows two
 	 ways how locate data on HDFS. For automate way is parameter \textit{table}. For this approach, user
 	 define name of table and hive driver\footnote{using hd.connect must be set connection to Hive} using Hql query 'describe formatted' recognize location of table in HDFS.
-	 Second way is to define HDFS path manually using parameter \textit{hdfs}
+	 Second way is to define HDFS path manually using parameter \textit{hdfs}.
 	
 	Now, the spatial analyses using GHF and ESRI Spatial Framework for Hadoop is done and result can be processed within GRASS GIS. In figures \ref{fig:outmap}, \ref{fig:outmap1} is shown visualization aggregated points into bins.
 	
 
 	 In addition, using the same precess patter was aggregate all points for whole history of OpenStreetMap project on the area of Europe. Thus, approximately 1.3 billions  of points  to bin  resolution 0.1 degree. The map us in attachment \ref{open_street_agg_all}. 
-
 	
 	
 	
 	\paragraph{Summary of GHF usage}
-
+~ %%% ML: must be here otherwise section is below the figure
 		
 		
 		
 		
-		\begin{figure}[htp]
+		\begin{figure}[!h]
 		  \centering
 	
 	  \subfloat[2006-2007]{\label{figur:1}\includegraphics[width=0.5\textwidth]{./img/osm/2006.png}}
@@ -3550,7 +3550,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 			\label{fig:outmap}
 		\end{figure}
 	
-	\begin{figure}[htp]
+	\begin{figure}[!h]
 	  \centering
 	  \subfloat[2009-2009]{\label{figur:3}\includegraphics[width=0.5\textwidth]{./img/osm/2008.png}}
 	   \subfloat[2009-2010]{\label{figur:4}\includegraphics[width=0.5\textwidth]{./img/osm/2009.png}}
