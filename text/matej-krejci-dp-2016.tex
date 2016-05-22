@@ -218,11 +218,20 @@ right=20mm
 			
 %%% ML: is to design?
 %%% ML: zatim zadna odezva, prozatim jsem to tam pridal
-			The aim of the thesis is to design and developed workflow for managing and processing big spatial data within GRASS GIS. The thesis explains necessary fundamentals to understand aspects of Hadoop ecosystem. After that, the  distributed spatial processing is analyzed as well as available spatial frameworks for Hadoop. In addition, configuration
-			and deployment of Hadoop cluster using cloud platform is provided.
-			
-			In developed GRASS Hadoop Framework is implemented several command line  modu\-les for interaction between GRASS and Hadoop/Hive. The framework allows to control Hadoop spatial libraries using GRASS. The connection manager for different drivers is included. Thus, 
-			is provided both side data conversion, put/get data to HDFS and Hive table management. As use case of developed framework the Europe extraction of OpenStreetMap history dataset which included approx. 1.3 billions of points has been processed and visualized from GRASS GIS.
+         The goal of presented thesis lies in the design and development of workflow for management and
+          processing of big spatial data within GRASS GIS environment. The thesis explains necessary
+           fundamentals to understand aspects of Hadoop ecosystem. After that, the distributed spatial
+            processing is analyzed as well as available spatial frameworks for Hadoop. Moreover, the
+             configuration and deployment of Hadoop cluster using cloud platform is provided.
+		                               
+		                               
+		                               
+          Several command line modules for interaction between GRASS and Hadoop/Hive are implemented in
+           developed GRASS Hadoop Framework. The framework allows controlling Hadoop spatial libraries using
+            GRASS. The connection manager for different drivers is also included. Therefore, both side data
+             conversion put/get data to HDFS and Hive table management is provided. As a selected case of
+              developed framework the Europe extraction of Open Street Map history dataset, which included
+               approx. 1.3 billions of points, has been processed and visualized from GRASS GIS.
 %%% ML: from ? by - but processing has been done in Hadoop and not GRASS...
 %%% ML: hm, from means sense... OK
 			
@@ -234,14 +243,13 @@ right=20mm
 	
 
 		\begin{abstractx}{czech}
-		
 
-		 		Cílem práce je návrh řešení pro zpracovaní vektorových  dat velkého objemu v prostředí GRASS GIS a~jeho implementace.
+		 		Cílem práce je návrh řešení pro zpracovaní vektorových  dat velkého objemu z prostředí GRASS GIS a~jeho implementace.
 		 		V práci jsou popsány principy systému Hadoop a~jeho komponent. Dále text navazuje rešerší nastrojů, které umožňují 
 		 		prostorové analýzy s~využi\-tím systému Hadoop a jejich porovnáním. Závěr první kapitoly se zabývá sezná\-mením s~cloudovými řešeními pro
 		 		konfiguraci a spuštění Hadoop clusteru.
 		 		
-		 		V rámci praktické časti byl implementován GRASS Hadoop Framework, který obsahuje moduly umožňující komunikaci mezi systémy GRASS a Hadoop/Hive. Nástroj umožňuje ovládat knihovny psané pro systém Hadoop a zajišťuje konverzi vektorových map, jejich přenos a správu  tabulek v databázi.
+		 		V rámci praktické časti byl implementován GRASS Hadoop Framework, který obsahuje moduly umožňující komunikaci mezi GRASS a Hadoop/Hive.Tímto nástrojem se ovládají knihovny psané pro systém Hadoop a je zajištěna konverze vektorových map, jejich přenos a správa tabulek v databázi.
 		 		Pro správu účtů jednotlivých připojení je implementován modul s SQL rozhraním. Vytvořený nástroj byl otestován nad datasetem OpenStreetMap pro území Evropy, kde bylo zpracováno  a vizualizováno 1.3 miliardy bodů z prostředí GRASS GIS.
 %%% ML: viz poznamka u anglickeho textu, zpracovani prohehlo v Hadoop a ne v GRASSu	
 %%% ML: z prostredi dava smysl, je to to v poradku
@@ -389,14 +397,14 @@ right=20mm
 	\newpage
 	\chapter*{Background of Related Work}\stepcounter{chapter}\addcontentsline{toc}{chapter}{Background of Related Work}
 	The chapter \textit{Background of related work} is focused on familiarization
-	with theoretical aspects which are essential for fulfilling the aim of the work.
+	with theoretical aspects which are essential for fulfiling the aim of the work.
 	Firstly, introduce the Hadoop system, which supports distributed filesystem for
 %%% ML: or YARN
 %%% MK: ok footneote
 	manipulation with data and computational framework MapReduce \footnote{MapReduce version 2 is also called YARN} for
 	parallel processing. 
 	The next section is focused on review and comparison of spatial frameworks for
-	Hadoop which support geoprocessing tools of big data. For fulfilling the
+	Hadoop which support geoprocessing tools of big data. For fulfiling the
 %%% ML: libraries?
 %%% MK: ok
 	capacity of Hadoop and its extensions is essential to dispose cluster of computer
@@ -420,7 +428,7 @@ right=20mm
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=0.3\textwidth]{./img/664px-Hadoop_logo.png}
-		\caption[Hadoop architecture2]{\centering Hadoop Logo.}
+		\caption[Hadoop logo]{\centering Hadoop Logo.}
 	\end{figure}
 	
 %%% ML: chybejici reference
@@ -447,7 +455,7 @@ right=20mm
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=0.6\textwidth]{./img/schema2.pdf}
-		\caption[Hadoop architecture2]{\centering Hadoop HDFS and MapReduce layers. Fig. author Matej Krejci}
+		\caption[Hadoop layers]{\centering Hadoop HDFS and MapReduce layers. Fig. author Matej Krejci}
 	\end{figure} 
 	
 	
@@ -573,7 +581,7 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 	
 	The second benefit of fixed size is simplifying storage management. Even file
 	size not fully 		
-	fills the filesystem block, the block is not use for other files. 
+	fills the filesystem block, the block is not used for other files.
 	Obviously, it makes easy 
 	to hold calculating of size discernibility and eliminating metadata concerns
 	(not necessary 
@@ -647,7 +655,7 @@ $ hadoop fs -cp /user/hadoop/file1.csv /user/tmp/file1.csv
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=0.8\textwidth]{./img/hdfsarchitecture.png}
-		\caption[HDFS architecture1]{\centering HDFS architecture \footnotemark}
+		\caption[HDFS architecture]{\centering HDFS architecture \footnotemark}
 		\label{hdfs_arch}
 	\end{figure} 
 	\footnotetext{Figure source:
@@ -1021,7 +1029,7 @@ linkid;data;rx;tx
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=1\textwidth]{./img/part_overview.png}
-		\caption[mapreduce flow]{\centering  Spatial partitions generated by
+		\caption[Spatial partitioning]{\centering  Spatial partitions generated by
 			different algorithms BSP: Binary split 
 			partitioning, FG: Fixed grid
 			partitioning, SLC: Strip partitioning, BOS: Boundary optimized strip
@@ -1070,7 +1078,7 @@ linkid;data;rx;tx
 		recursive partitioning approach. The maximal and a minimal number of objects per
 		tile is defined for controlling 
 		number of objects per tile . Splitting recursion 
-		finds optimal direction(x or y) for creating half-sized tiles which fulfill the
+		finds optimal direction(x or y) for creating half-sized tiles which fulfil the
 		thresholds by a number of objects 
 		in each half.  Taking into account default HDFS blocks size (128MB), the final
 		tiles are not stored in small files.
@@ -1207,7 +1215,7 @@ linkid;data;rx;tx
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=1\textwidth]{./img/spatial_hadoop_parti.png}
-			\caption[Spatial MapReduce]{\centering (a) Grid Partitioning (b) R-tree
+			\caption[Spatial partitioning - comparsion]{\centering (a) Grid Partitioning (b) R-tree
 				Partitioning.\footnotemark}
 			\label{fig:partitioning}
 		\end{figure}  
@@ -1250,7 +1258,7 @@ linkid;data;rx;tx
 	The implementation of spatial operators are designed to be used as defined
 	functions (UDFs) which are seamless to integrate with existing  non-spatial
 	operations in Hive or Pig for SpatialHadoop. The spatial operators of all three
-	libraries fulfill implementation rules according to OGC standard.
+	libraries fulfil implementation rules according to OGC standard.
 	
 	
 %%%JK:kontrola velkych/malych pismen v tabulce	
@@ -1378,7 +1386,7 @@ linkid;data;rx;tx
 	
 	\section{Google Cloud Platform}
 	\textbf{Cloud} in computer technology means service which provide capability of
-	storage and computation engine within datacenter. Services allow to developers 
+	storage and computation engine within data center  . Services allow to developers 
 	work efficiently  with 
 	requisite resources which are necessary for an application to work.
 	
@@ -1558,7 +1566,7 @@ region = region).execute()
 	
 	
 	\subsection{Geography and Regions}
-	Google Cloud datacenters are available across three \textit{locations}: North
+	Google Cloud data centers are available across three \textit{locations}: North
 	America, Europe, and Asia. Each location includes 
 	\textit{regions} and \textit{zones}. The choice of place, where service is
 	running is on developer. The statistics data and live stream of 
@@ -1723,7 +1731,7 @@ usage: 0.0
 		\subfloat[Policy hierarchy]{
 			\includegraphics[width=0.7\textwidth]{./img/iampolicy-hierarchy.png} }%
 		
-		\caption[access]{Concepts of Cloud Identity and Access Management. Source: \url{https://cloud.google.com/iam/docs/overview} 
+		\caption[Cloud Identity and Access]{Concepts of Cloud Identity and Access Management. Source: \url{https://cloud.google.com/iam/docs/overview} 
 			\centering }
 		\label{fig:iam}
 	\end{figure}
@@ -1879,7 +1887,7 @@ gsutil cp -a bucket-owner-full-control mwbck.zip gs://mwdata
 	configuration. Hadoop and Spark deployment are compatible with official
 	releases. With default configuration, the configuration of automatic deployment is simple. 
 	On the other hand in the most cases, it is 
-	necessary to configure cluster manually to fulfill custom requirements. 
+	necessary to configure cluster manually to fulfil custom requirements. 
 	Next to the standard command-line tool \textit{gcloud} there is 
 	helper software \emph{bdutil}.  The tool  allows complex 
 	configuration including the  
@@ -2008,7 +2016,7 @@ n1-highcpu-16  asia-east1-c   16   14.40
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=0.2\textwidth]{./img/grasslogo.png}
-		\caption[Logo GRASS]{\centering Logo of GRASS GIS.}
+		\caption[GRASS GIS Logo ]{\centering GRASS GIS Logo}
 	\end{figure}   
 
 	GRASS GIS vector map is a data layer which consists of number sets in
@@ -2658,7 +2666,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=1\textwidth]{./img/idea_schema.pdf}
-		\caption[Resources]{\centering Resources for processing big data within
+		\caption[GHF Resources]{\centering Resources for processing big data within
 			desktop GIS}
 	\end{figure} 
 	
@@ -3018,7 +3026,7 @@ $hive add jar ${env:HIVE_HOME}/lib/ESRI-geometry-api.jar;
 	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=1\textwidth]{./img/diag1_small.pdf}
-		\caption[Core diagram]{\centering Design of the core library }
+		\caption[Core GHF diagram]{\centering Design of the core library }
 	\end{figure} 
 	
 	\paragraph{Connection} management on the  lower level is handled by  class
@@ -3077,11 +3085,8 @@ return webhdfs_hook.WebHDFSHook(webhdfs_conn_id=self.conn_id)
 %%% ML: veta "The Main ... " zni divne
 %%% MK: ok
 	The middle interface consists of two Python modules. The first one, called
-	\textit{hdfs\_grass\_lib.py}, which includes classes for Connection management
-	and GeoJSON conversion.  The second module called \textit{hdfs\_grass\_util.py}
-%%% ML: their ?
-%%% MK: ok :)
-
+	\textit{hdfs\_grass\_lib}, which includes classes for Connection management
+	and GeoJSON conversion.  The second module called \textit{hdfs\_grass\_util}
 	is its helper. This interface allows to developed command lines
 	modules. These modules mainly call API according to parsed parameters and flags.  
 	
@@ -3433,8 +3438,8 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.6\textwidth]{./img/binning.png}
-	\caption[GHF workflow]{\centering Use case of spatial binning for
-	generalisation of raster.
+	\caption[Spatial binning]{\centering Use case of spatial binning for
+	generalization of raster.
 	Source: \textless\url{https://web.stanford.edu}}
 	\label{map_cz}
 \end{figure} 
@@ -3451,7 +3456,7 @@ create temporary function ST_BinEnvelope as 'com.ESRI.hadoop.hive.ST_BinEnvelope
 		\begin{figure}[!htbp]
 			\centering
 			\includegraphics[width=0.8\textwidth]{./img/eu_all.png}
-			\caption[GHF workflow]{\centering Snap shot of 1.3 billions of points from
+			\caption[OpenStreetMap Europe]{\centering Snap shot of 1.3 billions of points from
 			OpenStreetMap Planet dataset \newline
 			Source: \textless\url{http://spatialhadoop.cs.umn.edu/datasets/osm2/all_nodes.pyramid/}}
 			\label{map_eu}
@@ -3544,7 +3549,7 @@ hd.hdfs.out.vector.py driver=webhdfs
 	  \subfloat[2006-2007]{\label{figur:1}\includegraphics[width=0.5\textwidth]{./img/osm/2006.png}}
 		  \subfloat[2007-2008]{\label{figur:2}\includegraphics[width=0.5\textwidth]{./img/osm/2007.png}}
 		  \\
-			\label{figur}\caption{Aggregation of OSM points for particulars 1 year interval. 
+			\label{figur}\caption{Aggregation of OSM points for particular 1 year interval. 
 			The resolution of spatial binning is 0.2 degree (approx 20km). The source OSM map consists of 1.3 billions of points.
 			}
 			\label{fig:outmap}
@@ -3571,50 +3576,53 @@ hd.hdfs.out.vector.py driver=webhdfs
 	\newpage
 	\section{Conclusion}
 	
-	The first part of work introduced essentials and features of Hadoop design and its
-	components. The following discussion aims on problems of spatial libraries coupled with Hadoop. 
-	The second chapter expands the theoretical principles by the application in practice and describes 
-	functionality, implementation and usage of developed GRASS Hadoop framework in detail.
-	First chapter briefly introduced Hadoop ecosystem and its main components: distributed filesystem, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the
-	functionality and implementation strategy of spatial libraries for Hadoop is
-	done. Following discussion deals with the challenges connected to spatial
-	processing using MapReduce/HDFS and walk through particulars solutions for each
-	library. The rest of the first part overviews Google Cloud Platform, 
-	especially services for cluster hosting.
-	
-	Experiment framework consists processing workflow with included description of 
-	implemented tools in detail. As the first step in the workflow tasks nascent 
-	within the setup of working environment and Hadoop configuration are described. Thus, 
-	set up environment for developing Hadoop/Hive client application. In addition, 
-	the configuration of  cluster for performance of spatial processing is also described.
-	The next section introduces functionality of developed framework for GRASS and overview 
+   The first part of work introduces essentials and features of Hadoop design and its
+   components. The following discussion aims on problems of spatial libraries coupled with Hadoop.
+   The second chapter expands the theoretical principles by the application in practice and describes
+   functionality, implementation and usage of developed GRASS Hadoop framework in detail.
+   The first chapter briefly introduced Hadoop ecosystem and its main components: distributed filesystem, layer for parallel processing - MapReduce and architecture of Hadoop server components. Thereafter, detailed analysis of the
+   functionality and implementation strategy of spatial libraries for Hadoop is
+   provided. Following discussion deals with the challenges connected to spatial
+   processing using MapReduce/HDFS and walk through particulars solutions for each
+   library. The rest of the first part overviews Google Cloud Platform,
+   especially services for cluster hosting.
+   
+   
+   Experiment framework consists of processing workflow and includes description of
+   implemented tools in detail. As the first step in the workflow tasks nascent
+   within the setup of working environment and Hadoop configuration is described. Therefore,
+   set up environment for developing Hadoop/Hive client application is provided. In addition,
+   the configuration of  cluster for performance of spatial processing is also described.
+   The next section introduces functionality of developed framework for GRASS and overview
+   implementation design. 
+   
+
 	implementation design.  
 	
 	\subsection*{Contribution}
-	The main goal of the work was design and implement processing workflow for
-	interaction  between  Hadoop and GRASS GIS. Especially brings native access to
-	distributed filesystem and data warehouse Hive within GRASS. This combination
-	allows to use external libraries for parallel spatial processing. 
-	
-	As experiment within work GRASS Hadoop framework (GHF) has been developed.
-	The package includes several GRASS command line modules for interaction between
-	Hadoop and Hive. The full pack of modules simplified and automated the
-	processing workflow. Therefore conversion data to serialized format, provides
-	transaction of data to distributed filesystem and load data to Hive data
-	warehouse which supports two spatial libraries. The result of highly demanding 
-	performance of spatial analysis by the GRASS Hadoop Framework provides transfer of
-	results to local filesystem and conversion to the native GRASS vector map. 
-	
-	The use case shown GRASS Hadoop Framework in use. The Europe extraction of OSM Planet dataset consisting 1.3 billions of point
-	 has been processed on Hadoop using GRASS native interface. The developed framework
-	 met expectations to be user friendly and effective tool.
+ The main goal of the work was design and implement processing workflow for
+ interaction  between  Hadoop and GRASS GIS, especially bring native access to
+ distributed filesystem and data warehouse Hive within GRASS. This combination
+ allows to use external libraries for parallel spatial processing.
+ 
+ As experiment within work GRASS Hadoop framework(GHF) has been developed.
+ The package includes several GRASS command line modules for interaction between
+ Hadoop and Hive. The full pack of modules simplifies and automates the
+ processing workflow. Therefore conversion data to serialized format provides
+ transaction of data to distributed filesystem and load data to Hive data
+ warehouse which supports two spatial libraries. The result of highly demanding
+ performance of spatial analysis by the GRASS Hadoop Framework provides transfer of
+ results to local filesystem and conversion to the native GRASS vector map.
+ 
+ The selected case shown example of GRASS Hadoop Framework use. The Europe extraction of OSM Planet dataset consisting 1.3 billions of point
+ has been processed on Hadoop using GRASS native interface. The developed framework
+ meets expectations to be user friendly and effective tool.
 	
 	\subsection*{Further work}
-	Package GRASS Hadoop Framework to compare with ESRI Hadoop GP Toolbox
-	provide in many ways same functionality, even more, like Hive support or manager for connections. On the other hand, ESRI supports executing Apache Oozie workflow for Hadoop even  it is with several limitation. The further enhancement of GHF is supposed to be implementation of Oozie workflow support.
-	
-	The design of GHF respecting design layers based on interfaces hierarchy. The fact that core API is implemented independently on GRASS  and middle interface is dependent only partly is allowed to bring developed code into another GIS project. In field of open source free GIS there is open room for developing similar framework for QGIS. Due to design, this task will consists only implementation of GUI interface (Qt) and minor refracting of part of code which is connected to GRASS map conversion tools.
+Package GRASS Hadoop Framework compared with ESRI Hadoop GP Toolbox
+provides in many aspects same functionality, even more, like Hive support or manager for connections. On the other hand, ESRI supports executing Apache Oozie workflow for Hadoop even it is with several limitation. The further enhancement of GHF is supposed to be implementation of Oozie workflow support.
 
+The design of GHF respects design layers based on interfaces hierarchy. The fact that core API is implemented independently on GRASS and middle interface is dependent only partly it is allowed to bring developed code into another GIS project. In field of open source free GIS makes room for developing of similar framework for Quantum GIS(QGis). Due to design this task will consists only of implementation of GUI interface(QtGUI) and minor refracting of part of code which is connected to GRASS map conversion tools.
 
 	
 	
