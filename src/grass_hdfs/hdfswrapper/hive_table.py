@@ -4,6 +4,9 @@ import sys
 import os
 
 class HiveBaseTable(object):
+    """
+    Base class for creating Hive tables - table factory
+    """
     def __init__(self,
                 name,
                 col,
@@ -107,6 +110,9 @@ class HiveBaseTable(object):
 
 
 class HiveJsonTable(HiveBaseTable):
+    """
+    Table factory for Json tables
+    """
     def __init__(self,
                 name,
                 col ,
@@ -159,6 +165,9 @@ class HiveJsonTable(HiveBaseTable):
             self.hql+=" ROW FORMAT SERDE '%s'"%self.row_format
 
 class HiveCsvTable(HiveBaseTable):
+    """
+    Table factory for CSV tables
+    """
     def __init__(self,
                 name,
                 col ,
@@ -215,6 +224,9 @@ class HiveCsvTable(HiveBaseTable):
              self.hql+=' ROW FORMAT %s'%self.row_format
 
 class HiveSpatial(object):
+    """
+    Factory for spatial queries
+    """
     def execute(self, hql):
         NotImplementedError()
 

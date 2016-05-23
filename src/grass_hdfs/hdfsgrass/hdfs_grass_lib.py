@@ -187,23 +187,28 @@ class ConnectionManager:
         self.set_connection(conn_type=conn_type, conn_id=conn_id)
         self._set_active_connection()
 
-    def _set_active_connection(self, conn_type=None, idc=None):
+    def _set_active_connection(self, conn_type=None, conn_id=None):
         """
         Set active connection
-        :param conn_type:
-        :param idc:
+        :param conn_type: driver
+        :param conn_id: id of connection
         :return:
         """
         if conn_type is None:
             conn_type = self.conn_type
-        if idc is None:
-            idc = self.conn_id
+        if conn_id is None:
+            conn_id = self.conn_id
         cfg = read_dict(settings.grass_config)
-        cfg[conn_type] = idc
+        cfg[conn_type] = conn_id
         save_dict(settings.grass_config, cfg)
 
     @staticmethod
     def get_current_Id(conn_type):
+        """
+        Return id of active connection
+        :param conn_type:
+        :return:
+        """
         cfg = read_dict(settings.grass_config)
         if cfg:
             if cfg.has_key(conn_type):
@@ -213,6 +218,10 @@ class ConnectionManager:
 
     @staticmethod
     def show_active_connections():
+        """
+        Print active connection
+        :return:
+        """
         cfg = read_dict(settings.grass_config)
         if cfg:
             grass.message('***' * 30)
@@ -224,6 +233,11 @@ class ConnectionManager:
         grass.message('***' * 30)
 
     def get_current_connection(self, conn_type):
+        """
+        Return primary connection for given driver
+        :param conn_type:
+        :return:
+        """
         idc = self.get_current_Id(conn_type)
         if idc:
             self.set_connection(conn_id=idc, conn_type=conn_type)
@@ -234,12 +248,21 @@ class ConnectionManager:
         return self.connection
 
     def get_hook(self):
+        """
+        Return hook of current connection
+        :return:
+        """
         if self.connection:
             return self.connection.get_hook()
         return None
 
     @staticmethod
     def remove_conn_Id(id):
+        """
+        Remove connection for given ID
+        :param id:
+        :return:
+        """
         cn = settings.engine.connect()
         grass.message('***' * 30)
         grass.message("\n     Removing connection %s " % id)
@@ -253,10 +276,20 @@ class ConnectionManager:
         grass.message('***' * 30)
 
     def set_connection_uri(self, uri):
+        """
+        Set connection from uri
+        :param uri:
+        :return:
+        """
         self.uri = uri
         self._connect()
 
     def test_connection(self, conn_type=None):
+        """
+        Test active connection
+        :param conn_type:
+        :return:
+        """
         if conn_type is not None:
             self.get_current_connection(conn_type)
 
@@ -267,21 +300,23 @@ class ConnectionManager:
                 return False
 
 class HiveTableBuilder:
+    """
+    Abstract class for Hive table maker
+    """
     def __init__(self,map,layer):
         self.map = map
         self.layer = layer
 
     def get_structure(self):
         raise NotImplemented
-        dtypes=['TINYINT','SMALLINT','INT','BIGINT','BOOLEAN','FLOAT','DOUBLE',
-                'STRING','BINARY','TIMESTAMP','DECIMAL','DATE','VARCHAR','CHAR']
+
         table = VectorDBInfoBase(self.map)
         map_info = table.GetTableDesc(self.map)
 
         for col in map_info.keys():
             name=str(col)
             dtype=col['type']
-            if dtype == 'integet':
+            if dtype == 'integer':
                 dtype = 'INT'
             if not dtype.capitalize() in dtype:
                 grass.fatal('Automatic generation of columns faild, datatype %s is not recognized'%dtype)
@@ -290,6 +325,9 @@ class HiveTableBuilder:
        raise NotImplemented
 
 class JSONBuilder:
+    """
+    Class which performe conversion from grass map to  serialisable GeoJSON
+    """
     def __init__(self, grass_map=None, json_file=None):
 
         self.grass_map = grass_map
@@ -297,6 +335,10 @@ class JSONBuilder:
         self.json = ''
 
     def get_JSON(self):
+        """
+        Return geojson for class  variable grass_map
+        :return:
+        """
         if self.grass_map:
             self.json = self._get_grass_json()
         else:
@@ -305,6 +347,12 @@ class JSONBuilder:
         return self.json
 
     def rm_last_lines(self, path, rm_last_line=3):
+        """
+        Removing last n lines for given text file
+        :param path:
+        :param rm_last_line:
+        :return:
+        """
         file = open(path, "r+", )
 
         # Move the pointer (similar to a cursor in a text editor) to the end of the file.
@@ -325,6 +373,12 @@ class JSONBuilder:
 
     @staticmethod
     def remove_line(filename, lineNumber):
+        """
+        Remove n lines for given file
+        :param filename:
+        :param lineNumber:
+        :return:
+        """
         with open(filename, 'r+') as outputFile:
             with open(filename, 'r') as inputFile:
 
@@ -346,6 +400,10 @@ class JSONBuilder:
             outputFile.truncate()
 
     def _get_grass_json(self):
+        """
+        Transform GRASS map to GeoJSON
+        :return:
+        """
         if self.grass_map['type'] not in ['point', 'line', 'boundary', 'centroid',
                                           'area', 'face', 'kernel', 'auto']:
             self.grass_map['type'] = 'auto'
@@ -374,6 +432,9 @@ class JSONBuilder:
         return out
 
 class GrassMapBuilder(object):
+    """
+    Base class for creating GRASS map from GeoJSON
+    """
     def __init__(self, json_file, map,attributes):
         self.file = json_file
         self.map = map
@@ -415,12 +476,23 @@ class GrassMapBuilder(object):
                 return self._find_between(first_line,'wkid":','}')
 
     def _rm_null(self):
+        """
+        First line sometimes include null. Must be removed
+        :return:
+        """
         with open(self.file, 'r') as f:
             first_line = f.readline()
             if first_line.find('null') != -1:
                 self.remove_line(0)
 
     def _find_between(self,s, first, last ):
+        """
+        Return sting between two strings
+        :param s:
+        :param first:
+        :param last:
+        :return:
+        """
         try:
             start = s.index( first ) + len( first )
             end = s.index( last, start )
@@ -429,6 +501,10 @@ class GrassMapBuilder(object):
             return ""
 
     def _create_map(self):
+        """
+        Create map from GeoJSON
+        :return:
+        """
         out1=Module('v.in.ogr',
               input=self.file,
               output=self.map,
@@ -439,20 +515,32 @@ class GrassMapBuilder(object):
         #grass.message(out1.outputs["stderr"].value.strip())
         #logging.debug(out1.outputs["stderr"].value.strip())
 
-    def _json_parser(self):
-        pass
 
     def _prepend_line(self,line):
+        """
+        Prepend line to the text file
+        :param line:
+        :return:
+        """
         with open(self.file, "r+") as f:
              old = f.read() # read everything in the file
              f.seek(0) # rewind
              f.write("%s\n"%line + old) # write the new line before
 
     def _append_line(self,line):
+        """
+        Append line to the text file
+        :param line:
+        :return:
+        """
         with open(self.file, 'a') as file:
             file.write(line)
 
     def _get_type(self):
+        """
+        return type of esri simple feature
+        :return:
+        """
         line = stream_lines(self.file) | nth(0)
         if line.find('ring'):
             return ['ring','"type":"Polygon","coordinates":']
@@ -467,7 +555,12 @@ class GrassMapBuilder(object):
             grass.fatal('Envelope is not supported')
 
     def replace_substring(self,foo,bar):
-
+        """
+        Replace substring by given string
+        :param foo:
+        :param bar:
+        :return:
+        """
         path='%s1'%self.file
         io=open(path,'w')
         stream_lines(self.file) |\
@@ -476,6 +569,9 @@ class GrassMapBuilder(object):
         self.file=path
 
 class GrassMapBuilderEsriToStandard(GrassMapBuilder):
+    """
+    Class for conversion serialised GeoJson to GRASS MAP
+    """
     def __init__(self,json_file, map):
         super(GrassMapBuilderEsriToStandard,self).__init__(json_file, map)
 
@@ -492,6 +588,9 @@ class GrassMapBuilderEsriToStandard(GrassMapBuilder):
         self._create_map()
 
 class GrassMapBuilderEsriToEsri(GrassMapBuilder):
+    """
+    Class for conversion serialised Esri GeoJson to GRASS MAP
+    """
     def __init__(self,json_file, map,attributes):
         super(GrassMapBuilderEsriToEsri,self).__init__(json_file, map,attributes)
         if not os.path.exists(self.file):
@@ -556,6 +655,9 @@ class GrassMapBuilderEsriToEsri(GrassMapBuilder):
             return ['envelope','esriGeometryEnvelope']
 
 class GrassHdfs():
+    """
+    Helper class for ineteraction between GRASS and HDFS/HIVE
+    """
     def __init__(self, conn_type):
         self.conn = None
         self.hook = None
@@ -569,8 +671,6 @@ class GrassHdfs():
         self.conn = ConnectionManager()
         self.conn.get_current_connection(self.conn_type)
         self.hook = self.conn.get_hook()
-
-
 
     @staticmethod
     def printInfo( hdfs, msg=None):
