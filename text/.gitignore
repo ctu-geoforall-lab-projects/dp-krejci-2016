@@ -1,6 +1,5 @@
 *.aux
 *.log
-matej-krejci-dp-2016.pdf
 *.bak
 *.out
 *.toc
@@ -8,4 +7,5 @@ matej-krejci-dp-2016.pdf
 *.gz
 *.bbl
 *.blg
-
+*.lof
+*.lot
