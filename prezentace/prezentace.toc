@@ -1,0 +1,22 @@
+\beamer@endinputifotherversion {3.36pt}
+\select@language {english}
+\beamer@sectionintoc {1}{Motivace}{2}{0}{1}
+\beamer@sectionintoc {2}{\IeC {\'U}vod}{7}{0}{2}
+\beamer@sectionintoc {3}{Hadoop}{10}{0}{3}
+\beamer@subsectionintoc {3}{1}{HDFS}{13}{0}{3}
+\beamer@subsectionintoc {3}{2}{MapReduce}{15}{0}{3}
+\beamer@sectionintoc {4}{GIS Hadoop}{17}{0}{4}
+\beamer@subsectionintoc {4}{1}{GIS Extenze}{18}{0}{4}
+\beamer@subsectionintoc {4}{2}{MapReduce}{19}{0}{4}
+\beamer@subsectionintoc {4}{3}{Partitioning a Indexing}{20}{0}{4}
+\beamer@subsectionintoc {4}{4}{Hive}{21}{0}{4}
+\beamer@sectionintoc {5}{Hadoop Hosting}{22}{0}{5}
+\beamer@subsectionintoc {5}{1}{Google Cloud Platform}{23}{0}{5}
+\beamer@sectionintoc {6}{GHF}{24}{0}{6}
+\beamer@subsectionintoc {6}{1}{Funkcionalita}{25}{0}{6}
+\beamer@subsectionintoc {6}{2}{Vyu\IeC {\v z}it\IeC {\'\i }}{28}{0}{6}
+\beamer@subsectionintoc {6}{3}{P\IeC {\v r}\IeC {\'\i }padov\IeC {\'a} studie}{29}{0}{6}
+\beamer@sectionintoc {7}{Z\IeC {\'a}v\IeC {\v e}r}{32}{0}{7}
+\beamer@subsectionintoc {7}{1}{V\IeC {\'y}sledky pr\IeC {\'a}ce}{32}{0}{7}
+\beamer@subsectionintoc {7}{2}{Navazuj\IeC {\'\i }c\IeC {\'\i } pr\IeC {\'a}ce}{33}{0}{7}
+\beamer@sectionintoc {8}{Ot\IeC {\'a}zky oponenta}{35}{0}{8}
