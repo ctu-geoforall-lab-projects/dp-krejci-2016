@@ -124,7 +124,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\begin{frame}
 		\begin{figure}
-			\frametitle{Počet publikací v databázi ResearchGate s kličovým slovem BigData}
+			\frametitle{Počet publikací v databázi ResearchGate s klíčovým slovem BigData}
 			\centering
 			\includegraphics[width=0.8\textwidth]{./img/motivace/num_of_publication.png}
 			\label{fig:num_of_publication}
@@ -167,7 +167,7 @@ Diplomová práce se věnuje analýze technologií pro zpracování velkého mno
 		\begin{itemize}
 			\item Teoretický základ Hadoop a jeho GIS extenzí
 			\item Konfigurace Hadoop clusteru hostovaného na Google Cloud Platform
-			\item Vývoj GRASS Hadoop Framework umožňující interakci desktop GIS s Hadoop/Hive a jeho GIS exetenzemi.
+			\item Vývoj GRASS Hadoop Framework umožňující interakci desktop GIS s Hadoop/Hive a jeho GIS exetenzemi
 			\item Otestovaní navrženého workflow
 		\end{itemize}
 		\includegraphics[width=0.5\textwidth]{./img/motivace/zadani.jpg}
@@ -179,12 +179,12 @@ Diplomová práce se věnuje analýze technologií pro zpracování velkého mno
 
 
 	\begin{frame}
-		\frametitle{Struktůra prezentace}
+		\frametitle{Struktura prezentace}
 		\begin{itemize}
 			\item Úvod do Hadoop 
 			\item GIS extenze pro Hadoop
 			\item Hadoop konfigurací a cloudové služby
-			\item Seznámení s vyvynutým software
+			\item Seznámení s vyvinutým software
 			\item Případová studie
 			\item Závěr
 		\end{itemize}
@@ -206,13 +206,13 @@ Diplomová práce se věnuje analýze technologií pro zpracování velkého mno
 		\frametitle{Hadoop Framework}
 
 			\begin{itemize}
-				\item Sada \textbf{open-source} komponent pro zpracování velkého množství
-dat(v řádech petabytů a exabitů)  
+				\item Sada \textbf{open-source} komponent pro zpracování velkého množství.
+dat v řádech petabytů a exabytů.  
 				\item Uložení a zpracování objemných dat na velkém množství běžných počítačů. 
 				\item Dvě hlavní komponenty:
 				\begin{enumerate}
-					\item Distribuovaný file systém, nativně \textbf{HDFS}.
-					\item Framework \textbf{MapReduce} pro paralelní výpočy.
+					\item distribuovaný file systém, nativně \textbf{HDFS},
+					\item framework \textbf{MapReduce} pro paralelní výpočy.
 				\end{enumerate}
 			\end{itemize}
 			\begin{figure}
@@ -244,7 +244,7 @@ dat(v řádech petabytů a exabitů)
 				\item \textbf{DataNode} - \textbf{slave} -  Jsou instalovány na každém uzlu
 a disponují data bloky. Zajišťují čtení a zápis dat od klienta.
 				\item \textbf{Secondary NameNode} - periodicky zajišťuje zálohu metadata
-logů. V případě selhaní NameNode, umožňuje obnovu z posední zálohy.
+logů. V případě selhání NameNode umožňuje obnovu z poslední zálohy.
 			\end{itemize}
 		\begin{figure}
 			\centering
@@ -261,9 +261,9 @@ logů. V případě selhaní NameNode, umožňuje obnovu z posední zálohy.
 		\frametitle{Distribuovaný file systém}
 		\textbf{Hlavní vlastnosti}
 		\begin{itemize}
-			\item abstraktní vrstva - umožňuje využití jiné file systémy
+			\item abstraktní vrstva - umožňuje využití jiných file systémů
 			\begin{itemize}
-				\item 		Nativní distribuovaný filesystém - \textbf{Hadoop Distributed File System(HDFS)}
+				\item 		Nativní distribuovaný file systém - \textbf{Hadoop Distributed File System(HDFS)}
 			\end{itemize}
 			\item škálovatelnost 
 			\item replikace ->fault tolerant
@@ -295,13 +295,13 @@ logů. V případě selhaní NameNode, umožňuje obnovu z posední zálohy.
 	\subsection{MapReduce} 
 	\begin{frame}
 		\frametitle{MapReduce} 
-		Programovací model pro pralelní zpracování velkého objemu dat s využitím
+		Programovací model pro paralelní zpracování velkého objemu dat s využitím
 počítačévého clusteru.
 		
 		Princip MapReduce   
 		\begin{enumerate}
 			\item \textbf{Map} fáze - Každý \textbf{Slave} počítač zavolá funkci
-\textit{Map()} nad lokalními daty a dočasně zapíše mezivýsledky. Master počítač
+\textit{Map()} nad lokálními daty a dočasně zapíše mezivýsledky. Master počítač
 zajišťuje, že je zpracována pouze jedna replika.
 			%\item  \textbf{Shuffle} fáze - \textbf{Slave} předistribujuje mezivísledky
 %fce. map() tak, aby \textit{value} každého \textit{key} byla na stejném Slave
@@ -357,8 +357,8 @@ skupiny key-value pomocí uživatelem definované funkce Reduce()
 		\begin{frame}
 			\frametitle{GIS extenze pro Hadoop}
 		Pro MapReduce framework jsou dostupné extenze, které podporují základní GIS
-operace nad prostrovými daty. Analogií v běžných relačních databázích je PostGIS
-pro Postrges.
+operace nad prostorovými daty. Analogií v relačních databázích je PostGIS
+pro PostgreSQL.
 			\begin{enumerate}
 				\item Esri Spatial processing framework for Hadoop
 				\item HadoopGIS
@@ -378,7 +378,8 @@ pro Postrges.
 			\centering
 			\includegraphics[width=0.8\textwidth]{./img/spatial/mapred_spatial.pdf}
 		\end{figure}
-		Analýza prostorového vztahu dvou datasetů
+		Analýza prostorového vztahu dvou datasetů.
+		
 		\begin{enumerate}
 			\item Filtering 
 			\item Partitioning
@@ -442,18 +443,18 @@ pro Postrges.
 	\subsection{Hive}
 	\begin{frame}
 		\frametitle{Hive}
-		Co je Hive? Hadoop nadstavba, která umožňuje optimalní správu dat s
-expresivnim dotazovanim podobným jako SQL.
+		Co je Hive? Hadoop nadstavba, která umožňuje optimální správu dat s
+expresivním dotazováním jako SQL.
 				\begin{figure}
 					\centering
 					\includegraphics[width=0.2\textwidth]{./img/spatial/hive.png}
 				\end{figure}
 		\begin{enumerate}
-			\item Podpora indexů
+			\item Podpora indexů.
 			\item Podpora formátů pro uložení dat - text, RCFile, HBase, ORC a další.
-			\item Úložiště pro metadata je v externí RDBMS (default Derby databáze)
-			\item UDFs- funkce definované uživatelem např. BinEnvelope, Intersects
-			\item SQL-like query, které jsou implicitně konvertovány do MapReduce funckcí
+			\item Úložiště pro metadata je v externí RDBMS (default Derby databáze).
+			\item UDFs - funkce definované uživatelem např. BinEnvelope, Intersects.
+			\item SQL-like query, které jsou implicitně konvertovány do MapReduce funckcí.
 		\end{enumerate}
 	\end{frame}
 
@@ -473,8 +474,8 @@ expresivnim dotazovanim podobným jako SQL.
 		\begin{enumerate}
 		\item Konfigurace Google Cloud Platform prostředí
 		\item Konfigurace Hadoop serveru
-		\item Konfigurace počitačové sítě a firewall
-		\item Konfigurace lokalního počítače
+		\item Konfigurace počítačové sítě a firewall
+		\item Konfigurace lokálního počítače
 		\end{enumerate}
 	\end{frame}
 	
@@ -581,10 +582,10 @@ expresivnim dotazovanim podobným jako SQL.
 	\subsection{Využití}
 			\begin{frame}
 				\frametitle{GRASS Hadoop Framework - Ovládání}
-				Ovladání modulů:
+				Ovládání modulů:
 			
 				\begin{itemize}
-					\item  z přikazové řádky GRASSu = parametry a přepínače
+					\item  z příkazové řádky GRASSu = parametry a přepínače
 					\item  z vygenerovaného GUI GRASSu
 				\end{itemize}
 				
@@ -593,13 +594,13 @@ expresivnim dotazovanim podobným jako SQL.
 			
 	\subsection{Případová studie}		
 		\begin{frame}
-			\frametitle{Případová studie GHF - OSM History datastet}
+			\frametitle{Případová studie GHF - OSM History dataset}
 			Informace o datasetu:
 			\begin{itemize}
 				\item  Obsahuje veškeré změny prostorových informací od založení projektu
-				\item  Extrakce Evropy obsahuje cca 1.3 miliardy bodů tj. 116 Gb
+				\item  Extrakce Evropy obsahuje cca 1.3 miliardy bodů, tj. 116 Gb
 			\end{itemize}
-			S využitím \textit{binning} funkce byly body z OSM agregovány do bin(obdelníků) o velikosti 0.1 stupně tj. cca 10km
+			S využitím \textit{binning} funkce byly body z OSM agregovány do bin (obdelníků) o velikosti 0.1 stupně, tj. cca 10km.
 		\end{frame}	
 			
 		\begin{frame}
@@ -630,9 +631,9 @@ expresivnim dotazovanim podobným jako SQL.
 					\item Analýza teoretických aspektů
 					\item Porovnání dostupných GIS extenzí pro Hadoop
 				\end{itemize}
-			\item Využití cloud služeby Google Cloud Platform
+			\item Využití cloud služby Google Cloud Platform
 				\begin{itemize}
-					\item Konfigurace projektu, sitě, firewall
+					\item Konfigurace projektu
 					\item Konfigurace Hadoop clusteru
 				\end{itemize}
 			\item Implementace vlastních nástrojů pro GRASS GIS
@@ -649,7 +650,7 @@ expresivnim dotazovanim podobným jako SQL.
 		\begin{itemize}
 			\item Návrh knihoven systematicky implementuje core API nezávisle na GRASSu = možnost implementace Hadoop frameworku pro QGIS bez zásahů do těchto knihoven. Je třeba dopsat pouze konverzi map, která je v QGIS také založena na OGR driveru + implemenace GUI pro QGIS. 
 			
-			\item Implementace podpory Oozie workflow pro plánování Hadoop úloh  
+			\item Implementace podpory Oozie workflow pro plánování Hadoop úloh.  
 		\end{itemize}
 	\end{frame}
 	
@@ -668,34 +669,78 @@ expresivnim dotazovanim podobným jako SQL.
 		\frametitle{Reakce na poznámky oponenta}
 		\small
 		\begin{enumerate}
-			\item 
+			\item Jaké další frameworky typu Hadoop existují?
+			\begin{itemize}
+			\item Spark
+			\item MongoDB
+			\end{itemize}
+
 			\pause[]  
 			
-			\item 
-			
-			\pause[] 
-			\item
-		\end{enumerate}
-	\end{frame}
-	
-
-	
-	
-	
+			\item Pokud je možné Hadoop provozovat na Google cloudu, jaké jsou další cloud možnosti? 
+						Např:
+						\begin{itemize}
+							\item BigQuery (Příloha A)
+							\item Docker load balancing
+						\end{itemize}
+									%Google Cloud je stale rozvijejici se platforma, ktera umoznuje nespocet servisu. V priloze A jsem se zabival BigQuery- skalovatelna databaze
+									%Dale mimo dp jsem zkousel vyuzit load balanceru  pro docker image obsahujici web. Umoznuje atomaticke skalovani v reakci na navstevnost a ze statistik navstevnosti
+						 Jaké další cloud computing services diplomant zná?
+ 						\begin{itemize}
+ 							\item Amazoon Cloud
+ 							\item Docker Cloud
+ 						\end{itemize}
+							%Dale znam Amazoon platformu a DockerCloud platformu, ktera je primo zavisla na Amazoon a umoznuje maintenance Docker konteinteru
+							Proč zvolil právě Hadoop?
+							%Hadoop jsem zvolil jelikoz je nejrozsirenejsi platformou ve sfere distribuovanych databazi. A take proto, ze pro nej jsou dostupne GIS frameworky
+						\begin{itemize}
+							\item Nejrozšířenější platforma
+							\item a proto nejširší dostupnost GIS nadstaveb
+						\end{itemize}
+								\end{enumerate}
+							\end{frame}
+	\section{Otázky oponenta}
 	\begin{frame}
 		\frametitle{Reakce na poznámky oponenta}
-		\small
-		\begin{enumerate}
-			\setcounter{enumi}{3}
-			\item 
-			
-			\pause[] 
-			\item
+		
 
-			\pause[]  
-			\item 
+		\begin{enumerate}
+					     \setcounter{enumi}{2}
+			\item Výhody a nevýhody NoSQL databází vs "typické" relační databáze.
+			
+						Výhody NoSQL 
+						\begin{itemize}
+							\item Komoditní hardware
+							\item Škálování do šířky
+							\item Vysoká dostupnost (replikace)
+							\item Uložení nestrukuralizovaných dat
+							\item Dynamické přidávaní dat
+						\end{itemize}
+						
+						Výhody SQL
+					\begin{itemize}
+						\item Normalizace 
+						\item Relační schémata - lepší orientace v db
+						\item Datové typy, validace
+						\item Klíče
+						\item SQL standard
+						\item Striktní transakce - izolace
+					\end{itemize}
+		%Vyhody NoSQL
+			%potreba vykoneho hardware a i presto narazi na limity pro ukladani velkeho objemu dat
+			%skalovani do sirky pro nosql X vertikalni pro RDBMS 
+			%Vysoka dostupnost dostupne -replikace, faul tolerant
+			%Rychla odezva i pro velka data
+			%Linearni skalovani - do sirky
+			%ulozeni nestrukturovanych dat
+			%dynamicke pridavani dat(v pripade alter table je tabulka offline)
+		%Nevyhody
+			%
 		\end{enumerate}
 	\end{frame}
+	
+
+
 	
 	
 	
