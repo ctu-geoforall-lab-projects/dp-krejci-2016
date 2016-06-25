@@ -12,6 +12,10 @@ Bc. Matěj Krejčí
 
 Ing. Martin Landa, Ph.D.
 
+## Oponent
+
+Ing. Jan Pytel, Ph.D.
+
 ## Obhajoba
 
 06/2016
